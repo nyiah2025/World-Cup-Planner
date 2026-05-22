@@ -625,6 +625,7 @@ footer strong { color: rgba(253,250,244,0.7); }
   .controls { flex-direction: column; align-items: stretch; }
   .view-all-btn { text-align: center; }
 }
+img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.1em; display: inline-block; }
 </style>
 <!-- Twemoji: consistent cross-platform emoji flags -->
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
@@ -1232,7 +1233,11 @@ setInterval(render, 60000);
 <script>
 /* Twemoji: replace emoji with cross-platform SVG flags */
 document.addEventListener('DOMContentLoaded', function() {
-  twemoji.parse(document.body, { folder: 'svg', ext: '.svg' });
+  twemoji.parse(document.body, {
+    folder: 'svg',
+    ext: '.svg',
+    base: 'https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/'
+  });
 });
 </script>
 </body>

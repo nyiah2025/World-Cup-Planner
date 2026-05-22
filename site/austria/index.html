@@ -102,6 +102,7 @@ footer strong { color:rgba(253,250,244,0.7); }
 .toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--ink); color:var(--white); font-size:13px; font-weight:600; padding:12px 24px; border-radius:100px; z-index:9999; transition:transform 0.3s ease; pointer-events:none; }
 .toast.show { transform:translateX(-50%) translateY(0); }
 @media(max-width:600px) { .matches-grid { grid-template-columns:1fr; } .hero h1 { font-size:28px; } .controls { flex-direction:column; align-items:stretch; } }
+img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.1em; display: inline-block; }
 </style>
 <!-- Twemoji: consistent cross-platform emoji flags -->
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
@@ -319,7 +320,11 @@ function copyMatch(id, home, away, venue, city) {
 <script>
 /* Twemoji: replace emoji with cross-platform SVG flags */
 document.addEventListener('DOMContentLoaded', function() {
-  twemoji.parse(document.body, { folder: 'svg', ext: '.svg' });
+  twemoji.parse(document.body, {
+    folder: 'svg',
+    ext: '.svg',
+    base: 'https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/'
+  });
 });
 </script>
 </body>
