@@ -655,6 +655,27 @@ footer strong { color: rgba(253,250,244,0.7); }
   .view-all-btn { text-align: center; }
 }
 img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.1em; display: inline-block; }
+
+/* ── TOP NAV ── */
+.topnav {
+  background: var(--ink);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--white);
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+
+.nav-logo span { color: var(--gold-light); }
 </style>
 <!-- Twemoji: consistent cross-platform emoji flags -->
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
@@ -662,6 +683,10 @@ img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
 </head>
 <body>
+
+<nav class="topnav">
+  <a href="index.html" class="nav-logo">myteam<span>kickoff</span>.com</a>
+</nav>
 
 <!-- HERO -->
 <div class="hero">
