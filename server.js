@@ -21,53 +21,60 @@ const MIME_TYPES = {
 };
 
 function serveFile(res, filePath) {
+  const ext = path.extname(filePath);
+  const contentType = MIME_TYPES[ext] || "application/octet-stream";
   fs.readFile(filePath, (err, data) => {
     if (err) {
       res.writeHead(404, { "Content-Type": "text/plain" });
       res.end("Not found");
       return;
     }
-    const ext = path.extname(filePath);
-    const contentType = MIME_TYPES[ext] || "application/octet-stream";
     res.writeHead(200, { "Content-Type": contentType });
     res.end(data);
   });
 }
 
-function tryPaths(candidates, res) {
-  const [first, ...rest] = candidates;
-  if (!first) {
+function resolve(urlPath, res) {
+  const target = path.join(SITE_DIR, urlPath);
+
+  fs.stat(target, (err, stat) => {
+    if (!err && stat.isFile()) {
+      return serveFile(res, target);
+    }
+
+    if (!err && stat.isDirectory()) {
+      const indexPath = path.join(target, "index.html");
+      return fs.access(indexPath, fs.constants.F_OK, (err2) => {
+        if (!err2) {
+          serveFile(res, indexPath);
+        } else {
+          res.writeHead(404, { "Content-Type": "text/plain" });
+          res.end("Not found");
+        }
+      });
+    }
+
+    if (path.extname(urlPath) === "") {
+      const stripped = urlPath.replace(/\/+$/, "");
+      const indexPath = path.join(SITE_DIR, stripped, "index.html");
+      return fs.access(indexPath, fs.constants.F_OK, (err2) => {
+        if (!err2) {
+          serveFile(res, indexPath);
+        } else {
+          res.writeHead(404, { "Content-Type": "text/plain" });
+          res.end("Not found");
+        }
+      });
+    }
+
     res.writeHead(404, { "Content-Type": "text/plain" });
     res.end("Not found");
-    return;
-  }
-  fs.access(first, fs.constants.F_OK, (err) => {
-    if (err) {
-      tryPaths(rest, res);
-    } else {
-      serveFile(res, first);
-    }
   });
 }
 
 const server = http.createServer((req, res) => {
-  let urlPath = req.url.split("?")[0];
-
-  const candidates = [];
-
-  const direct = path.join(SITE_DIR, urlPath);
-  candidates.push(direct);
-
-  if (!path.extname(urlPath)) {
-    candidates.push(path.join(SITE_DIR, urlPath, "index.html"));
-    candidates.push(path.join(SITE_DIR, urlPath.replace(/\/$/, ""), "index.html"));
-  }
-
-  if (urlPath === "/" || urlPath === "") {
-    candidates.unshift(path.join(SITE_DIR, "index.html"));
-  }
-
-  tryPaths(candidates, res);
+  const urlPath = req.url.split("?")[0] || "/";
+  resolve(urlPath, res);
 });
 
 server.listen(PORT, "0.0.0.0", () => {

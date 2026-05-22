@@ -16,7 +16,7 @@ A 2026 FIFA World Cup match timezone converter — pure static HTML/CSS/JS site 
 ## Where things live
 
 - `site/` — all site files (edit these, then push to GitHub)
-  - `site/index.html` — homepage (placeholder — upload real file)
+  - `site/index.html` — homepage (NOT YET UPLOADED — add this file to complete the site)
   - `site/<team>/index.html` — one page per qualified team (48 teams)
   - `site/sitemap.xml` — 49 URLs
   - `site/robots.txt` — points to sitemap
