@@ -670,7 +670,7 @@ function patchIndexHtml() {
 }`;
 
   html = html.replace(
-    /function resolveKnockout\(\) \{[\s\S]*?\}/,
+    /function resolveKnockout\(\) \{[\s\S]*?\n\}/,
     newResolve
   );
 
