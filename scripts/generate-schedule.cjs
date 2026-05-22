@@ -592,17 +592,9 @@ function teamsArrayJs() {
 }
 
 // ─── GENERATE MATCHES JS ARRAY STRING ────────────────────────────────────────
-function matchesArrayJs() {
+// scores: map of matchId (number) → {homeScore, awayScore, status}
+function matchesArrayJs(scores = {}) {
   const lines = [];
-  let lastGroup = null;
-  const groupNames = {
-    'Group Stage': true,
-    'Round of 32': true,
-    'Round of 16': true,
-    'Quarterfinal': true,
-    'Semifinal': true,
-    'Final': true,
-  };
   const stageComments = {
     'Group Stage': 'GROUP STAGE',
     'Round of 32': 'ROUND OF 32',
@@ -626,11 +618,14 @@ function matchesArrayJs() {
       lines.push(`  // Group ${m.group}: ${grpTeams}`);
       lastGrp = m.group;
     }
-    const id = String(m.id).padStart(3,' ');
+    const sc = scores[m.id];
+    const scorePart = sc
+      ? `, homeScore:${sc.homeScore}, awayScore:${sc.awayScore}, status:${JSON.stringify(sc.status)}`
+      : '';
     lines.push(
       `  {id:${m.id}, stage:${JSON.stringify(m.stage)}, group:${JSON.stringify(m.group)}, ` +
       `home:${JSON.stringify(m.home)}, away:${JSON.stringify(m.away)}, ` +
-      `utc:${JSON.stringify(m.utc)}, venue:${JSON.stringify(m.venue)}, city:${JSON.stringify(m.city)}},`
+      `utc:${JSON.stringify(m.utc)}, venue:${JSON.stringify(m.venue)}, city:${JSON.stringify(m.city)}${scorePart}},`
     );
   }
   lines.push('];');
@@ -640,7 +635,22 @@ function matchesArrayJs() {
 // ─── PATCH INDEX.HTML ─────────────────────────────────────────────────────────
 function patchIndexHtml() {
   const indexPath = path.join(__dirname, '..', 'site', 'index.html');
+  const resultsPath = path.join(__dirname, '..', 'site', 'results.json');
   let html = fs.readFileSync(indexPath, 'utf8');
+
+  // Load persisted match results — keyed by match id (as number)
+  let scores = {};
+  if (fs.existsSync(resultsPath)) {
+    try {
+      const raw = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
+      for (const [k, v] of Object.entries(raw)) {
+        scores[Number(k)] = v;
+      }
+      console.log(`📊 Loaded ${Object.keys(scores).length} result(s) from results.json`);
+    } catch (e) {
+      console.warn('⚠️  Could not parse results.json — skipping score preservation:', e.message);
+    }
+  }
 
   // Replace TEAMS array
   html = html.replace(
@@ -648,10 +658,10 @@ function patchIndexHtml() {
     teamsArrayJs() + '\n'
   );
 
-  // Replace MATCHES array
+  // Replace MATCHES array (scores from results.json are embedded to preserve them)
   html = html.replace(
     /const MATCHES = \[[\s\S]*?\];(\s*\n)/,
-    matchesArrayJs() + '\n'
+    matchesArrayJs(scores) + '\n'
   );
 
   // Replace resolveKnockout()

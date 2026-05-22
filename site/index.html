@@ -1056,8 +1056,26 @@ const ESPN_NAME_MAP = {
 };
 function normName(n) { return ESPN_NAME_MAP[n] ?? n; }
 
+// Pre-seed liveData/matchWinners/matchLosers from scores embedded in MATCHES
+// by the generator (sourced from results.json). This covers completed matches
+// that have aged out of ESPN's ±1-day scoreboard window.
+function seedEmbeddedResults() {
+  for (const m of MATCHES) {
+    if (m.homeScore == null) continue;
+    const mHome = resolvedTeams[m.home] || m.home;
+    const mAway = resolvedTeams[m.away] || m.away;
+    liveData[m.id] = { homeScore: m.homeScore, awayScore: m.awayScore, status: m.status || 'final' };
+    if ((m.status || 'final') === 'final' && m.homeScore !== m.awayScore) {
+      matchWinners[m.id] = m.homeScore > m.awayScore ? mHome : mAway;
+      matchLosers[m.id]  = m.homeScore > m.awayScore ? mAway : mHome;
+    }
+  }
+}
+
 function processScores(espnMatches) {
   liveData = {}; matchWinners = {}; matchLosers = {};
+  // Seed from embedded results first — preserves matches older than ESPN's ±1-day window
+  seedEmbeddedResults();
   for (const em of espnMatches) {
     if (em.status === 'scheduled') continue;
     for (const m of MATCHES) {
@@ -1452,6 +1470,11 @@ tzSelect.addEventListener('change', () => {
 });
 
 // ─── INIT ────────────────────────────────────────────────────────
+// Show embedded results immediately (before API responds) so old completed
+// matches are never blank even when ESPN's window no longer covers them.
+seedEmbeddedResults();
+resolveKnockout();
+render();
 fetchLiveData();
 setInterval(fetchLiveData, 60000);
 </script>
