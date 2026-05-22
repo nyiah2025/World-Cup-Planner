@@ -210,7 +210,7 @@ const MATCHES = [
   {id:106, stage:"Semifinal", group:"—", home:"QF W3", away:"QF W4", utc:"2026-07-15T19:00:00Z", venue:"Mercedes-Benz Stadium", city:"Atlanta, USA"},
 
   // 3RD PLACE + FINAL
-  {id:107, stage:"Final", group:"—", home:"SF L1",  away:"SF L2",  utc:"2026-07-18T21:00:00Z", venue:"Hard Rock Stadium", city:"Miami, USA"},
+  {id:107, stage:"Third Place Playoff", group:"—", home:"SF L1",  away:"SF L2",  utc:"2026-07-18T21:00:00Z", venue:"Hard Rock Stadium", city:"Miami, USA"},
   {id:108, stage:"Final", group:"—", home:"SF W1",  away:"SF W2",  utc:"2026-07-19T19:00:00Z", venue:"MetLife Stadium",   city:"New York, USA"},
 ];
 
@@ -601,7 +601,8 @@ function matchesArrayJs(scores = {}) {
     'Round of 16': 'ROUND OF 16',
     'Quarterfinal': 'QUARTERFINALS',
     'Semifinal': 'SEMIFINALS',
-    'Final': '3RD PLACE + FINAL',
+    'Third Place Playoff': 'THIRD PLACE PLAYOFF',
+    'Final': 'FINAL',
   };
   let lastStage = null;
   let lastGrp = null;

@@ -861,7 +861,7 @@ const TIMEZONES = [
 ];
 
 // 108 matches: IDs 1–76 group stage, 77–92 Round of 32,
-// 93–100 Round of 16, 101–104 QF, 105–106 SF, 107–108 Final.
+// 93–100 Round of 16, 101–104 QF, 105–106 SF, 107 Third Place Playoff, 108 Final.
 // All UTC times verified against official FIFA schedule.
 const MATCHES = [
   // GROUP STAGE
@@ -984,7 +984,7 @@ const MATCHES = [
   {id:105, stage:"Semifinal", group:"—", home:"QF W1", away:"QF W2", utc:"2026-07-14T19:00:00Z", venue:"AT&T Stadium", city:"Dallas, USA"},
   {id:106, stage:"Semifinal", group:"—", home:"QF W3", away:"QF W4", utc:"2026-07-15T19:00:00Z", venue:"Mercedes-Benz Stadium", city:"Atlanta, USA"},
   // 3RD PLACE + FINAL
-  {id:107, stage:"Final", group:"—", home:"SF L1", away:"SF L2", utc:"2026-07-18T21:00:00Z", venue:"Hard Rock Stadium", city:"Miami, USA"},
+  {id:107, stage:"Third Place Playoff", group:"—", home:"SF L1", away:"SF L2", utc:"2026-07-18T21:00:00Z", venue:"Hard Rock Stadium", city:"Miami, USA"},
   {id:108, stage:"Final", group:"—", home:"SF W1", away:"SF W2", utc:"2026-07-19T19:00:00Z", venue:"MetLife Stadium", city:"New York, USA"},
 ];
 // ─── STATE ───────────────────────────────────────────────────────
@@ -1322,7 +1322,7 @@ function render() {
     ? teamMatches(selectedTeam)
     : MATCHES;
 
-  const stageOrder = ["Group Stage","Round of 32","Round of 16","Quarterfinal","Semifinal","Final"];
+  const stageOrder = ["Group Stage","Round of 32","Round of 16","Quarterfinal","Semifinal","Third Place Playoff","Final"];
   const byStage = {};
   filtered.forEach(m => {
     if (!byStage[m.stage]) byStage[m.stage] = [];
