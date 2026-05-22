@@ -1053,7 +1053,7 @@ function processStandings(groups) {
   for (const [grp, entries] of Object.entries(groups)) {
     entries.forEach((e, i) => { resolvedTeams[`${i+1}${grp}`] = e.team; });
   }
-  // Best third-place teams
+  // Collect all third-place teams ranked by points → GD → GF
   const thirds = [];
   for (const [grp, entries] of Object.entries(groups)) {
     if (entries.length >= 3) thirds.push({ group: grp, ...entries[2] });
@@ -1062,14 +1062,28 @@ function processStandings(groups) {
     b.points !== a.points ? b.points - a.points :
     b.gd    !== a.gd    ? b.gd    - a.gd    : b.gf - a.gf
   );
-  // Resolve "3X/Y/Z" codes in MATCHES
+
+  // Collect unique "3X/Y/Z" placeholder codes from the MATCHES array
   const thirdCodes = [...new Set(
     MATCHES.flatMap(m => [m.home, m.away]).filter(t => /^3[A-L]/.test(t))
   )];
-  for (const code of thirdCodes) {
+
+  // One-to-one global assignment: each third-place team can fill exactly one slot.
+  // Assign most-constrained slots first (fewest allowed groups) so the least
+  // flexible slots always get satisfied before the flexible ones.
+  const sortedCodes = [...thirdCodes].sort((a, b) =>
+    a.slice(1).split('/').length - b.slice(1).split('/').length
+  );
+
+  const usedGroups = new Set();
+  for (const code of sortedCodes) {
     const allowed = code.slice(1).split('/');
-    const eligible = thirds.filter(t => allowed.includes(t.group));
-    if (eligible.length) resolvedTeams[code] = eligible[0].team;
+    // Best ranked team from the allowed groups that hasn't been assigned yet
+    const pick = thirds.find(t => allowed.includes(t.group) && !usedGroups.has(t.group));
+    if (pick) {
+      resolvedTeams[code] = pick.team;
+      usedGroups.add(pick.group);
+    }
   }
   resolveKnockout();
 }
@@ -1284,15 +1298,19 @@ function render() {
     const grid = section.querySelector('.matches-grid');
 
     matches.forEach(m => {
-      const live = isLive(m.utc);
-      const today = isToday(m.utc, tz);
-      const past = isPast(m.utc);
-
       // Use resolved team names (e.g. "Argentina" instead of "1C")
       const homeTeam = resolvedTeams[m.home] || m.home;
       const awayTeam = resolvedTeams[m.away] || m.away;
       const homeFlag = getFlag(homeTeam);
       const awayFlag = getFlag(awayTeam);
+
+      // Prefer authoritative API status; fall back to time-window heuristics
+      const sd = liveData[m.id];
+      const apiLive  = sd?.status === 'live';
+      const apiFinal = sd?.status === 'final';
+      const live  = apiLive  || (!sd && isLive(m.utc));
+      const past  = apiFinal || (!sd && isPast(m.utc));
+      const today = isToday(m.utc, tz);
 
       let statusTag = '';
       if (live) statusTag = `<span class="status-tag live-tag">● Live</span>`;
@@ -1302,7 +1320,6 @@ function render() {
       const groupLabel = m.group !== '—' ? `Group ${m.group} · Match ${m.id}` : `Match ${m.id}`;
 
       // Build VS / score block
-      const sd = liveData[m.id];
       let vsHtml;
       if (sd && (sd.status === 'live' || sd.status === 'final')) {
         const cls = sd.status === 'live' ? 'score-display score-live' : 'score-display';
