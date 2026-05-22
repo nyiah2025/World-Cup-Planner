@@ -35,13 +35,11 @@ body::after {
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
   pointer-events:none; z-index:999; opacity:0.6;
 }
-/* NAV */
 .topnav { background:var(--ink); padding:12px 24px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
 .nav-logo { font-family:'Syne',sans-serif; font-weight:800; font-size:16px; color:var(--white); text-decoration:none; letter-spacing:1px; }
 .nav-logo span { color:var(--gold-light); }
 .nav-home { font-size:12px; color:rgba(253,250,244,0.5); text-decoration:none; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:6px 12px; transition:all 0.2s; }
 .nav-home:hover { color:var(--white); border-color:var(--gold); }
-/* HERO */
 .hero { background:var(--ink); padding:40px 24px 32px; position:relative; overflow:hidden; }
 .hero::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,0.03) 39px,rgba(255,255,255,0.03) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,0.03) 39px,rgba(255,255,255,0.03) 40px); }
 .hero-inner { max-width:1100px; margin:0 auto; position:relative; z-index:1; }
@@ -55,7 +53,6 @@ body::after {
 .hero-stats { display:flex; gap:20px; flex-wrap:wrap; }
 .stat-chip { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:8px 16px; font-size:13px; color:rgba(253,250,244,0.7); }
 .stat-chip strong { color:var(--gold-light); }
-/* CONTROLS */
 .main { max-width:1100px; margin:0 auto; padding:32px 24px 80px; }
 .controls { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:28px; padding:16px 20px; background:var(--white); border:1px solid var(--border); border-radius:14px; box-shadow:var(--shadow); }
 .tz-label { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
@@ -64,7 +61,6 @@ body::after {
 select { width:100%; background:var(--bg2); border:1px solid var(--border); border-radius:8px; color:var(--ink); font-family:'Instrument Sans',sans-serif; font-size:13px; font-weight:500; padding:9px 32px 9px 12px; appearance:none; cursor:pointer; outline:none; transition:border-color 0.2s; }
 select:focus { border-color:var(--gold); }
 .now-badge { font-family:'Instrument Mono',monospace; font-size:12px; color:var(--grass); background:rgba(42,107,58,0.1); border:1px solid rgba(42,107,58,0.2); border-radius:8px; padding:7px 13px; white-space:nowrap; }
-/* MATCH CARDS */
 .section-label { font-family:'Syne',sans-serif; font-size:12px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--muted); margin-bottom:14px; display:flex; align-items:center; gap:12px; }
 .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
 .matches-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:12px; margin-bottom:36px; }
@@ -88,25 +84,20 @@ select:focus { border-color:var(--gold); }
 .ts-block .venue-val { font-family:'Instrument Sans',sans-serif; font-size:11px; color:var(--ink2); }
 .copy-match-btn { display:flex; align-items:center; justify-content:center; gap:6px; width:100%; padding:10px; background:transparent; border:none; border-top:1px solid var(--border); color:var(--muted); font-family:'Instrument Sans',sans-serif; font-size:11px; font-weight:600; letter-spacing:0.5px; cursor:pointer; transition:all 0.18s; }
 .copy-match-btn:hover { background:var(--bg); color:var(--ink); }
-/* OTHER TEAMS */
 .other-teams { margin-top:48px; padding-top:32px; border-top:1px solid var(--border); }
 .other-teams-title { font-family:'Syne',sans-serif; font-size:18px; font-weight:800; margin-bottom:16px; }
 .team-links { display:flex; flex-wrap:wrap; gap:8px; }
 .team-link { display:inline-flex; align-items:center; gap:6px; background:var(--white); border:1px solid var(--border); border-radius:100px; padding:6px 14px; font-size:12px; font-weight:500; color:var(--ink2); text-decoration:none; transition:all 0.18s; white-space:nowrap; }
 .team-link:hover { border-color:var(--gold); color:var(--gold); background:var(--bg); }
-/* FOOTER */
 footer { text-align:center; padding:28px 24px; background:var(--ink); color:rgba(253,250,244,0.4); font-size:12px; line-height:1.8; }
 footer a { color:var(--gold-light); text-decoration:none; }
 footer strong { color:rgba(253,250,244,0.7); }
-/* TOAST */
 .toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--ink); color:var(--white); font-size:13px; font-weight:600; padding:12px 24px; border-radius:100px; z-index:9999; transition:transform 0.3s ease; pointer-events:none; }
 .toast.show { transform:translateX(-50%) translateY(0); }
 @media(max-width:600px) { .matches-grid { grid-template-columns:1fr; } .hero h1 { font-size:28px; } .controls { flex-direction:column; align-items:stretch; } }
 img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.1em; display: inline-block; }
 </style>
-<!-- Twemoji: consistent cross-platform emoji flags -->
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
-<!-- Google AdSense (replace ca-pub-XXXXXXXXXX with your publisher ID) -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -131,14 +122,8 @@ img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.
   </div>
 </div>
 
-<!-- AdSense Ad Unit 1 (replace XXXXXXXXXX with your ad-slot ID) -->
 <div style="text-align:center;margin:28px auto;max-width:1100px;padding:0 24px;">
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-XXXXXXXXXX"
-       data-ad-slot="XXXXXXXXXX"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 <div class="main">
@@ -155,7 +140,7 @@ img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.
 
         <article class="match-card" itemscope itemtype="https://schema.org/SportsEvent">
           <meta itemprop="name" content="South Korea vs Czechia – 2026 FIFA World Cup">
-          <meta itemprop="startDate" content="2026-06-12T01:00:00Z">
+          <meta itemprop="startDate" content="2026-06-12T02:00:00Z">
           <meta itemprop="location" content="Estadio Akron, Guadalajara, MEX">
           <div class="card-accent"></div>
           <div class="card-body">
@@ -186,7 +171,7 @@ img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.
             </div>
             <div class="ts-block">
               <div class="ts-label">Kickoff (UTC)</div>
-              <div class="ts-val">2026-06-12 01:00:00 UTC</div>
+              <div class="ts-val">12 Jun 2026 02:00 UTC</div>
             </div>
             <div class="ts-block">
               <div class="ts-label">Venue</div>
@@ -197,56 +182,13 @@ img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.
         </article>
 
         <article class="match-card" itemscope itemtype="https://schema.org/SportsEvent">
-          <meta itemprop="name" content="Mexico vs Czechia – 2026 FIFA World Cup">
-          <meta itemprop="startDate" content="2026-06-16T23:00:00Z">
-          <meta itemprop="location" content="AT&T Stadium, Dallas, USA">
-          <div class="card-accent"></div>
-          <div class="card-body">
-            <div class="card-meta">
-              <span class="group-tag">Group A &middot; Match 3</span>
-            </div>
-            <h3 class="match-h3">Mexico vs Czechia &ndash; World Cup 2026 Kickoff Time</h3>
-            <div class="teams-row">
-              <div class="team-side">
-                <div class="t-flag">🇲🇽</div>
-                <div class="t-name">Mexico</div>
-              </div>
-              <div class="vs-block"><span class="vs-text">VS</span></div>
-              <div class="team-side">
-                <div class="t-flag">🇨🇿</div>
-                <div class="t-name">Czechia</div>
-              </div>
-            </div>
-          </div>
-          <div class="time-strip">
-            <div class="ts-block highlight">
-              <div class="ts-label">Your Local Time</div>
-              <div class="ts-val" id="time-3">Loading...</div>
-            </div>
-            <div class="ts-block">
-              <div class="ts-label">Date</div>
-              <div class="ts-val" id="date-3">—</div>
-            </div>
-            <div class="ts-block">
-              <div class="ts-label">Kickoff (UTC)</div>
-              <div class="ts-val">2026-06-16 23:00:00 UTC</div>
-            </div>
-            <div class="ts-block">
-              <div class="ts-label">Venue</div>
-              <div class="ts-val venue-val">📍 AT&T Stadium, Dallas, USA</div>
-            </div>
-          </div>
-          <button class="copy-match-btn" onclick="copyMatch(3, 'Mexico', 'Czechia', 'AT&T Stadium', 'Dallas, USA')">📋 Copy kickoff time</button>
-        </article>
-
-        <article class="match-card" itemscope itemtype="https://schema.org/SportsEvent">
           <meta itemprop="name" content="Czechia vs South Africa – 2026 FIFA World Cup">
-          <meta itemprop="startDate" content="2026-06-21T21:00:00Z">
-          <meta itemprop="location" content="Lumen Field, Seattle, USA">
+          <meta itemprop="startDate" content="2026-06-18T16:00:00Z">
+          <meta itemprop="location" content="Mercedes-Benz Stadium, Atlanta, USA">
           <div class="card-accent"></div>
           <div class="card-body">
             <div class="card-meta">
-              <span class="group-tag">Group A &middot; Match 6</span>
+              <span class="group-tag">Group A &middot; Match 25</span>
             </div>
             <h3 class="match-h3">Czechia vs South Africa &ndash; World Cup 2026 Kickoff Time</h3>
             <div class="teams-row">
@@ -264,99 +206,130 @@ img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.
           <div class="time-strip">
             <div class="ts-block highlight">
               <div class="ts-label">Your Local Time</div>
-              <div class="ts-val" id="time-6">Loading...</div>
+              <div class="ts-val" id="time-25">Loading...</div>
             </div>
             <div class="ts-block">
               <div class="ts-label">Date</div>
-              <div class="ts-val" id="date-6">—</div>
+              <div class="ts-val" id="date-25">—</div>
             </div>
             <div class="ts-block">
               <div class="ts-label">Kickoff (UTC)</div>
-              <div class="ts-val">2026-06-21 21:00:00 UTC</div>
+              <div class="ts-val">18 Jun 2026 16:00 UTC</div>
             </div>
             <div class="ts-block">
               <div class="ts-label">Venue</div>
-              <div class="ts-val venue-val">📍 Lumen Field, Seattle, USA</div>
+              <div class="ts-val venue-val">📍 Mercedes-Benz Stadium, Atlanta, USA</div>
             </div>
           </div>
-          <button class="copy-match-btn" onclick="copyMatch(6, 'Czechia', 'South Africa', 'Lumen Field', 'Seattle, USA')">📋 Copy kickoff time</button>
+          <button class="copy-match-btn" onclick="copyMatch(25, 'Czechia', 'South Africa', 'Mercedes-Benz Stadium', 'Atlanta, USA')">📋 Copy kickoff time</button>
+        </article>
+
+        <article class="match-card" itemscope itemtype="https://schema.org/SportsEvent">
+          <meta itemprop="name" content="Czechia vs Mexico – 2026 FIFA World Cup">
+          <meta itemprop="startDate" content="2026-06-25T02:00:00Z">
+          <meta itemprop="location" content="Estadio Azteca, Mexico City, MEX">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="group-tag">Group A &middot; Match 53</span>
+            </div>
+            <h3 class="match-h3">Czechia vs Mexico &ndash; World Cup 2026 Kickoff Time</h3>
+            <div class="teams-row">
+              <div class="team-side">
+                <div class="t-flag">🇨🇿</div>
+                <div class="t-name">Czechia</div>
+              </div>
+              <div class="vs-block"><span class="vs-text">VS</span></div>
+              <div class="team-side">
+                <div class="t-flag">🇲🇽</div>
+                <div class="t-name">Mexico</div>
+              </div>
+            </div>
+          </div>
+          <div class="time-strip">
+            <div class="ts-block highlight">
+              <div class="ts-label">Your Local Time</div>
+              <div class="ts-val" id="time-53">Loading...</div>
+            </div>
+            <div class="ts-block">
+              <div class="ts-label">Date</div>
+              <div class="ts-val" id="date-53">—</div>
+            </div>
+            <div class="ts-block">
+              <div class="ts-label">Kickoff (UTC)</div>
+              <div class="ts-val">25 Jun 2026 02:00 UTC</div>
+            </div>
+            <div class="ts-block">
+              <div class="ts-label">Venue</div>
+              <div class="ts-val venue-val">📍 Estadio Azteca, Mexico City, MEX</div>
+            </div>
+          </div>
+          <button class="copy-match-btn" onclick="copyMatch(53, 'Czechia', 'Mexico', 'Estadio Azteca', 'Mexico City, MEX')">📋 Copy kickoff time</button>
         </article>
   </div>
 
-<!-- AdSense Ad Unit 2 (replace XXXXXXXXXX with your ad-slot ID) -->
 <div style="text-align:center;margin:28px auto;max-width:1100px;padding:0 24px;">
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-XXXXXXXXXX"
-       data-ad-slot="XXXXXXXXXX"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
   <div class="other-teams">
     <div class="other-teams-title">See Another Team's Schedule</div>
     <div class="team-links">
-<a href="../albania/index.html" class="team-link">🇦🇱 Albania</a>
+<a href="../algeria/index.html" class="team-link">🇩🇿 Algeria</a>
 <a href="../argentina/index.html" class="team-link">🇦🇷 Argentina</a>
 <a href="../australia/index.html" class="team-link">🇦🇺 Australia</a>
 <a href="../austria/index.html" class="team-link">🇦🇹 Austria</a>
-<a href="../bahrain/index.html" class="team-link">🇧🇭 Bahrain</a>
 <a href="../belgium/index.html" class="team-link">🇧🇪 Belgium</a>
-<a href="../bosnia/index.html" class="team-link">🇧🇦 Bosnia & Herz.</a>
+<a href="../bosnia/index.html" class="team-link">🇧🇦 Bosnia &amp; Herz.</a>
 <a href="../brazil/index.html" class="team-link">🇧🇷 Brazil</a>
-<a href="../cameroon/index.html" class="team-link">🇨🇲 Cameroon</a>
 <a href="../canada/index.html" class="team-link">🇨🇦 Canada</a>
-<a href="../chile/index.html" class="team-link">🇨🇱 Chile</a>
+<a href="../cape-verde/index.html" class="team-link">🇨🇻 Cape Verde</a>
 <a href="../colombia/index.html" class="team-link">🇨🇴 Colombia</a>
-<a href="../costa-rica/index.html" class="team-link">🇨🇷 Costa Rica</a>
+<a href="../cote-divoire/index.html" class="team-link">🇨🇮 Côte d&#39;Ivoire</a>
 <a href="../croatia/index.html" class="team-link">🇭🇷 Croatia</a>
-<a href="../cote-divoire/index.html" class="team-link">🇨🇮 Côte d'Ivoire</a>
+<a href="../curacao/index.html" class="team-link">🇨🇼 Curaçao</a>
 <a href="../dr-congo/index.html" class="team-link">🇨🇩 DR Congo</a>
-<a href="../denmark/index.html" class="team-link">🇩🇰 Denmark</a>
 <a href="../ecuador/index.html" class="team-link">🇪🇨 Ecuador</a>
+<a href="../egypt/index.html" class="team-link">🇪🇬 Egypt</a>
 <a href="../england/index.html" class="team-link">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England</a>
 <a href="../france/index.html" class="team-link">🇫🇷 France</a>
 <a href="../germany/index.html" class="team-link">🇩🇪 Germany</a>
-<a href="../honduras/index.html" class="team-link">🇭🇳 Honduras</a>
+<a href="../ghana/index.html" class="team-link">🇬🇭 Ghana</a>
+<a href="../haiti/index.html" class="team-link">🇭🇹 Haiti</a>
 <a href="../iran/index.html" class="team-link">🇮🇷 Iran</a>
-<a href="../italy/index.html" class="team-link">🇮🇹 Italy</a>
-<a href="../jamaica/index.html" class="team-link">🇯🇲 Jamaica</a>
+<a href="../iraq/index.html" class="team-link">🇮🇶 Iraq</a>
 <a href="../japan/index.html" class="team-link">🇯🇵 Japan</a>
+<a href="../jordan/index.html" class="team-link">🇯🇴 Jordan</a>
 <a href="../mexico/index.html" class="team-link">🇲🇽 Mexico</a>
 <a href="../morocco/index.html" class="team-link">🇲🇦 Morocco</a>
 <a href="../netherlands/index.html" class="team-link">🇳🇱 Netherlands</a>
 <a href="../new-zealand/index.html" class="team-link">🇳🇿 New Zealand</a>
-<a href="../nigeria/index.html" class="team-link">🇳🇬 Nigeria</a>
+<a href="../norway/index.html" class="team-link">🇳🇴 Norway</a>
+<a href="../panama/index.html" class="team-link">🇵🇦 Panama</a>
 <a href="../paraguay/index.html" class="team-link">🇵🇾 Paraguay</a>
-<a href="../peru/index.html" class="team-link">🇵🇪 Peru</a>
 <a href="../portugal/index.html" class="team-link">🇵🇹 Portugal</a>
 <a href="../qatar/index.html" class="team-link">🇶🇦 Qatar</a>
 <a href="../saudi-arabia/index.html" class="team-link">🇸🇦 Saudi Arabia</a>
+<a href="../scotland/index.html" class="team-link">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland</a>
 <a href="../senegal/index.html" class="team-link">🇸🇳 Senegal</a>
-<a href="../serbia/index.html" class="team-link">🇷🇸 Serbia</a>
 <a href="../south-africa/index.html" class="team-link">🇿🇦 South Africa</a>
 <a href="../south-korea/index.html" class="team-link">🇰🇷 South Korea</a>
 <a href="../spain/index.html" class="team-link">🇪🇸 Spain</a>
+<a href="../sweden/index.html" class="team-link">🇸🇪 Sweden</a>
 <a href="../switzerland/index.html" class="team-link">🇨🇭 Switzerland</a>
 <a href="../tunisia/index.html" class="team-link">🇹🇳 Tunisia</a>
 <a href="../turkiye/index.html" class="team-link">🇹🇷 Türkiye</a>
-<a href="../usa/index.html" class="team-link">🇺🇸 USA</a>
-<a href="../ukraine/index.html" class="team-link">🇺🇦 Ukraine</a>
 <a href="../uruguay/index.html" class="team-link">🇺🇾 Uruguay</a>
+<a href="../usa/index.html" class="team-link">🇺🇸 USA</a>
+<a href="../uzbekistan/index.html" class="team-link">🇺🇿 Uzbekistan</a>
     </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<!-- AdSense Ad Unit 3 (replace XXXXXXXXXX with your ad-slot ID) -->
 <div style="text-align:center;margin:28px auto;max-width:1100px;padding:0 24px;">
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-XXXXXXXXXX"
-       data-ad-slot="XXXXXXXXXX"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 <footer>
@@ -395,9 +368,11 @@ const TIMEZONES = [
   {label:"UTC+12:00 – Auckland / Fiji",tz:"Pacific/Auckland"},
 ];
 
-const MATCHES = [{id:2,utc:"2026-06-12T01:00:00Z",home:"South Korea",away:"Czechia",venue:"Estadio Akron",city:"Guadalajara, MEX"},{id:3,utc:"2026-06-16T23:00:00Z",home:"Mexico",away:"Czechia",venue:"AT&T Stadium",city:"Dallas, USA"},{id:6,utc:"2026-06-21T21:00:00Z",home:"Czechia",away:"South Africa",venue:"Lumen Field",city:"Seattle, USA"}];
-
-let tz = 'America/New_York';
+const MATCHES = [
+  {id:2, utc:"2026-06-12T02:00:00Z"},
+  {id:25, utc:"2026-06-18T16:00:00Z"},
+  {id:53, utc:"2026-06-25T02:00:00Z"}
+];
 
 const sel = document.getElementById('tzSelect');
 TIMEZONES.forEach(t => {
@@ -405,11 +380,10 @@ TIMEZONES.forEach(t => {
   o.value = t.tz; o.textContent = t.label;
   sel.appendChild(o);
 });
-
 const detected = Intl.DateTimeFormat().resolvedOptions().timeZone;
 const found = TIMEZONES.find(t => t.tz === detected);
-if (found) { tz = found.tz; sel.value = found.tz; }
-else { sel.value = 'America/New_York'; }
+let tz = found ? found.tz : 'America/New_York';
+sel.value = tz;
 
 function fmtTime(utc, tz) {
   return new Date(utc).toLocaleString('en-US', {timeZone:tz, hour:'2-digit', minute:'2-digit', hour12:true});
@@ -446,11 +420,9 @@ function copyMatch(id, home, away, venue, city) {
 }
 </script>
 <script>
-/* Twemoji: replace emoji with cross-platform SVG flags */
 document.addEventListener('DOMContentLoaded', function() {
   twemoji.parse(document.body, {
-    folder: 'svg',
-    ext: '.svg',
+    folder: 'svg', ext: '.svg',
     base: 'https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/'
   });
 });
