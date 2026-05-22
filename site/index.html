@@ -621,6 +621,10 @@ footer strong { color: rgba(253,250,244,0.7); }
   .view-all-btn { text-align: center; }
 }
 </style>
+<!-- Twemoji: consistent cross-platform emoji flags -->
+<script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+<!-- Google AdSense (replace ca-pub-XXXXXXXXXX with your publisher ID) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -639,6 +643,16 @@ footer strong { color: rgba(253,250,244,0.7); }
   </div>
 </div>
 
+<!-- AdSense Ad Unit 1 (replace XXXXXXXXXX with your ad-slot ID) -->
+<div style="text-align:center;margin:28px auto;max-width:1100px;padding:0 24px;">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-XXXXXXXXXX"
+       data-ad-slot="XXXXXXXXXX"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 <!-- MAIN -->
 <div class="main">
 
@@ -670,12 +684,32 @@ footer strong { color: rgba(253,250,244,0.7); }
 
   <!-- MATCHES -->
   <div id="matchesContainer"></div>
+<!-- AdSense Ad Unit 2 (replace XXXXXXXXXX with your ad-slot ID) -->
+<div style="text-align:center;margin:28px auto;max-width:1100px;padding:0 24px;">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-XXXXXXXXXX"
+       data-ad-slot="XXXXXXXXXX"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
 </div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<!-- AdSense Ad Unit 3 (replace XXXXXXXXXX with your ad-slot ID) -->
+<div style="text-align:center;margin:28px auto;max-width:1100px;padding:0 24px;">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-XXXXXXXXXX"
+       data-ad-slot="XXXXXXXXXX"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 <footer>
   <strong>World Cup 2026 Match Times</strong> · All 104 fixtures · Auto-converts to your timezone<br>
   Hosted across 🇺🇸 USA · 🇨🇦 Canada · 🇲🇽 Mexico · Jun 11 – Jul 19, 2026<br>
@@ -1189,6 +1223,12 @@ tzSelect.addEventListener('change', () => {
 // ─── INIT ────────────────────────────────────────────────────────
 render();
 setInterval(render, 60000);
+</script>
+<script>
+/* Twemoji: replace emoji with cross-platform SVG flags */
+document.addEventListener('DOMContentLoaded', function() {
+  twemoji.parse(document.body, { folder: 'svg', ext: '.svg' });
+});
 </script>
 </body>
 </html>

@@ -102,6 +102,10 @@ footer strong { color:rgba(253,250,244,0.7); }
 .toast.show { transform:translateX(-50%) translateY(0); }
 @media(max-width:600px) { .matches-grid { grid-template-columns:1fr; } .hero h1 { font-size:28px; } .controls { flex-direction:column; align-items:stretch; } }
 </style>
+<!-- Twemoji: consistent cross-platform emoji flags -->
+<script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+<!-- Google AdSense (replace ca-pub-XXXXXXXXXX with your publisher ID) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -125,6 +129,16 @@ footer strong { color:rgba(253,250,244,0.7); }
   </div>
 </div>
 
+<!-- AdSense Ad Unit 1 (replace XXXXXXXXXX with your ad-slot ID) -->
+<div style="text-align:center;margin:28px auto;max-width:1100px;padding:0 24px;">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-XXXXXXXXXX"
+       data-ad-slot="XXXXXXXXXX"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 <div class="main">
   <div class="controls">
     <span class="tz-label">🌍 Your Timezone</span>
@@ -396,6 +410,16 @@ footer strong { color:rgba(253,250,244,0.7); }
         </article>
   </div>
 
+<!-- AdSense Ad Unit 2 (replace XXXXXXXXXX with your ad-slot ID) -->
+<div style="text-align:center;margin:28px auto;max-width:1100px;padding:0 24px;">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-XXXXXXXXXX"
+       data-ad-slot="XXXXXXXXXX"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
   <div class="other-teams">
     <div class="other-teams-title">See Another Team's Schedule</div>
     <div class="team-links">
@@ -452,6 +476,16 @@ footer strong { color:rgba(253,250,244,0.7); }
 
 <div class="toast" id="toast"></div>
 
+<!-- AdSense Ad Unit 3 (replace XXXXXXXXXX with your ad-slot ID) -->
+<div style="text-align:center;margin:28px auto;max-width:1100px;padding:0 24px;">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-XXXXXXXXXX"
+       data-ad-slot="XXXXXXXXXX"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 <footer>
   <strong><a href="../index.html">myteamkickoff.com</a></strong> &middot; World Cup 2026 Kickoff Times in Your Timezone<br>
   🇺🇸 USA &middot; 🇨🇦 Canada &middot; 🇲🇽 Mexico &middot; June 11 – July 19, 2026<br>
@@ -537,6 +571,12 @@ function copyMatch(id, home, away, venue, city) {
     setTimeout(() => t.classList.remove('show'), 2500);
   });
 }
+</script>
+<script>
+/* Twemoji: replace emoji with cross-platform SVG flags */
+document.addEventListener('DOMContentLoaded', function() {
+  twemoji.parse(document.body, { folder: 'svg', ext: '.svg' });
+});
 </script>
 </body>
 </html>
