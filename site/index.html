@@ -513,6 +513,35 @@ select:focus { border-color: var(--gold); }
   opacity: 0.6;
 }
 
+/* ── SCORE DISPLAY ── */
+.score-display {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1;
+}
+.score-sep {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 600;
+}
+.score-display.score-live {
+  color: var(--red);
+  animation: scorePulse 1.5s ease-in-out infinite;
+}
+@keyframes scorePulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+.score-clock {
+  font-size: 9px;
+  color: var(--red);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
 /* ── TIME STRIP ── */
 .time-strip {
   border-top: 1px solid var(--border);
@@ -920,6 +949,10 @@ const MATCHES = [
 let selectedTZ = 'America/New_York';
 let selectedTeam = null; // null = all
 let stageFilter = 'all';
+let liveData = {};       // matchId → {homeScore, awayScore, status, clock}
+let resolvedTeams = {};  // placeholder code → real team name
+let matchWinners = {};   // matchId → winning team name
+let matchLosers = {};    // matchId → losing team name
 
 // ─── HELPERS ─────────────────────────────────────────────────────
 function getFlag(teamName) {
@@ -954,10 +987,12 @@ function isPast(utc) {
 }
 
 function teamMatches(teamName) {
-  return MATCHES.filter(m =>
-    m.home.toLowerCase() === teamName.toLowerCase() ||
-    m.away.toLowerCase() === teamName.toLowerCase()
-  );
+  return MATCHES.filter(m => {
+    const home = resolvedTeams[m.home] || m.home;
+    const away = resolvedTeams[m.away] || m.away;
+    return home.toLowerCase() === teamName.toLowerCase() ||
+           away.toLowerCase() === teamName.toLowerCase();
+  });
 }
 
 function showToast(msg) {
@@ -965,6 +1000,108 @@ function showToast(msg) {
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ─── LIVE DATA ───────────────────────────────────────────────────
+const ESPN_NAME_MAP = {
+  "United States": "USA", "Bosnia-Herzegovina": "Bosnia & Herz.",
+  "Bosnia and Herzegovina": "Bosnia & Herz.", "Ivory Coast": "Côte d'Ivoire",
+  "Cote d'Ivoire": "Côte d'Ivoire", "Turkey": "Türkiye",
+  "Czech Republic": "Czechia", "Democratic Republic of Congo": "DR Congo",
+  "Congo DR": "DR Congo", "Congo, DR": "DR Congo",
+  "Republic of Korea": "South Korea", "Korea Republic": "South Korea",
+  "IR Iran": "Iran",
+};
+function normName(n) { return ESPN_NAME_MAP[n] ?? n; }
+
+function processScores(espnMatches) {
+  liveData = {}; matchWinners = {}; matchLosers = {};
+  for (const em of espnMatches) {
+    if (em.status === 'scheduled') continue;
+    for (const m of MATCHES) {
+      const mHome = resolvedTeams[m.home] || m.home;
+      const mAway = resolvedTeams[m.away] || m.away;
+      const eHome = normName(em.homeTeam);
+      const eAway = normName(em.awayTeam);
+      const sameTeams = (eHome === mHome && eAway === mAway) ||
+                        (eHome === mAway && eAway === mHome);
+      const mDate = m.utc.slice(0, 10);
+      const eDate = (em.date || '').slice(0, 10);
+      if (!sameTeams || mDate !== eDate) continue;
+
+      const homeFirst = (eHome === mHome);
+      liveData[m.id] = {
+        homeScore: homeFirst ? em.homeScore : em.awayScore,
+        awayScore: homeFirst ? em.awayScore : em.homeScore,
+        status: em.status, clock: em.clock,
+      };
+      if (em.status === 'final') {
+        const hs = homeFirst ? em.homeScore : em.awayScore;
+        const as_ = homeFirst ? em.awayScore : em.homeScore;
+        if (hs !== as_) {
+          matchWinners[m.id] = hs > as_ ? mHome : mAway;
+          matchLosers[m.id]  = hs > as_ ? mAway : mHome;
+        }
+      }
+      break;
+    }
+  }
+  resolveKnockout();
+}
+
+function processStandings(groups) {
+  for (const [grp, entries] of Object.entries(groups)) {
+    entries.forEach((e, i) => { resolvedTeams[`${i+1}${grp}`] = e.team; });
+  }
+  // Best third-place teams
+  const thirds = [];
+  for (const [grp, entries] of Object.entries(groups)) {
+    if (entries.length >= 3) thirds.push({ group: grp, ...entries[2] });
+  }
+  thirds.sort((a, b) =>
+    b.points !== a.points ? b.points - a.points :
+    b.gd    !== a.gd    ? b.gd    - a.gd    : b.gf - a.gf
+  );
+  // Resolve "3X/Y/Z" codes in MATCHES
+  const thirdCodes = [...new Set(
+    MATCHES.flatMap(m => [m.home, m.away]).filter(t => /^3[A-L]/.test(t))
+  )];
+  for (const code of thirdCodes) {
+    const allowed = code.slice(1).split('/');
+    const eligible = thirds.filter(t => allowed.includes(t.group));
+    if (eligible.length) resolvedTeams[code] = eligible[0].team;
+  }
+  resolveKnockout();
+}
+
+function resolveKnockout() {
+  for (let n = 1; n <= 16; n++) { const w = matchWinners[72+n]; if (w) resolvedTeams[`R32 W${n}`] = w; }
+  for (let n = 1; n <= 8;  n++) { const w = matchWinners[88+n]; if (w) resolvedTeams[`QF${n}`]    = w; }
+  for (let n = 1; n <= 4;  n++) { const w = matchWinners[96+n]; if (w) resolvedTeams[`SF${n}`]    = w; }
+  if (matchWinners[101]) resolvedTeams['Winner SF1'] = matchWinners[101];
+  if (matchWinners[102]) resolvedTeams['Winner SF2'] = matchWinners[102];
+  if (matchLosers[101])  resolvedTeams['3rd Place']  = matchLosers[101];
+  if (matchLosers[102])  resolvedTeams['4th Place']  = matchLosers[102];
+}
+
+async function fetchLiveData() {
+  try {
+    const [scoresRes, standingsRes] = await Promise.allSettled([
+      fetch('/api/scores'),
+      fetch('/api/standings'),
+    ]);
+    if (scoresRes.status === 'fulfilled' && scoresRes.value.ok) {
+      const { matches } = await scoresRes.value.json();
+      processScores(matches || []);
+    }
+    if (standingsRes.status === 'fulfilled' && standingsRes.value.ok) {
+      const { groups } = await standingsRes.value.json();
+      processStandings(groups || {});
+    }
+  } catch (e) {
+    console.warn('Could not fetch live data:', e);
+  }
+  render();
 }
 
 // ─── BUILD TIMEZONE SELECT ────────────────────────────────────────
@@ -1150,8 +1287,12 @@ function render() {
       const live = isLive(m.utc);
       const today = isToday(m.utc, tz);
       const past = isPast(m.utc);
-      const homeFlag = getFlag(m.home);
-      const awayFlag = getFlag(m.away);
+
+      // Use resolved team names (e.g. "Argentina" instead of "1C")
+      const homeTeam = resolvedTeams[m.home] || m.home;
+      const awayTeam = resolvedTeams[m.away] || m.away;
+      const homeFlag = getFlag(homeTeam);
+      const awayFlag = getFlag(awayTeam);
 
       let statusTag = '';
       if (live) statusTag = `<span class="status-tag live-tag">● Live</span>`;
@@ -1159,6 +1300,18 @@ function render() {
       else if (past) statusTag = `<span class="status-tag past-tag">Played</span>`;
 
       const groupLabel = m.group !== '—' ? `Group ${m.group} · Match ${m.id}` : `Match ${m.id}`;
+
+      // Build VS / score block
+      const sd = liveData[m.id];
+      let vsHtml;
+      if (sd && (sd.status === 'live' || sd.status === 'final')) {
+        const cls = sd.status === 'live' ? 'score-display score-live' : 'score-display';
+        const clockHtml = sd.status === 'live' && sd.clock
+          ? `<div class="score-clock">${sd.clock}</div>` : '';
+        vsHtml = `<div class="${cls}"><span>${sd.homeScore}</span><span class="score-sep">–</span><span>${sd.awayScore}</span></div>${clockHtml}`;
+      } else {
+        vsHtml = `<span class="vs-text">VS</span>`;
+      }
 
       const card = document.createElement('div');
       card.className = 'match-card' + (live ? ' live' : today && !past ? ' today' : past ? ' past' : '');
@@ -1173,15 +1326,15 @@ function render() {
           <div class="teams-row">
             <div class="team-side">
               <div class="t-flag">${homeFlag}</div>
-              <div class="t-name">${m.home}</div>
+              <div class="t-name">${homeTeam}</div>
             </div>
             <div class="vs-block">
-              <span class="vs-text">VS</span>
+              ${vsHtml}
               <span class="match-num">#${m.id}</span>
             </div>
             <div class="team-side">
               <div class="t-flag">${awayFlag}</div>
-              <div class="t-name">${m.away}</div>
+              <div class="t-name">${awayTeam}</div>
             </div>
           </div>
         </div>
@@ -1240,8 +1393,8 @@ tzSelect.addEventListener('change', () => {
 });
 
 // ─── INIT ────────────────────────────────────────────────────────
-render();
-setInterval(render, 60000);
+fetchLiveData();
+setInterval(fetchLiveData, 60000);
 </script>
 <script>
 /* Twemoji: replace emoji with cross-platform SVG flags */
