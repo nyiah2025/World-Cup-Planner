@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://myteamkickoff.com/sitemap.xml

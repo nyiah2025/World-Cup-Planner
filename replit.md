@@ -1,45 +1,52 @@
-# [Project name]
+# myteamkickoff.com
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A 2026 FIFA World Cup match timezone converter — pure static HTML/CSS/JS site with 48 team pages and a homepage, all served locally for editing.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- `node server.js` — start the local preview server (port 3000)
+- The "Start application" workflow runs this automatically
 
 ## Stack
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Pure static HTML/CSS/JavaScript — no framework, no build step
+- Client-side timezone conversion using the browser's Intl API
+- Deployed on Cloudflare Pages via GitHub (push to deploy)
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `site/` — all site files (edit these, then push to GitHub)
+  - `site/index.html` — homepage (placeholder — upload real file)
+  - `site/<team>/index.html` — one page per qualified team (48 teams)
+  - `site/sitemap.xml` — 49 URLs
+  - `site/robots.txt` — points to sitemap
+  - `site/_redirects` — Cloudflare Pages clean URL rules
+- `server.js` — minimal Node.js static file server for local preview
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Static-first: no backend, no database, no build step — all changes are direct file edits
+- Clean URLs handled by `_redirects` on Cloudflare and by `server.js` locally (falls back to `<path>/index.html`)
+- The homepage `index.html` was not in the uploaded zip — a placeholder is at `site/index.html` until the real file is added
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+A match timezone converter for the 2026 FIFA World Cup. Users pick their team and see all fixture kick-off times converted to their local timezone. One page per qualified team (48 teams), each with its own SEO title, meta description, and match list.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Do not restructure or rewrite any site files unless explicitly asked
+- Make only targeted edits: match data updates, Twemoji flag support, AdSense snippets, bug fixes
+- Site deploys via GitHub push to Cloudflare Pages — Replit is the editing workspace only
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- After editing files in `site/`, restart the "Start application" workflow to see changes in preview
+- The homepage (`site/index.html`) is a placeholder — the real file needs to be uploaded
+- `_redirects` is for Cloudflare Pages only; the local server handles clean URLs via `server.js`
+- Team pages use self-contained embedded styles and scripts — no shared CSS/JS files
 
 ## Pointers
 
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+- See `site/_redirects` for the full list of clean URL rules
+- See `site/sitemap.xml` for all 49 URLs
