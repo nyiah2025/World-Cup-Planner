@@ -981,6 +981,16 @@ const found = TIMEZONES.find(t => t.tz === detected);
 if (found) { selectedTZ = found.tz; tzSelect.value = found.tz; }
 else { tzSelect.value = 'America/New_York'; selectedTZ = 'America/New_York'; }
 
+// ─── TWEMOJI HELPER ───────────────────────────────────────────────
+function parseTwemoji(el) {
+  if (typeof twemoji === 'undefined') return;
+  twemoji.parse(el, {
+    folder: 'svg',
+    ext: '.svg',
+    base: 'https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/'
+  });
+}
+
 // ─── BUILD TEAM PILLS ─────────────────────────────────────────────
 const teamGrid = document.getElementById('teamGrid');
 TEAMS.sort((a,b) => a.name.localeCompare(b.name)).forEach(team => {
@@ -991,6 +1001,7 @@ TEAMS.sort((a,b) => a.name.localeCompare(b.name)).forEach(team => {
   pill.addEventListener('click', () => selectTeam(team.name));
   teamGrid.appendChild(pill);
 });
+parseTwemoji(teamGrid);
 
 // ─── TEAM SELECTION ───────────────────────────────────────────────
 function selectTeam(name) {
@@ -1030,6 +1041,7 @@ function selectTeam(name) {
   updateShareButtons(name, matches);
   updatePageMeta(name);
   render();
+  parseTwemoji(document.getElementById('teamHero'));
   document.querySelector('.main').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
@@ -1217,6 +1229,7 @@ function render() {
   if (selectedTeam) {
     updateShareButtons(selectedTeam, filtered);
   }
+  parseTwemoji(container);
 }
 
 // ─── EVENTS ──────────────────────────────────────────────────────
