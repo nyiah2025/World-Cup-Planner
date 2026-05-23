@@ -327,6 +327,14 @@ function generateTeamPage(team) {
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N0RX6R0B5V"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-N0RX6R0B5V');
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>What Time Is ${displayName} Playing? | World Cup 2026 Kickoff Times – myteamkickoff.com</title>
 <meta name="description" content="See every ${displayName} match time at the 2026 FIFA World Cup in your local timezone. ${matchCount} fixtures including group stage kickoff times, venues, and dates. Free, instant, no signup.">
