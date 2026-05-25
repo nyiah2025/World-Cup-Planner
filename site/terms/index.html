@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Use | myteamkickoff.com</title>
+<meta name="description" content="Terms of Use for myteamkickoff.com – the rules and conditions governing your use of our World Cup 2026 kickoff time tool.">
+<link rel="canonical" href="https://myteamkickoff.com/terms">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@400;500;600&family=Instrument+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F0E8;
+  --bg2: #EDE8DC;
+  --ink: #1A1410;
+  --ink2: #4A3F35;
+  --muted: #8C7B6E;
+  --gold: #C17F2A;
+  --gold-light: #E8A84C;
+  --grass: #2A6B3A;
+  --white: #FDFAF4;
+  --border: rgba(26,20,16,0.12);
+  --shadow: 0 2px 20px rgba(26,20,16,0.08);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Instrument Sans', sans-serif;
+  min-height: 100vh;
+  line-height: 1.75;
+}
+
+body::after {
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:999;
+  opacity:0.6;
+}
+
+/* NAV */
+.topnav {
+  background: var(--ink);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--white);
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+
+.nav-logo span { color: var(--gold-light); }
+
+.nav-home {
+  font-size: 12px;
+  color: rgba(253,250,244,0.5);
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 6px;
+  padding: 6px 12px;
+  transition: all 0.2s;
+}
+
+.nav-home:hover { color: var(--white); border-color: var(--gold); }
+
+/* HERO */
+.hero {
+  background: var(--ink);
+  padding: 48px 24px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,0.03) 39px,rgba(255,255,255,0.03) 40px),
+    repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,0.03) 39px,rgba(255,255,255,0.03) 40px);
+}
+
+.hero-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-bottom: 18px;
+}
+
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(28px, 5vw, 48px);
+  line-height: 1.05;
+  color: var(--white);
+  margin-bottom: 12px;
+}
+
+.hero-meta {
+  font-size: 13px;
+  color: rgba(253,250,244,0.4);
+  font-family: 'Instrument Mono', monospace;
+  letter-spacing: 0.5px;
+}
+
+/* LAYOUT */
+.page-wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* TABLE OF CONTENTS */
+.toc {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin: 36px 0 48px;
+  box-shadow: var(--shadow);
+}
+
+.toc-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.toc ol {
+  list-style: none;
+  counter-reset: toc-counter;
+}
+
+.toc ol li {
+  counter-increment: toc-counter;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.toc ol li:last-child { border-bottom: none; }
+
+.toc ol li::before {
+  content: counter(toc-counter, decimal-leading-zero);
+  font-family: 'Instrument Mono', monospace;
+  font-size: 10px;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.toc ol li a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink2);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.toc ol li a:hover { color: var(--gold); }
+
+/* SECTIONS */
+.policy-section {
+  margin-bottom: 48px;
+  scroll-margin-top: 24px;
+}
+
+.section-number {
+  font-family: 'Instrument Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.policy-section h2 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(18px, 3vw, 24px);
+  color: var(--ink);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--gold);
+  display: inline-block;
+}
+
+.policy-section p {
+  font-size: 15px;
+  color: var(--ink2);
+  margin-bottom: 14px;
+  line-height: 1.8;
+}
+
+.policy-section p:last-child { margin-bottom: 0; }
+
+.policy-section ul, .policy-section ol {
+  margin: 12px 0 16px 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.policy-section ul li, .policy-section ol li {
+  font-size: 15px;
+  color: var(--ink2);
+  padding: 6px 0 6px 20px;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.7;
+}
+
+.policy-section ul li:last-child,
+.policy-section ol li:last-child { border-bottom: none; }
+
+.policy-section ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-size: 12px;
+  top: 8px;
+}
+
+/* CALLOUT BOXES */
+.callout {
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin: 20px 0;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.callout-gold {
+  background: rgba(193,127,42,0.08);
+  border: 1px solid rgba(193,127,42,0.25);
+  color: var(--ink2);
+}
+
+.callout-grass {
+  background: rgba(42,107,58,0.07);
+  border: 1px solid rgba(42,107,58,0.2);
+  color: var(--ink2);
+}
+
+.callout strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.callout a {
+  color: var(--grass);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(42,107,58,0.3);
+  transition: border-color 0.2s;
+}
+
+.callout a:hover { border-color: var(--grass); }
+
+/* INLINE LINKS */
+.policy-section a {
+  color: var(--grass);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(42,107,58,0.3);
+  transition: border-color 0.2s;
+}
+
+.policy-section a:hover { border-color: var(--grass); }
+
+/* DIVIDER */
+.section-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 48px 0;
+}
+
+/* CONTACT BOX */
+.contact-box {
+  background: var(--ink);
+  border-radius: 14px;
+  padding: 28px 32px;
+  margin-top: 48px;
+}
+
+.contact-box h3 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.contact-box p {
+  font-size: 14px;
+  color: rgba(253,250,244,0.55);
+  line-height: 1.7;
+}
+
+.contact-box a {
+  color: var(--gold-light);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* FOOTER */
+footer { text-align:center; padding:28px 24px; background:var(--ink); color:rgba(253,250,244,0.4); font-size:12px; line-height:1.8; }
+footer a { color:var(--gold-light); text-decoration:none; }
+footer strong { color:rgba(253,250,244,0.7); }
+
+@media (max-width: 600px) {
+  .hero { padding: 32px 20px 28px; }
+  .page-wrap { padding: 0 16px 60px; }
+  .toc { padding: 18px 20px; }
+  .contact-box { padding: 22px 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="../index.html" class="nav-logo">myteam<span>kickoff</span>.com</a>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <a href="../index.html" class="nav-home">← Back to Site</a>
+    <a href="/contact" class="nav-home">Contact</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">📄 Legal</div>
+    <h1>Terms of Use</h1>
+    <p class="hero-meta">Last updated: May 2026 &nbsp;·&nbsp; myteamkickoff.com</p>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#acceptance">Acceptance of Terms</a></li>
+      <li><a href="#description">Description of Service</a></li>
+      <li><a href="#use">Permitted Use</a></li>
+      <li><a href="#accuracy">Data Accuracy &amp; Disclaimer</a></li>
+      <li><a href="#ip">Intellectual Property</a></li>
+      <li><a href="#advertising">Advertising</a></li>
+      <li><a href="#links">Third-Party Links</a></li>
+      <li><a href="#liability">Limitation of Liability</a></li>
+      <li><a href="#changes">Changes to These Terms</a></li>
+      <li><a href="#governing">Governing Law</a></li>
+      <li><a href="#contact">Contact Us</a></li>
+    </ol>
+  </div>
+
+  <!-- 1. ACCEPTANCE -->
+  <div class="policy-section" id="acceptance">
+    <div class="section-number">01</div>
+    <h2>Acceptance of Terms</h2>
+    <p>By accessing or using <strong>myteamkickoff.com</strong> ("the Site", "we", "our", or "us"), you agree to be bound by these Terms of Use. If you do not agree with any part of these terms, please discontinue use of the Site immediately.</p>
+    <p>These Terms of Use apply to all visitors and users of the Site. We reserve the right to update or modify these terms at any time without prior notice. Your continued use of the Site following any changes constitutes your acceptance of the revised terms.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- 2. DESCRIPTION -->
+  <div class="policy-section" id="description">
+    <div class="section-number">02</div>
+    <h2>Description of Service</h2>
+    <p>myteamkickoff.com is a free, publicly accessible web tool that displays 2026 FIFA World Cup match kickoff times converted to the visitor's local timezone. The Site covers all 104 fixtures across the group stage and knockout rounds, hosted across the United States, Canada, and Mexico from June 11 to July 19, 2026.</p>
+    <p>The service is provided free of charge and is supported by advertising. No registration, account creation, or personal information is required to use the Site.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- 3. PERMITTED USE -->
+  <div class="policy-section" id="use">
+    <div class="section-number">03</div>
+    <h2>Permitted Use</h2>
+    <p>You may access and use this Site for personal, non-commercial purposes only. When using the Site, you agree not to:</p>
+    <ul>
+      <li>Copy, reproduce, or redistribute the Site's content or design without prior written permission</li>
+      <li>Use automated tools (bots, scrapers, crawlers) to access or extract data from the Site in a manner that places excessive load on our servers</li>
+      <li>Attempt to interfere with, disrupt, or compromise the integrity or security of the Site</li>
+      <li>Use the Site for any unlawful purpose or in violation of any applicable local, national, or international law or regulation</li>
+      <li>Misrepresent information on the Site as your own or pass it off as official FIFA data</li>
+    </ul>
+    <div class="callout callout-gold">
+      <strong>Fair use:</strong> Linking to myteamkickoff.com from blogs, social media, or other websites is welcome and encouraged. We simply ask that you do not frame or embed the Site without permission.
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- 4. ACCURACY -->
+  <div class="policy-section" id="accuracy">
+    <div class="section-number">04</div>
+    <h2>Data Accuracy &amp; Disclaimer</h2>
+    <p>Match kickoff times displayed on this Site are sourced from the official FIFA 2026 World Cup schedule and are converted from local venue time to UTC before being displayed in your local timezone. We make every effort to keep this data accurate and up to date.</p>
+    <p>However, <strong>myteamkickoff.com is not an official FIFA product or service</strong> and is not affiliated with, endorsed by, or connected to FIFA in any way. FIFA may revise the official match schedule at any time, and there may be a delay before changes are reflected on this Site.</p>
+    <div class="callout callout-gold">
+      <strong>Important:</strong> Always verify critical match times with official sources — such as the official FIFA website or your broadcast provider — before making travel or other arrangements based on information from this Site.
+    </div>
+    <p>The Site is provided on an "as is" and "as available" basis. We make no warranties, express or implied, regarding the accuracy, completeness, reliability, or suitability of the information provided.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- 5. IP -->
+  <div class="policy-section" id="ip">
+    <div class="section-number">05</div>
+    <h2>Intellectual Property</h2>
+    <p>All content on myteamkickoff.com — including but not limited to the Site design, layout, code, typography, copy, and visual assets — is the property of myteamkickoff.com and is protected by applicable copyright and intellectual property laws.</p>
+    <p>Match schedule data (dates, times, venues, team names) is factual information derived from publicly available official sources. Team names, tournament names, and related branding remain the property of their respective owners.</p>
+    <p>You may not reproduce, republish, or redistribute the Site's design or original content without express written permission from us.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- 6. ADVERTISING -->
+  <div class="policy-section" id="advertising">
+    <div class="section-number">06</div>
+    <h2>Advertising</h2>
+    <p>This Site is supported by advertising served through <strong>Google AdSense</strong> and potentially other third-party ad networks. By using the Site, you acknowledge and accept that advertisements may be displayed alongside the content.</p>
+    <p>We do not endorse any products or services advertised on the Site. We are not responsible for the content, accuracy, or practices of any advertiser or the websites linked to from advertisements.</p>
+    <p>For more information on how advertising cookies work, please see our <a href="/privacy">Privacy Policy</a>.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- 7. LINKS -->
+  <div class="policy-section" id="links">
+    <div class="section-number">07</div>
+    <h2>Third-Party Links</h2>
+    <p>The Site may contain links to third-party websites or services that are not owned or controlled by myteamkickoff.com. We have no control over, and assume no responsibility for, the content, privacy policies, or practices of any third-party websites.</p>
+    <p>We strongly advise you to review the terms and privacy policies of any third-party sites you visit. The inclusion of a link does not imply our endorsement of that site or its content.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- 8. LIABILITY -->
+  <div class="policy-section" id="liability">
+    <div class="section-number">08</div>
+    <h2>Limitation of Liability</h2>
+    <p>To the fullest extent permitted by applicable law, myteamkickoff.com and its operators shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from:</p>
+    <ul>
+      <li>Your use of, or inability to use, the Site</li>
+      <li>Reliance on match schedule information that proves to be inaccurate or out of date</li>
+      <li>Any errors, omissions, or interruptions in the service</li>
+      <li>Unauthorized access to or alteration of your data or transmissions</li>
+      <li>Any other matter relating to the Site</li>
+    </ul>
+    <div class="callout callout-grass">
+      <strong>In plain language:</strong> This is a free timezone conversion tool. We do our best to keep it accurate, but please do not rely solely on it for time-sensitive decisions like booking flights or making stadium plans without cross-checking with official sources.
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- 9. CHANGES -->
+  <div class="policy-section" id="changes">
+    <div class="section-number">09</div>
+    <h2>Changes to These Terms</h2>
+    <p>We reserve the right to modify these Terms of Use at any time. Changes will be effective immediately upon posting to this page, and the "Last updated" date at the top will be revised accordingly.</p>
+    <p>We encourage you to review these Terms periodically. Continued use of the Site after any changes constitutes your acceptance of the new Terms.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- 10. GOVERNING LAW -->
+  <div class="policy-section" id="governing">
+    <div class="section-number">10</div>
+    <h2>Governing Law</h2>
+    <p>These Terms of Use shall be governed by and construed in accordance with applicable law. Any disputes arising under these Terms shall be subject to the exclusive jurisdiction of the relevant courts.</p>
+    <p>If any provision of these Terms is found to be unenforceable or invalid, the remaining provisions will continue in full force and effect.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- 11. CONTACT -->
+  <div class="policy-section" id="contact">
+    <div class="section-number">11</div>
+    <h2>Contact Us</h2>
+    <p>If you have any questions about these Terms of Use, please <a href="/contact">contact us</a> via our contact page. We aim to respond to all enquiries within a reasonable timeframe.</p>
+  </div>
+
+  <div class="contact-box">
+    <h3><a href="/contact" style="color:var(--white);text-decoration:none;border-bottom:1px solid rgba(232,168,76,0.4);">Get in Touch</a></h3>
+    <p>For questions about these Terms, use our <a href="/contact">contact page</a>. For privacy-related questions, please see our <a href="/privacy">Privacy Policy</a>.</p>
+  </div>
+
+</div>
+
+<footer>
+  <strong><a href="../index.html">myteamkickoff.com</a></strong> &middot; World Cup 2026 Kickoff Times in Your Timezone<br>
+  🇺🇸 USA &middot; 🇨🇦 Canada &middot; 🇲🇽 Mexico &middot; June 11 – July 19, 2026<br>
+  Times based on official FIFA schedule. All kickoffs converted from local venue time to UTC.<br>
+  <a href="/privacy">Privacy Policy</a> &middot; <a href="/terms">Terms of Use</a> &middot; <a href="/contact">Contact</a> &middot; &copy; 2026 myteamkickoff.com &middot; All rights reserved
+</footer>
+
+</body>
+</html>
