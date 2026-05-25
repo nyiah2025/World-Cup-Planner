@@ -50,6 +50,7 @@ const UTILITY_PAGES = [
   { slug: 'articles', priority: '0.8', changefreq: 'daily'  },
   { slug: 'knockout', priority: '0.9', changefreq: 'daily'  },
   { slug: 'groups',   priority: '0.9', changefreq: 'daily'  },
+  { slug: 'contact',  priority: '0.5', changefreq: 'monthly'},
 ];
 
 // ── Build URL entries ──────────────────────────────────────────────────────────
