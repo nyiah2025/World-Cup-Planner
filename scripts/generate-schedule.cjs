@@ -441,6 +441,7 @@ img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.
   <a href="../index.html" class="nav-logo">myteam<span>kickoff</span>.com</a>
   <div style="display:flex;gap:8px;align-items:center;">
     <a href="../index.html" class="nav-home">← All Teams</a>
+    <a href="/schedule/" class="nav-home">Schedule</a>
     <a href="/contact" class="nav-home">Contact</a>
   </div>
 </nav>
