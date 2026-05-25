@@ -441,7 +441,7 @@ img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.
   <a href="../index.html" class="nav-logo">myteam<span>kickoff</span>.com</a>
   <div style="display:flex;gap:8px;align-items:center;">
     <a href="../index.html" class="nav-home">← All Teams</a>
-    <a href="../contact/index.html" class="nav-home">Contact</a>
+    <a href="/contact" class="nav-home">Contact</a>
   </div>
 </nav>
 
@@ -500,7 +500,7 @@ ${otherTeamsHtml(slug)}
   <strong><a href="../index.html">myteamkickoff.com</a></strong> &middot; World Cup 2026 Kickoff Times in Your Timezone<br>
   🇺🇸 USA &middot; 🇨🇦 Canada &middot; 🇲🇽 Mexico &middot; June 11 – July 19, 2026<br>
   Times based on official FIFA schedule. All kickoffs converted from local venue time to UTC.<br>
-  <a href="../privacy/index.html">Privacy Policy</a> &middot; <a href="../contact/index.html">Contact</a> &middot; &copy; 2026 myteamkickoff.com
+  <a href="/privacy">Privacy Policy</a> &middot; <a href="/contact">Contact</a> &middot; &copy; 2026 myteamkickoff.com
 </footer>
 
 <script>
