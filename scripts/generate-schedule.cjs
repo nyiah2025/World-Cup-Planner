@@ -375,6 +375,17 @@ body::after {
 .nav-logo span { color:var(--gold-light); }
 .nav-home { font-size:12px; color:rgba(253,250,244,0.5); text-decoration:none; border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:6px 12px; transition:all 0.2s; }
 .nav-home:hover { color:var(--white); border-color:var(--gold); }
+.nav-menu-btn { display:none; background:none; border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:6px 10px; cursor:pointer; color:var(--white); font-size:18px; line-height:1; }
+.nav-links-wrap { display:flex; gap:8px; align-items:center; }
+.nav-close-btn { display:none; background:none; border:none; color:rgba(253,250,244,0.6); font-size:24px; cursor:pointer; padding:8px; position:absolute; top:12px; right:16px; }
+@media(max-width:768px){
+  .nav-menu-btn { display:flex; align-items:center; }
+  .nav-links-wrap { display:none; position:fixed; inset:0; background:var(--ink); z-index:1000; flex-direction:column; align-items:flex-start; justify-content:center; padding:40px 32px; gap:16px; }
+  .nav-links-wrap.open { display:flex; }
+  .nav-links-wrap.open .nav-close-btn { display:flex; }
+  .nav-links-wrap .nav-home { font-size:15px; padding:10px 16px; }
+  .nav-links-wrap.open .nav-home { width:100%; max-width:320px; }
+}
 .hero { background:var(--ink); padding:40px 24px 32px; position:relative; overflow:hidden; }
 .hero::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,0.03) 39px,rgba(255,255,255,0.03) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,0.03) 39px,rgba(255,255,255,0.03) 40px); }
 .hero-inner { max-width:1100px; margin:0 auto; position:relative; z-index:1; }
@@ -439,7 +450,9 @@ img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.
 
 <nav class="topnav">
   <a href="../index.html" class="nav-logo">myteam<span>kickoff</span>.com</a>
-  <div style="display:flex;gap:8px;align-items:center;">
+  <button class="nav-menu-btn" id="navMenuBtn" aria-label="Open menu">☰</button>
+  <div class="nav-links-wrap" id="navLinksWrap">
+    <button class="nav-close-btn" id="navCloseBtn" aria-label="Close menu">✕</button>
     <a href="../index.html" class="nav-home">← All Teams</a>
     <a href="/schedule/" class="nav-home">Schedule</a>
     <a href="/about/" class="nav-home">About</a>
@@ -591,6 +604,9 @@ document.addEventListener('DOMContentLoaded', function() {
     base: 'https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/'
   });
 });
+</script>
+<script>
+(function(){var b=document.getElementById("navMenuBtn"),w=document.getElementById("navLinksWrap"),c=document.getElementById("navCloseBtn");if(!b||!w)return;b.addEventListener("click",function(){w.classList.add("open")});if(c)c.addEventListener("click",function(){w.classList.remove("open")});w.addEventListener("click",function(e){if(e.target.tagName==="A")w.classList.remove("open")})})();
 </script>
 </body>
 </html>`;
