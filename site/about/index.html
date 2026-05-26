@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6904183268749770"
+     crossorigin="anonymous"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N0RX6R0B5V"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-N0RX6R0B5V');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About | myteamkickoff.com – Who We Are & Why We Built This</title>
+<meta name="description" content="myteamkickoff.com was built to solve one simple problem: knowing exactly what time your team kicks off at the 2026 FIFA World Cup.">
+<link rel="canonical" href="https://myteamkickoff.com/about/">
+<meta property="og:title" content="About myteamkickoff.com">
+<meta property="og:description" content="Who built this site, why it exists, and what you can expect from it. A real person, a real problem, a free tool.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://myteamkickoff.com/about/">
+<meta property="og:image" content="https://myteamkickoff.com/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@400;500;600&family=Instrument+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F0E8;
+  --bg2: #EDE8DC;
+  --ink: #1A1410;
+  --ink2: #4A3F35;
+  --muted: #8C7B6E;
+  --gold: #C17F2A;
+  --gold-light: #E8A84C;
+  --grass: #2A6B3A;
+  --white: #FDFAF4;
+  --border: rgba(26,20,16,0.12);
+  --shadow: 0 2px 20px rgba(26,20,16,0.08);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Instrument Sans', sans-serif;
+  min-height: 100vh;
+  line-height: 1.75;
+}
+
+body::after {
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:999;
+  opacity:0.6;
+}
+
+/* ── TOP NAV ── */
+.topnav {
+  background: var(--ink);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--white);
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+
+.nav-logo span { color: var(--gold-light); }
+
+.nav-home {
+  font-size: 12px;
+  color: rgba(253,250,244,0.5);
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 6px;
+  padding: 6px 12px;
+  transition: all 0.2s;
+}
+
+.nav-home:hover { color: var(--white); border-color: var(--gold); }
+.nav-active { color: var(--white) !important; border-color: var(--gold) !important; }
+
+/* ── HERO ── */
+.hero {
+  background: var(--ink);
+  padding: 48px 24px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,0.03) 39px,rgba(255,255,255,0.03) 40px),
+    repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,0.03) 39px,rgba(255,255,255,0.03) 40px);
+}
+
+.hero-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-bottom: 18px;
+}
+
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(28px, 5vw, 52px);
+  line-height: 1.05;
+  color: var(--white);
+  margin-bottom: 12px;
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: var(--gold-light);
+}
+
+.hero-sub {
+  font-size: 15px;
+  color: rgba(253,250,244,0.55);
+  max-width: 560px;
+  line-height: 1.75;
+}
+
+/* ── PAGE LAYOUT ── */
+.page-wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ── STORY SECTIONS ── */
+.story-section {
+  padding: 48px 0;
+  border-bottom: 1px solid var(--border);
+  animation: fadeUp 0.4s ease both;
+}
+
+.story-section:last-of-type { border-bottom: none; }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.section-number {
+  font-family: 'Instrument Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.story-section h2 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(20px, 3.5vw, 28px);
+  color: var(--ink);
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.story-section p {
+  font-size: 15px;
+  color: var(--ink2);
+  line-height: 1.85;
+  margin-bottom: 16px;
+}
+
+.story-section p:last-child { margin-bottom: 0; }
+
+.story-section p strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ── PULL QUOTE ── */
+.pull-quote {
+  border-left: 3px solid var(--gold);
+  padding: 16px 24px;
+  margin: 28px 0;
+  background: var(--white);
+  border-radius: 0 10px 10px 0;
+  box-shadow: var(--shadow);
+}
+
+.pull-quote p {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── PROMISE CARDS ── */
+.promise-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.promise-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+.promise-icon {
+  font-size: 24px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.promise-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.promise-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── FOUNDER CARD ── */
+.founder-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+  margin-top: 28px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.founder-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--grass) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 26px;
+  color: white;
+  flex-shrink: 0;
+  letter-spacing: 1px;
+}
+
+.founder-info { flex: 1; min-width: 200px; }
+
+.founder-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.founder-title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.founder-bio {
+  font-size: 14px;
+  color: var(--ink2);
+  line-height: 1.75;
+}
+
+.founder-location {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 12px;
+  background: var(--bg2);
+  border-radius: 6px;
+  padding: 5px 10px;
+}
+
+/* ── TRANSPARENCY BOX ── */
+.transparency-box {
+  background: rgba(193,127,42,0.07);
+  border: 1px solid rgba(193,127,42,0.2);
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin-top: 24px;
+}
+
+.transparency-box h3 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.transparency-box p {
+  font-size: 14px;
+  color: var(--ink2);
+  line-height: 1.75;
+  margin-bottom: 10px;
+}
+
+.transparency-box p:last-child { margin-bottom: 0; }
+
+.transparency-box a {
+  color: var(--grass);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(42,107,58,0.3);
+  transition: border-color 0.2s;
+}
+
+.transparency-box a:hover { border-color: var(--grass); }
+
+/* ── CTA BLOCK ── */
+.cta-block {
+  background: var(--ink);
+  border-radius: 16px;
+  padding: 36px;
+  margin-top: 48px;
+  text-align: center;
+}
+
+.cta-block h3 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(20px, 3vw, 28px);
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.cta-block p {
+  font-size: 14px;
+  color: rgba(253,250,244,0.5);
+  margin-bottom: 24px;
+  line-height: 1.7;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.18s;
+  letter-spacing: 0.3px;
+}
+
+.cta-btn.primary {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.cta-btn.primary:hover { background: var(--gold-light); }
+
+.cta-btn.secondary {
+  background: rgba(255,255,255,0.08);
+  color: var(--white);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.cta-btn.secondary:hover {
+  background: rgba(255,255,255,0.14);
+  border-color: var(--gold);
+}
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 28px 24px;
+  background: var(--ink);
+  color: rgba(253,250,244,0.4);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+footer a { color: var(--gold-light); text-decoration: none; }
+footer strong { color: rgba(253,250,244,0.7); }
+
+img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.1em; display: inline-block; }
+
+@media (max-width: 600px) {
+  .hero { padding: 32px 20px 28px; }
+  .page-wrap { padding: 0 16px 60px; }
+  .founder-card { flex-direction: column; }
+  .promise-grid { grid-template-columns: 1fr 1fr; }
+  .cta-block { padding: 28px 20px; }
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="/" class="nav-logo">myteam<span>kickoff</span>.com</a>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <a href="/" class="nav-home">← All Teams</a>
+    <a href="/schedule/" class="nav-home">Schedule</a>
+    <a href="/about/" class="nav-home nav-active">About</a>
+    <a href="/contact" class="nav-home">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">👋 About This Site</div>
+    <h1>Built by a fan,<br>for <em>every fan</em></h1>
+    <p class="hero-sub">The story behind myteamkickoff.com — why it was built, who built it, and what you can always expect when you visit.</p>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- SECTION 1: THE PROBLEM -->
+  <div class="story-section">
+    <div class="section-number">01 — The Problem</div>
+    <h2>It shouldn't be this hard to know when your team plays</h2>
+    <p>Picture the scene. The 2026 FIFA World Cup is underway. Your team has a massive group stage match and you want to watch it live. You search online. You find a schedule — but it's in Eastern Time. You do the math. Or you think you do. You set an alarm. You wake up at 3am. The match kicked off two hours ago.</p>
+    <p>It's a small frustration, but it happens to millions of football fans every major tournament. The World Cup is a truly global event — <strong>48 teams, 104 matches, fans in every timezone on earth</strong> — and yet finding a clear, simple answer to "what time is my team playing?" is still harder than it should be.</p>
+
+    <div class="pull-quote">
+      <p>"What time is my team playing?" is one of the most searched questions during any World Cup. We built the clearest possible answer to it.</p>
+    </div>
+
+    <p>That frustration is exactly what myteamkickoff.com was built to solve. No schedules in a single timezone. No conversion math. No digging through a wall of fixtures to find your team. Just: pick your team, see your kickoff times. Done.</p>
+  </div>
+
+  <!-- SECTION 2: THE SITE -->
+  <div class="story-section">
+    <div class="section-number">02 — What This Site Does</div>
+    <h2>One tool. Every match. Your timezone.</h2>
+    <p>myteamkickoff.com is a free, no-signup timezone converter built specifically for the <strong>2026 FIFA World Cup</strong> — the largest in the tournament's history, hosted across the United States, Canada, and Mexico from June 11 to July 19.</p>
+    <p>The site covers all 104 matches across all 12 groups and every knockout round, from the group stage opener to the Final at MetLife Stadium in New York. Pick any of the 48 qualified nations from the team picker and you'll instantly see every one of their fixtures converted to your local timezone — with the venue, date, and a one-tap option to copy or share the times with friends.</p>
+    <p>Alongside the match times tool, the <strong>How to Watch</strong> guide covers official broadcasters and streaming platforms for 29 countries — so once you know when your team plays, you know exactly where to watch them too.</p>
+    <p>Everything runs in your browser. There's no account, no app to download, no subscription. The site auto-detects your timezone and updates every minute. It's as simple as we could make it.</p>
+  </div>
+
+  <!-- SECTION 3: WHO BUILT IT -->
+  <div class="story-section">
+    <div class="section-number">03 — Who Built This</div>
+    <h2>A real person, not a media company</h2>
+    <p>myteamkickoff.com wasn't built by a sports network or a tech startup. It was built by one person — me.</p>
+
+    <div class="founder-card">
+      <div class="founder-avatar">JG</div>
+      <div class="founder-info">
+        <div class="founder-name">Jay Gumbs</div>
+        <div class="founder-title">Builder · Digital Entrepreneur</div>
+        <div class="founder-bio">I've been working online since 2007 — building websites, creating content, and developing digital tools across a range of niches. When the 2026 World Cup draw was announced and I started looking for a clean timezone tool to bookmark, I couldn't find one that worked the way I wanted. So I built it.</div>
+        <div class="founder-location">📍 St. Vincent and the Grenadines, Caribbean</div>
+      </div>
+    </div>
+
+    <p style="margin-top: 28px;">I'm a football fan first and a builder second. I grew up watching the World Cup the way most Caribbean fans do — staying up late, doing mental arithmetic on kickoff times, and occasionally missing the first half because someone got the timezone wrong in a WhatsApp group. That experience is baked into how this site works.</p>
+    <p>myteamkickoff.com is an independent project. It's not affiliated with FIFA, any national football association, or any broadcaster. The data is sourced from official FIFA schedules and verified against multiple credible sources. When match data updates — as it will throughout the tournament — I update the site.</p>
+  </div>
+
+  <!-- SECTION 4: THE COMMITMENT -->
+  <div class="story-section">
+    <div class="section-number">04 — What You Can Expect</div>
+    <h2>Our commitment to you</h2>
+    <p>There are a lot of sites covering the 2026 World Cup. Here's what makes this one different — and what you can hold us to.</p>
+
+    <div class="promise-grid">
+      <div class="promise-card">
+        <span class="promise-icon">✅</span>
+        <div class="promise-title">Always Free</div>
+        <div class="promise-desc">No paywalls, no subscriptions, no account required. Every feature on this site is free to use, forever.</div>
+      </div>
+      <div class="promise-card">
+        <span class="promise-icon">🎯</span>
+        <div class="promise-title">Accurate Data</div>
+        <div class="promise-desc">Match times and team data are sourced from official FIFA schedules and verified against multiple credible sources.</div>
+      </div>
+      <div class="promise-card">
+        <span class="promise-icon">🔄</span>
+        <div class="promise-title">Kept Up to Date</div>
+        <div class="promise-desc">As the tournament progresses and knockout fixtures are confirmed, the site is updated. You won't find stale placeholders here.</div>
+      </div>
+      <div class="promise-card">
+        <span class="promise-icon">🔒</span>
+        <div class="promise-title">Privacy Respected</div>
+        <div class="promise-desc">We don't collect personal data. No forms, no logins, no tracking beyond standard analytics. Read our full privacy policy for details.</div>
+      </div>
+      <div class="promise-card">
+        <span class="promise-icon">📱</span>
+        <div class="promise-title">Works Everywhere</div>
+        <div class="promise-desc">Designed to work on any device — phone, tablet, or desktop — without an app download or software install.</div>
+      </div>
+      <div class="promise-card">
+        <span class="promise-icon">🌍</span>
+        <div class="promise-title">Built for Everyone</div>
+        <div class="promise-desc">26 timezones, 48 teams, 29 country watching guides. Whether you're in Lagos, London, or La Paz, this site works for you.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: TRANSPARENCY -->
+  <div class="story-section">
+    <div class="section-number">05 — Transparency</div>
+    <h2>How this site is funded</h2>
+    <p>myteamkickoff.com is completely free to use. Like most free websites, it's supported by advertising and affiliate partnerships — and I believe you deserve to know exactly how that works.</p>
+
+    <div class="transparency-box">
+      <h3>💬 An honest note on advertising</h3>
+      <p><strong>Display advertising:</strong> This site uses Google AdSense to display advertisements. Google may use cookies to serve ads relevant to your browsing history. You can opt out of personalised advertising at <a href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a>. Full details are in our <a href="/privacy/">Privacy Policy</a>.</p>
+      <p><strong>Affiliate links:</strong> Some links on the How to Watch pages — particularly VPN services and streaming platforms — are affiliate links marked with an asterisk (*). If you click one and make a purchase, I may earn a small commission at no extra cost to you. I only link to services I would genuinely recommend to a friend.</p>
+      <p><strong>Editorial independence:</strong> Advertising and affiliate relationships have no influence over which broadcasters, platforms, or tools are featured or how they are described. The information on this site reflects honest research, not paid placement.</p>
+    </div>
+
+    <p style="margin-top: 24px;">I'd rather be upfront about this than hide it in small print. The site costs money to run and time to maintain. Ads and affiliate commissions make it possible to keep everything free for you. That's the deal — and I think it's a fair one.</p>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <h3>Ready to find your kickoff time?</h3>
+    <p>Pick your team and see every 2026 World Cup match in your local timezone.<br>No signup. No app. Just your schedule.</p>
+    <div class="cta-buttons">
+      <a href="/" class="cta-btn primary">⏱ Find My Team's Kickoff Times</a>
+      <a href="/schedule/" class="cta-btn secondary">📅 Full Match Schedule</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <strong><a href="/">myteamkickoff.com</a></strong> &middot; World Cup 2026 Match Times &amp; Viewing Guides<br>
+  🇺🇸 USA &middot; 🇨🇦 Canada &middot; 🇲🇽 Mexico &middot; Jun 11 – Jul 19, 2026<br>
+  Times based on official FIFA schedule. All kickoffs in local venue time converted to UTC.<br>
+  <a href="/privacy/">Privacy Policy</a> &middot; <a href="/terms">Terms of Use</a> &middot; <a href="/about/">About</a> &middot; <a href="/contact">Contact</a>
+</footer>
+
+<script>
+twemoji.parse(document.body, {
+  folder: 'svg',
+  ext: '.svg',
+  base: 'https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/'
+});
+</script>
+
+</body>
+</html>
