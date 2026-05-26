@@ -1626,7 +1626,7 @@ function renderCountry(c) {
     <a href="/" class="kickoff-cta">
       <div class="kc-text">
         <div class="kc-label">Also on myteamkickoff.com</div>
-        <div class="kc-title">⏱ Find out exactly what time ${c.name === 'Caribbean (General)' ? 'your team' : c.name.split(' ')[0] + "'s team"} kicks off in your timezone →</div>
+        <div class="kc-title">⏱ Find out exactly what time ${({"Caribbean (General)":"your team","United Kingdom":"UK teams","United States":"USA's team"})[c.name] || c.name.split(' ')[0] + "'s team"} kicks off in your timezone</div>
       </div>
       <div class="kc-arrow">→</div>
     </a>
