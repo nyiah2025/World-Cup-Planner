@@ -202,15 +202,16 @@ const MATCHES = [
   {id:96,  stage:"Round of 16", group:"—", home:"R32 W13", away:"R32 W15", utc:"2026-07-13T20:00:00Z", venue:"BC Place",                city:"Vancouver, CAN"},
 
   // QUARTERFINALS (IDs 97–100; QF Wn = winner of match 96+n)
-  // Dates: July 15–18. Venues/times are placeholders pending knockout schedule verification (task #44).
-  {id:97,  stage:"Quarterfinal", group:"—", home:"R16 W1", away:"R16 W2", utc:"2026-07-15T20:00:00Z", venue:"Gillette Stadium",  city:"Boston, USA"},
-  {id:98,  stage:"Quarterfinal", group:"—", home:"R16 W5", away:"R16 W6", utc:"2026-07-16T19:00:00Z", venue:"SoFi Stadium",      city:"Los Angeles, USA"},
-  {id:99,  stage:"Quarterfinal", group:"—", home:"R16 W3", away:"R16 W4", utc:"2026-07-17T21:00:00Z", venue:"Hard Rock Stadium", city:"Miami, USA"},
-  {id:100, stage:"Quarterfinal", group:"—", home:"R16 W7", away:"R16 W8", utc:"2026-07-18T01:00:00Z", venue:"Arrowhead Stadium", city:"Kansas City, USA"},
+  // Dates: July 14–15 (2 per day). Venues/times are placeholders pending knockout schedule verification (task #44).
+  {id:97,  stage:"Quarterfinal", group:"—", home:"R16 W1", away:"R16 W2", utc:"2026-07-14T17:00:00Z", venue:"Gillette Stadium",  city:"Boston, USA"},
+  {id:98,  stage:"Quarterfinal", group:"—", home:"R16 W5", away:"R16 W6", utc:"2026-07-14T21:00:00Z", venue:"SoFi Stadium",      city:"Los Angeles, USA"},
+  {id:99,  stage:"Quarterfinal", group:"—", home:"R16 W3", away:"R16 W4", utc:"2026-07-15T17:00:00Z", venue:"Hard Rock Stadium", city:"Miami, USA"},
+  {id:100, stage:"Quarterfinal", group:"—", home:"R16 W7", away:"R16 W8", utc:"2026-07-15T21:00:00Z", venue:"Arrowhead Stadium", city:"Kansas City, USA"},
 
-  // SEMIFINALS (IDs 105–106)
-  {id:101, stage:"Semifinal", group:"—", home:"QF W1", away:"QF W2", utc:"2026-07-14T19:00:00Z", venue:"AT&T Stadium",          city:"Dallas, USA"},
-  {id:102, stage:"Semifinal", group:"—", home:"QF W3", away:"QF W4", utc:"2026-07-15T19:00:00Z", venue:"Mercedes-Benz Stadium", city:"Atlanta, USA"},
+  // SEMIFINALS (IDs 101–102)
+  // Dates: July 16–17. Venues/times are placeholders pending knockout schedule verification (task #44).
+  {id:101, stage:"Semifinal", group:"—", home:"QF W1", away:"QF W2", utc:"2026-07-16T19:00:00Z", venue:"AT&T Stadium",          city:"Dallas, USA"},
+  {id:102, stage:"Semifinal", group:"—", home:"QF W3", away:"QF W4", utc:"2026-07-17T19:00:00Z", venue:"Mercedes-Benz Stadium", city:"Atlanta, USA"},
 
   // 3RD PLACE + FINAL
   {id:103, stage:"Third Place Playoff", group:"—", home:"SF L1",  away:"SF L2",  utc:"2026-07-18T21:00:00Z", venue:"Hard Rock Stadium", city:"Miami, USA"},
