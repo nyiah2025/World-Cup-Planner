@@ -87,6 +87,9 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .ac-meta{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
 .ac-time{font-size:10px;color:var(--muted);font-family:'Instrument Mono',monospace;}
 .ac-link{font-size:11px;font-weight:700;color:var(--grass);text-decoration:none;letter-spacing:0.5px;}
+.ac-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
+.ac-tool-link{font-size:11px;font-weight:600;color:var(--ink2);text-decoration:none;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;transition:all 0.15s;white-space:nowrap;}
+.ac-tool-link:hover{border-color:var(--gold);color:var(--gold);}
 
 /* CTA STRIP */
 .cta-strip{background:var(--ink);border-radius:14px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:40px;text-decoration:none;transition:transform 0.18s;}
@@ -159,25 +162,33 @@ footer strong{color:rgba(253,250,244,0.7);}
     </div>
     <div class="article-grid">
 
-      <a href="/articles/how-to-watch-world-cup-2026-uk/" class="article-card">
+      <div class="article-card">
         <div class="ac-cat">How to Watch · UK</div>
         <div class="ac-title">How to Watch the World Cup 2026 in the UK</div>
         <div class="ac-desc">BBC and ITV show all 104 matches completely free. Which channel covers England? What about Scotland? How to stream online, and what to expect from late-night BST kickoffs.</div>
         <div class="ac-meta">
           <span class="ac-time">⏱ 6 min read</span>
-          <span class="ac-link">Read →</span>
+          <a href="/articles/how-to-watch-world-cup-2026-uk/" class="ac-link">Read →</a>
         </div>
-      </a>
+        <div class="ac-tools">
+          <a href="/england/" class="ac-tool-link">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England times</a>
+          <a href="/scotland/" class="ac-tool-link">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland times</a>
+        </div>
+      </div>
 
-      <a href="/articles/how-to-watch-world-cup-2026-usa/" class="article-card">
+      <div class="article-card">
         <div class="ac-cat">How to Watch · USA</div>
         <div class="ac-title">How to Watch the World Cup 2026 in the USA</div>
         <div class="ac-desc">FOX airs 70 matches free over the air. FS1 covers the rest in English, Telemundo and Peacock in Spanish. Free options, streaming services compared, and the full USMNT group schedule.</div>
         <div class="ac-meta">
           <span class="ac-time">⏱ 7 min read</span>
-          <span class="ac-link">Read →</span>
+          <a href="/articles/how-to-watch-world-cup-2026-usa/" class="ac-link">Read →</a>
         </div>
-      </a>
+        <div class="ac-tools">
+          <a href="/usa/" class="ac-tool-link">🇺🇸 USMNT times</a>
+          <a href="/watch/" class="ac-tool-link">📺 All broadcasters</a>
+        </div>
+      </div>
 
     </div>
   </div>
@@ -190,25 +201,33 @@ footer strong{color:rgba(253,250,244,0.7);}
     </div>
     <div class="article-grid">
 
-      <a href="/articles/what-is-the-round-of-32/" class="article-card">
+      <div class="article-card">
         <div class="ac-cat">Tournament Guide</div>
         <div class="ac-title">What Is the Round of 32? The New Knockout Stage Explained</div>
         <div class="ac-desc">The Round of 32 is brand new to the World Cup in 2026. Who qualifies, how matchups are decided, when it's played, and what it means for your team — all explained clearly.</div>
         <div class="ac-meta">
           <span class="ac-time">⏱ 6 min read</span>
-          <span class="ac-link">Read →</span>
+          <a href="/articles/what-is-the-round-of-32/" class="ac-link">Read →</a>
         </div>
-      </a>
+        <div class="ac-tools">
+          <a href="/schedule/" class="ac-tool-link">📅 Knockout schedule</a>
+          <a href="/" class="ac-tool-link">⏱ Match times tool</a>
+        </div>
+      </div>
 
-      <a href="/articles/how-does-the-2026-world-cup-format-work/" class="article-card">
+      <div class="article-card">
         <div class="ac-cat">Tournament Guide</div>
         <div class="ac-title">How Does the 2026 World Cup Format Work? The Complete Guide</div>
         <div class="ac-desc">48 teams, 12 groups, the Round of 32 — the entire 2026 World Cup format explained, including tiebreaker rules, group advancement, and how the bracket path to the Final works.</div>
         <div class="ac-meta">
           <span class="ac-time">⏱ 7 min read</span>
-          <span class="ac-link">Read →</span>
+          <a href="/articles/how-does-the-2026-world-cup-format-work/" class="ac-link">Read →</a>
         </div>
-      </a>
+        <div class="ac-tools">
+          <a href="/" class="ac-tool-link">⏱ Match times tool</a>
+          <a href="/schedule/" class="ac-tool-link">📅 Full schedule</a>
+        </div>
+      </div>
 
     </div>
   </div>
