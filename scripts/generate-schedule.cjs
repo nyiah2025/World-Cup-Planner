@@ -171,39 +171,42 @@ const MATCHES = [
   {id:67, stage:"Group Stage", group:"L", home:"Panama",        away:"England",       utc:"2026-06-27T21:00:00Z", venue:"MetLife Stadium",         city:"New York, USA"},
   {id:68, stage:"Group Stage", group:"L", home:"Croatia",       away:"Ghana",         utc:"2026-06-27T21:00:00Z", venue:"Lincoln Financial Field", city:"Philadelphia, USA"},
 
-  // ROUND OF 32 (IDs 77–92; R32 Wn = winner of match 76+n)
-  {id:73,  stage:"Round of 32", group:"—", home:"2A",      away:"2B",          utc:"2026-06-28T19:00:00Z", venue:"SoFi Stadium",            city:"Los Angeles, USA"},
-  {id:74,  stage:"Round of 32", group:"—", home:"1E",      away:"3A/B/C/D/F",  utc:"2026-06-29T20:30:00Z", venue:"Gillette Stadium",        city:"Boston, USA"},
-  {id:75,  stage:"Round of 32", group:"—", home:"1F",      away:"2C",          utc:"2026-06-30T01:00:00Z", venue:"Estadio BBVA",            city:"Monterrey, MEX"},
-  {id:76,  stage:"Round of 32", group:"—", home:"1C",      away:"2F",          utc:"2026-06-29T17:00:00Z", venue:"NRG Stadium",             city:"Houston, USA"},
-  {id:77,  stage:"Round of 32", group:"—", home:"1I",      away:"3C/D/F/G/H",  utc:"2026-06-30T21:00:00Z", venue:"MetLife Stadium",         city:"New York, USA"},
-  {id:78,  stage:"Round of 32", group:"—", home:"2E",      away:"2I",          utc:"2026-06-30T17:00:00Z", venue:"AT&T Stadium",            city:"Dallas, USA"},
-  {id:79,  stage:"Round of 32", group:"—", home:"1A",      away:"3C/E/F/H/I",  utc:"2026-07-01T01:00:00Z", venue:"Estadio Azteca",          city:"Mexico City, MEX"},
-  {id:80,  stage:"Round of 32", group:"—", home:"1L",      away:"3E/H/I/J/K",  utc:"2026-07-01T16:00:00Z", venue:"Mercedes-Benz Stadium",   city:"Atlanta, USA"},
-  {id:81,  stage:"Round of 32", group:"—", home:"1D",      away:"3B/E/F/I/J",  utc:"2026-07-02T00:00:00Z", venue:"Levi's Stadium",          city:"San Francisco, USA"},
-  {id:82,  stage:"Round of 32", group:"—", home:"1G",      away:"3A/E/H/I/J",  utc:"2026-07-01T20:00:00Z", venue:"Lumen Field",             city:"Seattle, USA"},
-  {id:83,  stage:"Round of 32", group:"—", home:"2K",      away:"2L",          utc:"2026-07-02T23:00:00Z", venue:"BMO Field",               city:"Toronto, CAN"},
-  {id:84,  stage:"Round of 32", group:"—", home:"1H",      away:"2J",          utc:"2026-07-02T19:00:00Z", venue:"SoFi Stadium",            city:"Los Angeles, USA"},
-  {id:85,  stage:"Round of 32", group:"—", home:"1B",      away:"3E/F/G/I/J",  utc:"2026-07-03T03:00:00Z", venue:"BC Place",                city:"Vancouver, CAN"},
-  {id:86,  stage:"Round of 32", group:"—", home:"1J",      away:"2H",          utc:"2026-07-03T22:00:00Z", venue:"Hard Rock Stadium",       city:"Miami, USA"},
-  {id:87,  stage:"Round of 32", group:"—", home:"1K",      away:"3D/E/I/J/L",  utc:"2026-07-04T01:30:00Z", venue:"Arrowhead Stadium",       city:"Kansas City, USA"},
-  {id:88,  stage:"Round of 32", group:"—", home:"2D",      away:"2G",          utc:"2026-07-03T18:00:00Z", venue:"AT&T Stadium",            city:"Dallas, USA"},
+  // ROUND OF 32 (IDs 73–88; R32 Wn = winner of match 72+n)
+  // Dates: July 1–8. Venues/times are placeholders pending knockout schedule verification (task #44).
+  {id:73,  stage:"Round of 32", group:"—", home:"2A",      away:"2B",          utc:"2026-07-01T19:00:00Z", venue:"SoFi Stadium",            city:"Los Angeles, USA"},
+  {id:74,  stage:"Round of 32", group:"—", home:"1E",      away:"3A/B/C/D/F",  utc:"2026-07-02T20:30:00Z", venue:"Gillette Stadium",        city:"Boston, USA"},
+  {id:75,  stage:"Round of 32", group:"—", home:"1F",      away:"2C",          utc:"2026-07-03T01:00:00Z", venue:"Estadio BBVA",            city:"Monterrey, MEX"},
+  {id:76,  stage:"Round of 32", group:"—", home:"1C",      away:"2F",          utc:"2026-07-02T17:00:00Z", venue:"NRG Stadium",             city:"Houston, USA"},
+  {id:77,  stage:"Round of 32", group:"—", home:"1I",      away:"3C/D/F/G/H",  utc:"2026-07-03T21:00:00Z", venue:"MetLife Stadium",         city:"New York, USA"},
+  {id:78,  stage:"Round of 32", group:"—", home:"2E",      away:"2I",          utc:"2026-07-03T17:00:00Z", venue:"AT&T Stadium",            city:"Dallas, USA"},
+  {id:79,  stage:"Round of 32", group:"—", home:"1A",      away:"3C/E/F/H/I",  utc:"2026-07-04T01:00:00Z", venue:"Estadio Azteca",          city:"Mexico City, MEX"},
+  {id:80,  stage:"Round of 32", group:"—", home:"1L",      away:"3E/H/I/J/K",  utc:"2026-07-04T16:00:00Z", venue:"Mercedes-Benz Stadium",   city:"Atlanta, USA"},
+  {id:81,  stage:"Round of 32", group:"—", home:"1D",      away:"3B/E/F/I/J",  utc:"2026-07-05T00:00:00Z", venue:"Levi's Stadium",          city:"San Jose, USA"},
+  {id:82,  stage:"Round of 32", group:"—", home:"1G",      away:"3A/E/H/I/J",  utc:"2026-07-04T20:00:00Z", venue:"Lumen Field",             city:"Seattle, USA"},
+  {id:83,  stage:"Round of 32", group:"—", home:"2K",      away:"2L",          utc:"2026-07-05T23:00:00Z", venue:"BMO Field",               city:"Toronto, CAN"},
+  {id:84,  stage:"Round of 32", group:"—", home:"1H",      away:"2J",          utc:"2026-07-05T19:00:00Z", venue:"SoFi Stadium",            city:"Los Angeles, USA"},
+  {id:85,  stage:"Round of 32", group:"—", home:"1B",      away:"3E/F/G/I/J",  utc:"2026-07-06T03:00:00Z", venue:"BC Place",                city:"Vancouver, CAN"},
+  {id:86,  stage:"Round of 32", group:"—", home:"1J",      away:"2H",          utc:"2026-07-06T22:00:00Z", venue:"Hard Rock Stadium",       city:"Miami, USA"},
+  {id:87,  stage:"Round of 32", group:"—", home:"1K",      away:"3D/E/I/J/L",  utc:"2026-07-07T01:30:00Z", venue:"Arrowhead Stadium",       city:"Kansas City, USA"},
+  {id:88,  stage:"Round of 32", group:"—", home:"2D",      away:"2G",          utc:"2026-07-06T18:00:00Z", venue:"AT&T Stadium",            city:"Dallas, USA"},
 
-  // ROUND OF 16 (IDs 93–100; R16 Wn = winner of match 92+n)
-  {id:89,  stage:"Round of 16", group:"—", home:"R32 W2",  away:"R32 W5",  utc:"2026-07-04T21:00:00Z", venue:"Lincoln Financial Field", city:"Philadelphia, USA"},
-  {id:90,  stage:"Round of 16", group:"—", home:"R32 W1",  away:"R32 W3",  utc:"2026-07-04T17:00:00Z", venue:"NRG Stadium",             city:"Houston, USA"},
-  {id:91,  stage:"Round of 16", group:"—", home:"R32 W4",  away:"R32 W6",  utc:"2026-07-05T20:00:00Z", venue:"MetLife Stadium",         city:"New York, USA"},
-  {id:92,  stage:"Round of 16", group:"—", home:"R32 W7",  away:"R32 W8",  utc:"2026-07-06T00:00:00Z", venue:"Estadio Azteca",          city:"Mexico City, MEX"},
-  {id:93,  stage:"Round of 16", group:"—", home:"R32 W11", away:"R32 W12", utc:"2026-07-06T19:00:00Z", venue:"AT&T Stadium",            city:"Dallas, USA"},
-  {id:94,  stage:"Round of 16", group:"—", home:"R32 W9",  away:"R32 W10", utc:"2026-07-06T00:00:00Z", venue:"Lumen Field",             city:"Seattle, USA"},
-  {id:95,  stage:"Round of 16", group:"—", home:"R32 W14", away:"R32 W16", utc:"2026-07-07T16:00:00Z", venue:"Mercedes-Benz Stadium",   city:"Atlanta, USA"},
-  {id:96, stage:"Round of 16", group:"—", home:"R32 W13", away:"R32 W15", utc:"2026-07-07T20:00:00Z", venue:"BC Place",                city:"Vancouver, CAN"},
+  // ROUND OF 16 (IDs 89–96; R16 Wn = winner of match 88+n)
+  // Dates: July 10–13. Venues/times are placeholders pending knockout schedule verification (task #44).
+  {id:89,  stage:"Round of 16", group:"—", home:"R32 W2",  away:"R32 W5",  utc:"2026-07-10T21:00:00Z", venue:"Lincoln Financial Field", city:"Philadelphia, USA"},
+  {id:90,  stage:"Round of 16", group:"—", home:"R32 W1",  away:"R32 W3",  utc:"2026-07-10T17:00:00Z", venue:"NRG Stadium",             city:"Houston, USA"},
+  {id:91,  stage:"Round of 16", group:"—", home:"R32 W4",  away:"R32 W6",  utc:"2026-07-11T20:00:00Z", venue:"MetLife Stadium",         city:"New York, USA"},
+  {id:92,  stage:"Round of 16", group:"—", home:"R32 W7",  away:"R32 W8",  utc:"2026-07-12T00:00:00Z", venue:"Estadio Azteca",          city:"Mexico City, MEX"},
+  {id:93,  stage:"Round of 16", group:"—", home:"R32 W11", away:"R32 W12", utc:"2026-07-12T19:00:00Z", venue:"AT&T Stadium",            city:"Dallas, USA"},
+  {id:94,  stage:"Round of 16", group:"—", home:"R32 W9",  away:"R32 W10", utc:"2026-07-11T00:00:00Z", venue:"Lumen Field",             city:"Seattle, USA"},
+  {id:95,  stage:"Round of 16", group:"—", home:"R32 W14", away:"R32 W16", utc:"2026-07-13T16:00:00Z", venue:"Mercedes-Benz Stadium",   city:"Atlanta, USA"},
+  {id:96,  stage:"Round of 16", group:"—", home:"R32 W13", away:"R32 W15", utc:"2026-07-13T20:00:00Z", venue:"BC Place",                city:"Vancouver, CAN"},
 
-  // QUARTERFINALS (IDs 101–104; QF Wn = winner of match 100+n)
-  {id:97, stage:"Quarterfinal", group:"—", home:"R16 W1", away:"R16 W2", utc:"2026-07-09T20:00:00Z", venue:"Gillette Stadium",  city:"Boston, USA"},
-  {id:98, stage:"Quarterfinal", group:"—", home:"R16 W5", away:"R16 W6", utc:"2026-07-10T19:00:00Z", venue:"SoFi Stadium",      city:"Los Angeles, USA"},
-  {id:99, stage:"Quarterfinal", group:"—", home:"R16 W3", away:"R16 W4", utc:"2026-07-11T21:00:00Z", venue:"Hard Rock Stadium", city:"Miami, USA"},
-  {id:100, stage:"Quarterfinal", group:"—", home:"R16 W7", away:"R16 W8", utc:"2026-07-12T01:00:00Z", venue:"Arrowhead Stadium", city:"Kansas City, USA"},
+  // QUARTERFINALS (IDs 97–100; QF Wn = winner of match 96+n)
+  // Dates: July 15–18. Venues/times are placeholders pending knockout schedule verification (task #44).
+  {id:97,  stage:"Quarterfinal", group:"—", home:"R16 W1", away:"R16 W2", utc:"2026-07-15T20:00:00Z", venue:"Gillette Stadium",  city:"Boston, USA"},
+  {id:98,  stage:"Quarterfinal", group:"—", home:"R16 W5", away:"R16 W6", utc:"2026-07-16T19:00:00Z", venue:"SoFi Stadium",      city:"Los Angeles, USA"},
+  {id:99,  stage:"Quarterfinal", group:"—", home:"R16 W3", away:"R16 W4", utc:"2026-07-17T21:00:00Z", venue:"Hard Rock Stadium", city:"Miami, USA"},
+  {id:100, stage:"Quarterfinal", group:"—", home:"R16 W7", away:"R16 W8", utc:"2026-07-18T01:00:00Z", venue:"Arrowhead Stadium", city:"Kansas City, USA"},
 
   // SEMIFINALS (IDs 105–106)
   {id:101, stage:"Semifinal", group:"—", home:"QF W1", away:"QF W2", utc:"2026-07-14T19:00:00Z", venue:"AT&T Stadium",          city:"Dallas, USA"},
@@ -733,6 +736,36 @@ function patchIndexHtml() {
   console.log('✅ Patched site/index.html');
 }
 
+// ─── PATCH SCHEDULE.HTML ──────────────────────────────────────────────────────
+function patchScheduleHtml() {
+  const schedulePath = path.join(__dirname, '..', 'site', 'schedule', 'index.html');
+  if (!fs.existsSync(schedulePath)) {
+    console.warn('⚠️  site/schedule/index.html not found — skipping');
+    return;
+  }
+  let html = fs.readFileSync(schedulePath, 'utf8');
+
+  // Build TEAMS array for schedule page (no slug field)
+  const schedTeams = ['const TEAMS = ['];
+  for (const t of TEAMS) {
+    schedTeams.push(`  { name:${JSON.stringify(t.name)}, flag:${JSON.stringify(t.flag)}, group:${JSON.stringify(t.group)} },`);
+  }
+  schedTeams.push('];');
+
+  html = html.replace(
+    /const TEAMS = \[[\s\S]*?\];(\s*\n)/,
+    schedTeams.join('\n') + '\n'
+  );
+
+  html = html.replace(
+    /const MATCHES = \[[\s\S]*?\];(\s*\n)/,
+    matchesArrayJs() + '\n'
+  );
+
+  fs.writeFileSync(schedulePath, html, 'utf8');
+  console.log('✅ Patched site/schedule/index.html');
+}
+
 // ─── TEAMS TO REMOVE ──────────────────────────────────────────────────────────
 const VALID_SLUGS = new Set(TEAMS.map(t => t.slug));
 const KNOWN_DIRS = [
@@ -750,8 +783,9 @@ const DIRS_TO_REMOVE = KNOWN_DIRS.filter(d => !VALID_SLUGS.has(d));
 function main() {
   const siteDir = path.join(__dirname, '..', 'site');
 
-  // 1. Patch index.html
+  // 1. Patch index.html and schedule page
   patchIndexHtml();
+  patchScheduleHtml();
 
   // 2. Remove obsolete team dirs
   for (const dir of DIRS_TO_REMOVE) {
