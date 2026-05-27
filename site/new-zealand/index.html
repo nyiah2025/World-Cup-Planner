@@ -117,6 +117,17 @@ footer strong { color:rgba(253,250,244,0.7); }
 .toast.show { transform:translateX(-50%) translateY(0); }
 @media(max-width:600px) { .matches-grid { grid-template-columns:1fr; } .hero h1 { font-size:28px; } .controls { flex-direction:column; align-items:stretch; } }
 img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.1em; display: inline-block; }
+.status-tag { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; border-radius:4px; padding:3px 8px; margin-left:8px; vertical-align:middle; }
+.live-tag { background:rgba(192,57,43,0.12); color:var(--red); border:1px solid rgba(192,57,43,0.25); animation:pulse 2s infinite; }
+.final-tag { background:rgba(26,20,16,0.06); color:var(--muted); border:1px solid var(--border); }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+.match-card.live { border-color:rgba(192,57,43,0.35); box-shadow:0 0 0 2px rgba(192,57,43,0.1); }
+.match-card.live .card-accent { background:var(--red); }
+.match-card.final { opacity:0.88; }
+.score-display { display:flex; align-items:center; gap:6px; font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:var(--ink); }
+.score-display.score-live { color:var(--red); }
+.score-sep { color:var(--muted); font-size:18px; font-weight:400; }
+.score-clock { font-family:'Instrument Mono',monospace; font-size:11px; color:var(--red); margin-top:2px; text-align:center; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
@@ -166,7 +177,7 @@ img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.
   <div class="section-label">Group Stage Fixtures</div>
   <div class="matches-grid">
 
-        <article class="match-card" itemscope itemtype="https://schema.org/SportsEvent">
+        <article class="match-card" id="card-15" itemscope itemtype="https://schema.org/SportsEvent">
           <meta itemprop="name" content="Iran vs New Zealand – 2026 FIFA World Cup">
           <meta itemprop="startDate" content="2026-06-16T01:00:00Z">
           <meta itemprop="location" content="SoFi Stadium, Los Angeles, USA">
@@ -181,7 +192,7 @@ img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.
                 <div class="t-flag">🇮🇷</div>
                 <div class="t-name">Iran</div>
               </div>
-              <div class="vs-block"><span class="vs-text">VS</span></div>
+              <div class="vs-block" id="vs-15"><span class="vs-text">VS</span></div>
               <div class="team-side">
                 <div class="t-flag">🇳🇿</div>
                 <div class="t-name">New Zealand</div>
@@ -209,7 +220,7 @@ img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.
           <button class="copy-match-btn" onclick="copyMatch(15, 'Iran', 'New Zealand', 'SoFi Stadium', 'Los Angeles, USA')">📋 Copy kickoff time</button>
         </article>
 
-        <article class="match-card" itemscope itemtype="https://schema.org/SportsEvent">
+        <article class="match-card" id="card-40" itemscope itemtype="https://schema.org/SportsEvent">
           <meta itemprop="name" content="New Zealand vs Egypt – 2026 FIFA World Cup">
           <meta itemprop="startDate" content="2026-06-22T01:00:00Z">
           <meta itemprop="location" content="BC Place, Vancouver, CAN">
@@ -224,7 +235,7 @@ img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.
                 <div class="t-flag">🇳🇿</div>
                 <div class="t-name">New Zealand</div>
               </div>
-              <div class="vs-block"><span class="vs-text">VS</span></div>
+              <div class="vs-block" id="vs-40"><span class="vs-text">VS</span></div>
               <div class="team-side">
                 <div class="t-flag">🇪🇬</div>
                 <div class="t-name">Egypt</div>
@@ -252,7 +263,7 @@ img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.
           <button class="copy-match-btn" onclick="copyMatch(40, 'New Zealand', 'Egypt', 'BC Place', 'Vancouver, CAN')">📋 Copy kickoff time</button>
         </article>
 
-        <article class="match-card" itemscope itemtype="https://schema.org/SportsEvent">
+        <article class="match-card" id="card-64" itemscope itemtype="https://schema.org/SportsEvent">
           <meta itemprop="name" content="New Zealand vs Belgium – 2026 FIFA World Cup">
           <meta itemprop="startDate" content="2026-06-27T03:00:00Z">
           <meta itemprop="location" content="BC Place, Vancouver, CAN">
@@ -267,7 +278,7 @@ img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.
                 <div class="t-flag">🇳🇿</div>
                 <div class="t-name">New Zealand</div>
               </div>
-              <div class="vs-block"><span class="vs-text">VS</span></div>
+              <div class="vs-block" id="vs-64"><span class="vs-text">VS</span></div>
               <div class="team-side">
                 <div class="t-flag">🇧🇪</div>
                 <div class="t-name">Belgium</div>
@@ -398,9 +409,9 @@ const TIMEZONES = [
 ];
 
 const MATCHES = [
-  {id:15, utc:"2026-06-16T01:00:00Z"},
-  {id:40, utc:"2026-06-22T01:00:00Z"},
-  {id:64, utc:"2026-06-27T03:00:00Z"}
+  {id:15, home:"Iran", away:"New Zealand", utc:"2026-06-16T01:00:00Z"},
+  {id:40, home:"New Zealand", away:"Egypt", utc:"2026-06-22T01:00:00Z"},
+  {id:64, home:"New Zealand", away:"Belgium", utc:"2026-06-27T03:00:00Z"}
 ];
 
 const sel = document.getElementById('tzSelect');
@@ -447,6 +458,102 @@ function copyMatch(id, home, away, venue, city) {
     setTimeout(() => t.classList.remove('show'), 2500);
   });
 }
+
+// ─── LIVE SCORES ─────────────────────────────────────────────────
+const ESPN_NAME_MAP = {
+  "United States":"USA","Bosnia-Herzegovina":"Bosnia & Herz.",
+  "Bosnia and Herzegovina":"Bosnia & Herz.","Ivory Coast":"Côte d'Ivoire",
+  "Cote d'Ivoire":"Côte d'Ivoire","Turkey":"Türkiye",
+  "Czech Republic":"Czechia","Democratic Republic of Congo":"DR Congo",
+  "Congo DR":"DR Congo","Congo, DR":"DR Congo",
+  "Republic of Korea":"South Korea","Korea Republic":"South Korea",
+  "IR Iran":"Iran","United States of America":"USA",
+};
+function normName(n) { return ESPN_NAME_MAP[n] ?? n; }
+function isLive(utc) { const n=Date.now(),s=new Date(utc).getTime(); return n>=s&&n<=s+2*3600*1000; }
+function isPast(utc) { return new Date(utc).getTime()+2*3600*1000<Date.now(); }
+
+const liveData = {};
+
+function seedEmbeddedResults() {
+  for (const m of MATCHES) {
+    if (m.homeScore != null) {
+      liveData[m.id] = { homeScore:m.homeScore, awayScore:m.awayScore, status:m.status||'final' };
+    }
+  }
+}
+
+function applyScoresToDom() {
+  for (const m of MATCHES) {
+    const card = document.getElementById('card-'+m.id);
+    const vsEl  = document.getElementById('vs-'+m.id);
+    if (!card || !vsEl) continue;
+
+    const sd = liveData[m.id];
+    const apiLive  = sd?.status === 'live';
+    const apiFinal = sd?.status === 'final';
+    const live  = apiLive  || (!sd && isLive(m.utc));
+    const final = apiFinal || (!sd && isPast(m.utc));
+
+    // Card visual state
+    card.classList.toggle('live',  live);
+    card.classList.toggle('final', !live && final);
+
+    // Status tag
+    const metaEl = card.querySelector('.card-meta');
+    const existing = metaEl && metaEl.querySelector('.status-tag');
+    if (existing) existing.remove();
+    if (live) {
+      const tag = document.createElement('span');
+      tag.className = 'status-tag live-tag'; tag.textContent = '● Live';
+      metaEl && metaEl.appendChild(tag);
+    } else if (apiFinal) {
+      const tag = document.createElement('span');
+      tag.className = 'status-tag final-tag'; tag.textContent = 'Final';
+      metaEl && metaEl.appendChild(tag);
+    }
+
+    // Score / VS display
+    if (sd && (sd.status === 'live' || sd.status === 'final')) {
+      const cls = sd.status === 'live' ? 'score-display score-live' : 'score-display';
+      const clockHtml = sd.status === 'live' && sd.clock
+        ? `<div class="score-clock">${sd.clock}</div>` : '';
+      vsEl.innerHTML = `<div class="${cls}"><span>${sd.homeScore}</span><span class="score-sep">–</span><span>${sd.awayScore}</span></div>${clockHtml}`;
+    } else {
+      vsEl.innerHTML = '<span class="vs-text">VS</span>';
+    }
+  }
+}
+
+async function fetchLiveData() {
+  try {
+    const res = await fetch('/api/scores');
+    if (res.ok) {
+      const { matches } = await res.json();
+      for (const em of (matches || [])) {
+        if (em.status === 'scheduled') continue;
+        for (const m of MATCHES) {
+          const eHome = normName(em.homeTeam), eAway = normName(em.awayTeam);
+          const same = (eHome===m.home&&eAway===m.away)||(eHome===m.away&&eAway===m.home);
+          if (!same || m.utc.slice(0,10) !== (em.date||'').slice(0,10)) continue;
+          const homeFirst = eHome === m.home;
+          liveData[m.id] = {
+            homeScore: homeFirst ? em.homeScore : em.awayScore,
+            awayScore: homeFirst ? em.awayScore : em.homeScore,
+            status: em.status, clock: em.clock,
+          };
+          break;
+        }
+      }
+    }
+  } catch(e) { console.warn('Live data unavailable:', e); }
+  applyScoresToDom();
+}
+
+seedEmbeddedResults();
+applyScoresToDom();
+fetchLiveData();
+setInterval(fetchLiveData, 60000);
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {

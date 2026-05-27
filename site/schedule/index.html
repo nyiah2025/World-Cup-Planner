@@ -294,6 +294,8 @@ select:focus { border-color: var(--gold); }
 .match-card.live .card-accent { background: var(--red); }
 .match-card.today .card-accent { background: var(--grass); }
 .match-card.past .card-accent { background: var(--bg2); opacity: 0.5; }
+.match-card.final { opacity: 0.88; }
+.match-card.final .card-accent { background: var(--muted); opacity: 0.4; }
 
 .card-body { padding: 16px 18px 0; }
 
@@ -325,6 +327,7 @@ select:focus { border-color: var(--gold); }
 .live-tag { background: var(--red); color: white; animation: blink 1.4s ease-in-out infinite; }
 .today-tag { background: var(--grass); color: white; }
 .past-tag { color: var(--muted); background: var(--bg2); }
+.final-tag { color: var(--muted); background: var(--bg2); border: 1px solid var(--border); }
 
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
@@ -965,17 +968,17 @@ function render() {
   dayOrder.forEach((dayKey, di) => {
     const matches = byDay[dayKey];
 
-    // Determine which matches in this day are visible (live or upcoming)
+    // Show matches that are: live, upcoming, or have a confirmed final score
     const visibleMatches = matches.filter(m => {
       const sd = liveData[m.id];
-      const apiLive  = sd?.status === 'live';
       const apiFinal = sd?.status === 'final';
-      const live  = apiLive  || (!sd && isLive(m.utc));
+      const live  = sd?.status === 'live' || (!sd && isLive(m.utc));
       const past  = apiFinal || (!sd && isPast(m.utc));
-      return live || !past;
+      // Keep if live, upcoming, or has a confirmed final score to display
+      return live || !past || apiFinal;
     });
 
-    // Hide the whole day section if all matches are past (and none live)
+    // Hide the whole day section if nothing is visible
     if (visibleMatches.length === 0) return;
 
     // Format the day heading using UTC date
@@ -1004,8 +1007,14 @@ function render() {
     `;
     container.appendChild(section);
 
-    // Track first upcoming section for scroll
-    if (!firstUpcomingSection) firstUpcomingSection = section;
+    // Track first section that has at least one live or upcoming match (skip all-final days)
+    if (!firstUpcomingSection) {
+      const hasLiveOrUpcoming = visibleMatches.some(m => {
+        const sd = liveData[m.id];
+        return sd?.status === 'live' || (!sd && !isPast(m.utc)) || (!sd && isLive(m.utc));
+      });
+      if (hasLiveOrUpcoming) firstUpcomingSection = section;
+    }
 
     const grid = section.querySelector('.matches-grid');
 
@@ -1024,6 +1033,7 @@ function render() {
 
       let statusTag = '';
       if (live) statusTag = `<span class="status-tag live-tag">● Live</span>`;
+      else if (apiFinal) statusTag = `<span class="status-tag final-tag">Final</span>`;
       else if (todayMatch && !past) statusTag = `<span class="status-tag today-tag">Today</span>`;
 
       const groupLabel = m.group !== '—' ? `Group ${m.group} · Match ${m.id}` : `${m.stage} · Match ${m.id}`;
@@ -1039,7 +1049,7 @@ function render() {
       }
 
       const card = document.createElement('div');
-      card.className = 'match-card' + (live ? ' live' : todayMatch && !past ? ' today' : '');
+      card.className = 'match-card' + (live ? ' live' : apiFinal ? ' final' : todayMatch && !past ? ' today' : '');
 
       card.innerHTML = `
         <div class="card-accent"></div>

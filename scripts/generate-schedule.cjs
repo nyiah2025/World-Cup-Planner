@@ -243,7 +243,7 @@ function fmtUtcLabel(utc) {
 }
 
 // ─── TEAM PAGE GENERATOR ──────────────────────────────────────────────────────
-function generateTeamPage(team) {
+function generateTeamPage(team, scores = {}) {
   const teamMatches = MATCHES.filter(m =>
     (m.stage === 'Group Stage') &&
     (m.home === team.name || m.away === team.name)
@@ -255,10 +255,14 @@ function generateTeamPage(team) {
   const group = team.group;
   const slug = team.slug;
 
-  // Build MATCHES JS array for page
-  const matchesJs = teamMatches.map(m =>
-    `  {id:${m.id}, utc:"${m.utc}"}`
-  ).join(',\n');
+  // Build MATCHES JS array for page — include full data + any persisted scores
+  const matchesJs = teamMatches.map(m => {
+    const sc = scores[m.id];
+    const scorePart = sc
+      ? `, homeScore:${sc.homeScore}, awayScore:${sc.awayScore}, status:${JSON.stringify(sc.status)}`
+      : '';
+    return `  {id:${m.id}, home:${JSON.stringify(m.home)}, away:${JSON.stringify(m.away)}, utc:"${m.utc}"${scorePart}}`;
+  }).join(',\n');
 
   // Build match cards
   const cards = teamMatches.map(m => {
@@ -278,7 +282,7 @@ function generateTeamPage(team) {
     const copyCity  = m.city.replace(/'/g,"\\'");
 
     return `
-        <article class="match-card" itemscope itemtype="https://schema.org/SportsEvent">
+        <article class="match-card" id="card-${m.id}" itemscope itemtype="https://schema.org/SportsEvent">
           <meta itemprop="name" content="${esc(m.home)} vs ${esc(m.away)} – 2026 FIFA World Cup">
           <meta itemprop="startDate" content="${m.utc}">
           <meta itemprop="location" content="${esc(m.venue)}, ${esc(m.city)}">
@@ -293,7 +297,7 @@ function generateTeamPage(team) {
                 <div class="t-flag">${homeFlag}</div>
                 <div class="t-name">${esc(m.home)}</div>
               </div>
-              <div class="vs-block"><span class="vs-text">VS</span></div>
+              <div class="vs-block" id="vs-${m.id}"><span class="vs-text">VS</span></div>
               <div class="team-side">
                 <div class="t-flag">${awayFlag}</div>
                 <div class="t-name">${esc(m.away)}</div>
@@ -442,6 +446,17 @@ footer strong { color:rgba(253,250,244,0.7); }
 .toast.show { transform:translateX(-50%) translateY(0); }
 @media(max-width:600px) { .matches-grid { grid-template-columns:1fr; } .hero h1 { font-size:28px; } .controls { flex-direction:column; align-items:stretch; } }
 img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.1em; display: inline-block; }
+.status-tag { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; border-radius:4px; padding:3px 8px; margin-left:8px; vertical-align:middle; }
+.live-tag { background:rgba(192,57,43,0.12); color:var(--red); border:1px solid rgba(192,57,43,0.25); animation:pulse 2s infinite; }
+.final-tag { background:rgba(26,20,16,0.06); color:var(--muted); border:1px solid var(--border); }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+.match-card.live { border-color:rgba(192,57,43,0.35); box-shadow:0 0 0 2px rgba(192,57,43,0.1); }
+.match-card.live .card-accent { background:var(--red); }
+.match-card.final { opacity:0.88; }
+.score-display { display:flex; align-items:center; gap:6px; font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:var(--ink); }
+.score-display.score-live { color:var(--red); }
+.score-sep { color:var(--muted); font-size:18px; font-weight:400; }
+.score-clock { font-family:'Instrument Mono',monospace; font-size:11px; color:var(--red); margin-top:2px; text-align:center; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
@@ -596,6 +611,102 @@ function copyMatch(id, home, away, venue, city) {
     setTimeout(() => t.classList.remove('show'), 2500);
   });
 }
+
+// ─── LIVE SCORES ─────────────────────────────────────────────────
+const ESPN_NAME_MAP = {
+  "United States":"USA","Bosnia-Herzegovina":"Bosnia & Herz.",
+  "Bosnia and Herzegovina":"Bosnia & Herz.","Ivory Coast":"Côte d'Ivoire",
+  "Cote d'Ivoire":"Côte d'Ivoire","Turkey":"Türkiye",
+  "Czech Republic":"Czechia","Democratic Republic of Congo":"DR Congo",
+  "Congo DR":"DR Congo","Congo, DR":"DR Congo",
+  "Republic of Korea":"South Korea","Korea Republic":"South Korea",
+  "IR Iran":"Iran","United States of America":"USA",
+};
+function normName(n) { return ESPN_NAME_MAP[n] ?? n; }
+function isLive(utc) { const n=Date.now(),s=new Date(utc).getTime(); return n>=s&&n<=s+2*3600*1000; }
+function isPast(utc) { return new Date(utc).getTime()+2*3600*1000<Date.now(); }
+
+const liveData = {};
+
+function seedEmbeddedResults() {
+  for (const m of MATCHES) {
+    if (m.homeScore != null) {
+      liveData[m.id] = { homeScore:m.homeScore, awayScore:m.awayScore, status:m.status||'final' };
+    }
+  }
+}
+
+function applyScoresToDom() {
+  for (const m of MATCHES) {
+    const card = document.getElementById('card-'+m.id);
+    const vsEl  = document.getElementById('vs-'+m.id);
+    if (!card || !vsEl) continue;
+
+    const sd = liveData[m.id];
+    const apiLive  = sd?.status === 'live';
+    const apiFinal = sd?.status === 'final';
+    const live  = apiLive  || (!sd && isLive(m.utc));
+    const final = apiFinal || (!sd && isPast(m.utc));
+
+    // Card visual state
+    card.classList.toggle('live',  live);
+    card.classList.toggle('final', !live && final);
+
+    // Status tag
+    const metaEl = card.querySelector('.card-meta');
+    const existing = metaEl && metaEl.querySelector('.status-tag');
+    if (existing) existing.remove();
+    if (live) {
+      const tag = document.createElement('span');
+      tag.className = 'status-tag live-tag'; tag.textContent = '● Live';
+      metaEl && metaEl.appendChild(tag);
+    } else if (apiFinal) {
+      const tag = document.createElement('span');
+      tag.className = 'status-tag final-tag'; tag.textContent = 'Final';
+      metaEl && metaEl.appendChild(tag);
+    }
+
+    // Score / VS display
+    if (sd && (sd.status === 'live' || sd.status === 'final')) {
+      const cls = sd.status === 'live' ? 'score-display score-live' : 'score-display';
+      const clockHtml = sd.status === 'live' && sd.clock
+        ? \`<div class="score-clock">\${sd.clock}</div>\` : '';
+      vsEl.innerHTML = \`<div class="\${cls}"><span>\${sd.homeScore}</span><span class="score-sep">–</span><span>\${sd.awayScore}</span></div>\${clockHtml}\`;
+    } else {
+      vsEl.innerHTML = '<span class="vs-text">VS</span>';
+    }
+  }
+}
+
+async function fetchLiveData() {
+  try {
+    const res = await fetch('/api/scores');
+    if (res.ok) {
+      const { matches } = await res.json();
+      for (const em of (matches || [])) {
+        if (em.status === 'scheduled') continue;
+        for (const m of MATCHES) {
+          const eHome = normName(em.homeTeam), eAway = normName(em.awayTeam);
+          const same = (eHome===m.home&&eAway===m.away)||(eHome===m.away&&eAway===m.home);
+          if (!same || m.utc.slice(0,10) !== (em.date||'').slice(0,10)) continue;
+          const homeFirst = eHome === m.home;
+          liveData[m.id] = {
+            homeScore: homeFirst ? em.homeScore : em.awayScore,
+            awayScore: homeFirst ? em.awayScore : em.homeScore,
+            status: em.status, clock: em.clock,
+          };
+          break;
+        }
+      }
+    }
+  } catch(e) { console.warn('Live data unavailable:', e); }
+  applyScoresToDom();
+}
+
+seedEmbeddedResults();
+applyScoresToDom();
+fetchLiveData();
+setInterval(fetchLiveData, 60000);
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -734,7 +845,7 @@ function patchIndexHtml() {
 }
 
 // ─── PATCH SCHEDULE.HTML ──────────────────────────────────────────────────────
-function patchScheduleHtml() {
+function patchScheduleHtml(scores = {}) {
   const schedulePath = path.join(__dirname, '..', 'site', 'schedule', 'index.html');
   if (!fs.existsSync(schedulePath)) {
     console.warn('⚠️  site/schedule/index.html not found — skipping');
@@ -754,9 +865,10 @@ function patchScheduleHtml() {
     schedTeams.join('\n') + '\n'
   );
 
+  // Pass scores so embedded results from results.json are preserved in schedule page too
   html = html.replace(
     /const MATCHES = \[[\s\S]*?\];(\s*\n)/,
-    matchesArrayJs() + '\n'
+    matchesArrayJs(scores) + '\n'
   );
 
   fs.writeFileSync(schedulePath, html, 'utf8');
@@ -779,10 +891,27 @@ const DIRS_TO_REMOVE = KNOWN_DIRS.filter(d => !VALID_SLUGS.has(d));
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
 function main() {
   const siteDir = path.join(__dirname, '..', 'site');
+  const resultsPath = path.join(siteDir, 'results.json');
 
-  // 1. Patch index.html and schedule page
+  // Load results.json once — shared by all patchers and team page generators
+  let scores = {};
+  if (fs.existsSync(resultsPath)) {
+    try {
+      const raw = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
+      for (const [k, v] of Object.entries(raw)) {
+        scores[Number(k)] = v;
+      }
+      if (Object.keys(scores).length > 0) {
+        console.log(`📊 Loaded ${Object.keys(scores).length} result(s) from results.json`);
+      }
+    } catch (e) {
+      console.warn('⚠️  Could not parse results.json:', e.message);
+    }
+  }
+
+  // 1. Patch index.html and schedule page (both get embedded scores)
   patchIndexHtml();
-  patchScheduleHtml();
+  patchScheduleHtml(scores);
 
   // 2. Remove obsolete team dirs
   for (const dir of DIRS_TO_REMOVE) {
@@ -793,13 +922,13 @@ function main() {
     }
   }
 
-  // 3. Generate / overwrite all 48 team pages
+  // 3. Generate / overwrite all 48 team pages (with embedded scores for static fallback)
   for (const team of TEAMS) {
     const teamDir = path.join(siteDir, team.slug);
     if (!fs.existsSync(teamDir)) {
       fs.mkdirSync(teamDir, { recursive: true });
     }
-    const html = generateTeamPage(team);
+    const html = generateTeamPage(team, scores);
     fs.writeFileSync(path.join(teamDir, 'index.html'), html, 'utf8');
     console.log(`📄 Generated site/${team.slug}/index.html`);
   }
