@@ -1528,14 +1528,18 @@ function renderCountry(c) {
   const tipItems = c.tips.map(t => `<li>${t}</li>`).join('');
   const showVPN = c.vpnNeeded || ['india','caribbean','jamaica'].includes(c.slug);
 
-  const vpnCards = VPNS.map(v => `
+  const vpnCards = VPNS.map(v => {
+    let url = v.url;
+    if (v.name === "NordVPN" && c.slug === "uk") url = "/a/nordvpn-uk";
+    return `
     <div class="vpn-card">
       <div class="vpn-name">${v.name}</div>
       <div class="vpn-tag">${v.tag} · ${v.deal}</div>
       <div class="vpn-desc">${v.desc}</div>
-      <a href="${v.url}" target="_blank" rel="noopener noreferrer" class="vpn-cta">Get ${v.name} *</a>
+      <a href="${url}" target="_blank" rel="noopener noreferrer" class="vpn-cta">Get ${v.name} *</a>
     </div>
-  `).join('');
+  `;
+  }).join('');
 
   const statusTag = c.freeAvailable
     ? `<span class="ch-free-tag">✅ Free viewing available</span>`
