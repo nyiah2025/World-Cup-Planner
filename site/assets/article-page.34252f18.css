@@ -110,6 +110,21 @@
 .article-cta-text .ac-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; color: var(--white); line-height: 1.2; }
 .article-cta-arrow { font-size: 22px; color: rgba(253,250,244,0.4); }
 
+/* ── ARTICLE SHARE ── */
+.article-share { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 22px 0; border-top: 1px solid var(--border); margin-top: 40px; }
+.as-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); font-family: 'Instrument Mono', monospace; white-space: nowrap; }
+.as-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+.as-btn { display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: var(--bg2); border: 1px solid var(--border); color: var(--ink2); text-decoration: none; transition: all 0.18s; flex-shrink: 0; }
+.as-btn svg { width: 16px; height: 16px; fill: currentColor; }
+.as-btn:hover { border-color: transparent; color: #fff; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.as-facebook:hover { background: #1877F2; }
+.as-x:hover { background: #000; }
+.as-linkedin:hover { background: #0A66C2; }
+.as-reddit:hover { background: #FF4500; }
+.as-messenger:hover { background: #0084FF; }
+.as-whatsapp:hover { background: #25D366; }
+.as-email:hover { background: var(--grass); }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 600px) {
   .hero { padding: 28px 16px 24px; }
@@ -118,4 +133,6 @@
   .stage-flow { flex-direction: column; }
   .sf-item { width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
   .sf-item:last-child { border-bottom: none; }
+  .article-share { gap: 10px; }
+  .as-btn { width: 36px; height: 36px; }
 }
