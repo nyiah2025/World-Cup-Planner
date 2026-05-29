@@ -136,7 +136,11 @@ const server = http.createServer((req, res) => {
   resolve(req, res, urlPath);
 });
 
-server.listen(PORT, "0.0.0.0", () => {
-  console.log(`myteamkickoff.com preview server running on http://0.0.0.0:${PORT}`);
-  console.log(`Serving files from: ${SITE_DIR}`);
-});
+if (require.main === module) {
+  server.listen(PORT, "0.0.0.0", () => {
+    console.log(`myteamkickoff.com preview server running on http://0.0.0.0:${PORT}`);
+    console.log(`Serving files from: ${SITE_DIR}`);
+  });
+}
+
+module.exports = { server, serveFile, getCacheControl, SITE_DIR };

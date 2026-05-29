@@ -9,7 +9,8 @@
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
     "fingerprint": "node scripts/fingerprint.cjs",
     "generate": "node scripts/generate-schedule.cjs",
-    "sitemap": "node scripts/generate-sitemap.cjs"
+    "sitemap": "node scripts/generate-sitemap.cjs",
+    "test": "node server.test.js"
   },
   "packageManager": "pnpm@10.26.1",
   "private": true,
