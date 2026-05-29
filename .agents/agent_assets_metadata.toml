@@ -66,3 +66,15 @@ id = "K40IzVCpXQ3TcTGeKDymZ"
 uri = "file://site/articles/how-to-watch-world-cup-2026-caribbean/og.png"
 type = "image"
 title = "generated_image"
+
+[[generated]]
+id = "i6or8sgsUk65fDr9iqvNf"
+uri = "file://site/watch/og.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "qj0t7coa6tkPl9K31ehiH"
+uri = "file://site/og-tool.png"
+type = "image"
+title = "generated_image"
