@@ -42,37 +42,70 @@ function getCacheControl(ext, basename) {
   return "public, max-age=3600";
 }
 
-function serveFile(res, filePath) {
+function serveFile(req, res, filePath) {
   const ext = path.extname(filePath);
   const basename = path.basename(filePath);
   const contentType = MIME_TYPES[ext] || "application/octet-stream";
-  fs.readFile(filePath, (err, data) => {
-    if (err) {
+
+  fs.stat(filePath, (statErr, stat) => {
+    if (statErr) {
       res.writeHead(404, { "Content-Type": "text/plain" });
       res.end("Not found");
       return;
     }
-    res.writeHead(200, {
-      "Content-Type": contentType,
-      "Cache-Control": getCacheControl(ext, basename),
+
+    const mtime = stat.mtime;
+    const etag = `"${mtime.getTime().toString(16)}-${stat.size.toString(16)}"`;
+    const lastModified = mtime.toUTCString();
+
+    const ifNoneMatch = req.headers["if-none-match"];
+    const ifModifiedSince = req.headers["if-modified-since"];
+
+    if (ifNoneMatch && ifNoneMatch === etag) {
+      res.writeHead(304);
+      res.end();
+      return;
+    }
+
+    if (!ifNoneMatch && ifModifiedSince) {
+      const since = new Date(ifModifiedSince);
+      if (!isNaN(since) && mtime <= since) {
+        res.writeHead(304);
+        res.end();
+        return;
+      }
+    }
+
+    fs.readFile(filePath, (err, data) => {
+      if (err) {
+        res.writeHead(404, { "Content-Type": "text/plain" });
+        res.end("Not found");
+        return;
+      }
+      res.writeHead(200, {
+        "Content-Type": contentType,
+        "Cache-Control": getCacheControl(ext, basename),
+        "ETag": etag,
+        "Last-Modified": lastModified,
+      });
+      res.end(data);
     });
-    res.end(data);
   });
 }
 
-function resolve(urlPath, res) {
+function resolve(req, res, urlPath) {
   const target = path.join(SITE_DIR, urlPath);
 
   fs.stat(target, (err, stat) => {
     if (!err && stat.isFile()) {
-      return serveFile(res, target);
+      return serveFile(req, res, target);
     }
 
     if (!err && stat.isDirectory()) {
       const indexPath = path.join(target, "index.html");
       return fs.access(indexPath, fs.constants.F_OK, (err2) => {
         if (!err2) {
-          serveFile(res, indexPath);
+          serveFile(req, res, indexPath);
         } else {
           res.writeHead(404, { "Content-Type": "text/plain" });
           res.end("Not found");
@@ -85,7 +118,7 @@ function resolve(urlPath, res) {
       const indexPath = path.join(SITE_DIR, stripped, "index.html");
       return fs.access(indexPath, fs.constants.F_OK, (err2) => {
         if (!err2) {
-          serveFile(res, indexPath);
+          serveFile(req, res, indexPath);
         } else {
           res.writeHead(404, { "Content-Type": "text/plain" });
           res.end("Not found");
@@ -100,7 +133,7 @@ function resolve(urlPath, res) {
 
 const server = http.createServer((req, res) => {
   const urlPath = req.url.split("?")[0] || "/";
-  resolve(urlPath, res);
+  resolve(req, res, urlPath);
 });
 
 server.listen(PORT, "0.0.0.0", () => {
