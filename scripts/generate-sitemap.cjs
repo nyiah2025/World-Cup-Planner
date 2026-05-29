@@ -68,7 +68,7 @@ for (const page of UTILITY_PAGES) {
   const dir = path.join(SITE_DIR, page.slug);
   if (fs.existsSync(dir) && fs.statSync(dir).isDirectory() &&
       fs.existsSync(path.join(dir, 'index.html'))) {
-    addEntry(`${BASE_URL}/${page.slug}`, page.priority, page.changefreq);
+    addEntry(`${BASE_URL}/${page.slug}/`, page.priority, page.changefreq);
 
     // 3. Article sub-pages (site/articles/<slug>/index.html)
     if (page.slug === 'articles') {
@@ -78,7 +78,7 @@ for (const page of UTILITY_PAGES) {
         .sort();
       for (const sub of subdirs) {
         if (fs.existsSync(path.join(dir, sub, 'index.html'))) {
-          addEntry(`${BASE_URL}/articles/${sub}`, '0.7', 'weekly');
+          addEntry(`${BASE_URL}/articles/${sub}/`, '0.7', 'weekly');
         }
       }
     }
@@ -98,12 +98,12 @@ for (const dir of siteDirs) {
   if (!fs.existsSync(path.join(SITE_DIR, dir, 'index.html'))) continue;
 
   if (TEAM_SLUGS.has(dir)) {
-    addEntry(`${BASE_URL}/${dir}`, '0.9', 'daily');
+    addEntry(`${BASE_URL}/${dir}/`, '0.9', 'daily');
   } else {
     // Unknown folder with an index.html — include at medium priority so
     // new page types don't get silently omitted.
     console.warn(`[sitemap] Unknown folder "${dir}" included at priority 0.7. Add it to UTILITY_PAGES or TEAM_SLUGS for a more specific priority.`);
-    addEntry(`${BASE_URL}/${dir}`, '0.7', 'weekly');
+    addEntry(`${BASE_URL}/${dir}/`, '0.7', 'weekly');
   }
 }
 
