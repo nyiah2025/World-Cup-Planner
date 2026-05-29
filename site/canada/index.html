@@ -129,6 +129,21 @@ img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.
 .score-display.score-live { color:var(--red); }
 .score-sep { color:var(--muted); font-size:18px; font-weight:400; }
 .score-clock { font-family:'Instrument Mono',monospace; font-size:11px; color:var(--red); margin-top:2px; text-align:center; }
+
+/* ── ARTICLES TEASER ── */
+.articles-teaser { max-width:1100px; margin:0 auto; padding:48px 24px 40px; }
+.at-header { display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin-bottom:24px; flex-wrap:wrap; }
+.at-title { font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(18px,3vw,26px); color:var(--ink); }
+.at-browse { font-size:13px; font-weight:700; color:var(--grass); text-decoration:none; white-space:nowrap; letter-spacing:0.3px; }
+.at-browse:hover { color:#3D8F50; }
+.at-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.at-card { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:24px; text-decoration:none; display:flex; flex-direction:column; gap:0; transition:all 0.18s; }
+.at-card:hover { border-color:rgba(193,127,42,0.35); transform:translateY(-2px); box-shadow:0 8px 32px rgba(26,20,16,0.1); }
+.at-cat { font-size:9px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+.at-card-title { font-family:'Syne',sans-serif; font-weight:700; font-size:15px; color:var(--ink); line-height:1.3; flex:1; margin-bottom:16px; }
+.at-card-meta { display:flex; align-items:center; justify-content:space-between; font-size:10px; color:var(--muted); font-family:'Instrument Mono',monospace; margin-top:auto; }
+.at-card-link { font-size:11px; font-weight:700; color:var(--grass); letter-spacing:0.5px; }
+@media(max-width:768px) { .at-grid { grid-template-columns:1fr; } }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
@@ -372,6 +387,40 @@ img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
+
+<!-- FROM THE FAN'S GUIDE -->
+<section class="articles-teaser">
+  <div class="at-header">
+    <div class="at-title">From the Fan&#x27;s Guide</div>
+    <a href="/articles/" class="at-browse">Browse all articles &#x2192;</a>
+  </div>
+  <div class="at-grid">
+    <a href="/articles/how-to-watch-world-cup-2026-canada/" class="at-card">
+      <div class="at-cat">How to Watch &middot; Canada</div>
+      <div class="at-card-title">How to Watch the World Cup 2026 in Canada</div>
+      <div class="at-card-meta">
+        <span>&#x23F1; 5 min read</span>
+        <span class="at-card-link">Read &#x2192;</span>
+      </div>
+    </a>
+    <a href="/articles/how-does-the-2026-world-cup-format-work/" class="at-card">
+      <div class="at-cat">Tournament Guide</div>
+      <div class="at-card-title">How Does the New World Cup Format Work? The Complete Guide</div>
+      <div class="at-card-meta">
+        <span>&#x23F1; 7 min read</span>
+        <span class="at-card-link">Read &#x2192;</span>
+      </div>
+    </a>
+    <a href="/articles/group-stage-predictions-every-group-ranked-by-difficulty/" class="at-card">
+      <div class="at-cat">Predictions &amp; Analysis</div>
+      <div class="at-card-title">Group Stage Predictions: Every Group Ranked by Difficulty</div>
+      <div class="at-card-meta">
+        <span>&#x23F1; 9 min read</span>
+        <span class="at-card-link">Read &#x2192;</span>
+      </div>
+    </a>
+  </div>
+</section>
 <footer>
   <strong><a href="../index.html">myteamkickoff.com</a></strong> &middot; World Cup 2026 Kickoff Times in Your Timezone<br>
   🇺🇸 USA &middot; 🇨🇦 Canada &middot; 🇲🇽 Mexico &middot; June 11 – July 19, 2026<br>
