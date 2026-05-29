@@ -21,7 +21,15 @@ const MIME_TYPES = {
   ".woff2": "font/woff2",
 };
 
-function getCacheControl(ext) {
+// Matches fingerprinted filenames: basename.8hexchars.ext
+const FINGERPRINTED_RE = /^.+\.[0-9a-f]{8}\.(css|js)$/;
+
+function getCacheControl(ext, basename) {
+  // Fingerprinted assets have content-based hashes in their filename, so they
+  // are safe to cache forever — the URL changes whenever the content changes.
+  if (FINGERPRINTED_RE.test(basename)) {
+    return "public, max-age=31536000, immutable";
+  }
   if ([".png", ".webp", ".jpg", ".woff", ".woff2", ".js"].includes(ext)) {
     return "public, max-age=31536000, immutable";
   }
@@ -36,6 +44,7 @@ function getCacheControl(ext) {
 
 function serveFile(res, filePath) {
   const ext = path.extname(filePath);
+  const basename = path.basename(filePath);
   const contentType = MIME_TYPES[ext] || "application/octet-stream";
   fs.readFile(filePath, (err, data) => {
     if (err) {
@@ -45,7 +54,7 @@ function serveFile(res, filePath) {
     }
     res.writeHead(200, {
       "Content-Type": contentType,
-      "Cache-Control": getCacheControl(ext),
+      "Cache-Control": getCacheControl(ext, basename),
     });
     res.end(data);
   });
