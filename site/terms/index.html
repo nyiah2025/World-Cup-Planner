@@ -9,86 +9,8 @@
 <link rel="canonical" href="https://myteamkickoff.com/terms">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@400;500;600&family=Instrument+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/base.3ea7f29e.css">
 <style>
-:root {
-  --bg: #F5F0E8;
-  --bg2: #EDE8DC;
-  --ink: #1A1410;
-  --ink2: #4A3F35;
-  --muted: #8C7B6E;
-  --gold: #C17F2A;
-  --gold-light: #E8A84C;
-  --grass: #2A6B3A;
-  --white: #FDFAF4;
-  --border: rgba(26,20,16,0.12);
-  --shadow: 0 2px 20px rgba(26,20,16,0.08);
-}
-
-* { margin:0; padding:0; box-sizing:border-box; }
-
-body {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: 'Instrument Sans', sans-serif;
-  min-height: 100vh;
-  line-height: 1.75;
-}
-
-body::after {
-  content:'';
-  position:fixed;
-  inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events:none;
-  z-index:999;
-  opacity:0.6;
-}
-
-/* NAV */
-.topnav {
-  background: var(--ink);
-  padding: 12px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.nav-logo {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: 16px;
-  color: var(--white);
-  text-decoration: none;
-  letter-spacing: 1px;
-}
-
-.nav-logo span { color: var(--gold-light); }
-
-.nav-home {
-  font-size: 12px;
-  color: rgba(253,250,244,0.5);
-  text-decoration: none;
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 6px;
-  padding: 6px 12px;
-  transition: all 0.2s;
-}
-
-.nav-home:hover { color: var(--white); border-color: var(--gold); }
-.nav-active { color: var(--white) !important; border-color: var(--gold) !important; }
-.nav-menu-btn { display:none; background:none; border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:6px 10px; cursor:pointer; color:var(--white); font-size:18px; line-height:1; }
-.nav-links-wrap { display:flex; gap:8px; align-items:center; }
-.nav-close-btn { display:none; background:none; border:none; color:rgba(253,250,244,0.6); font-size:24px; cursor:pointer; padding:8px; position:absolute; top:12px; right:16px; }
-@media(max-width:768px){
-  .nav-menu-btn { display:flex; align-items:center; }
-  .nav-links-wrap { display:none; position:fixed; inset:0; background:var(--ink); z-index:1000; flex-direction:column; align-items:flex-start; justify-content:center; padding:40px 32px; gap:16px; }
-  .nav-links-wrap.open { display:flex; }
-  .nav-links-wrap.open .nav-close-btn { display:flex; }
-  .nav-links-wrap .nav-home { font-size:15px; padding:10px 16px; }
-  .nav-links-wrap.open .nav-home { width:100%; max-width:320px; }
-}
-
 /* HERO */
 .hero {
   background: var(--ink);
@@ -349,14 +271,6 @@ body::after {
   text-decoration: none;
   font-weight: 600;
 }
-
-/* TWEMOJI */
-img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.1em; display: inline-block; }
-
-/* FOOTER */
-footer { text-align:center; padding:28px 24px; background:var(--ink); color:rgba(253,250,244,0.4); font-size:12px; line-height:1.8; }
-footer a { color:var(--gold-light); text-decoration:none; }
-footer strong { color:rgba(253,250,244,0.7); }
 
 @media (max-width: 600px) {
   .hero { padding: 32px 20px 28px; }

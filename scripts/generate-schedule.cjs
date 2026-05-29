@@ -376,6 +376,7 @@ function generateTeamPage(team, scores = {}) {
 <link rel="canonical" href="https://myteamkickoff.com/${slug}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@400;500;600&family=Instrument+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="${assetUrl('/assets/base.css')}">
 <link rel="stylesheet" href="${assetUrl('/assets/team-page.css')}">
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
@@ -445,6 +446,59 @@ ${otherTeamsHtml(slug)}
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
+
+<!-- FROM THE FAN'S GUIDE -->
+<section class="articles-teaser">
+  <div class="at-header">
+    <div class="at-title">From the Fan&#x27;s Guide</div>
+    <a href="/articles/" class="at-browse">Browse all articles &#x2192;</a>
+  </div>
+  <div class="at-grid">
+    <a href="/articles/how-does-the-2026-world-cup-format-work/" class="at-card">
+      <picture>
+      <source type="image/webp" srcset="/articles/how-does-the-2026-world-cup-format-work/og.webp">
+      <img class="at-img" src="/articles/how-does-the-2026-world-cup-format-work/og.png" alt="Overhead view of a football pitch with 48 team flags arranged in 12 groups for the 2026 World Cup" loading="lazy">
+      </picture>
+      <div class="at-body">
+      <div class="at-cat">Tournament Guide</div>
+      <div class="at-card-title">How Does the New World Cup Format Work? The Complete Guide</div>
+      <div class="at-card-meta">
+        <span>&#x23F1; 7 min read</span>
+        <span class="at-card-link">Read &#x2192;</span>
+      </div>
+      </div>
+    </a>
+    <a href="/articles/group-stage-predictions-every-group-ranked-by-difficulty/" class="at-card">
+      <picture>
+      <source type="image/webp" srcset="/articles/group-stage-predictions-every-group-ranked-by-difficulty/og.webp">
+      <img class="at-img" src="/articles/group-stage-predictions-every-group-ranked-by-difficulty/og.png" alt="Twelve colourful international football flags arranged in a grid on a floodlit stadium pitch" loading="lazy">
+      </picture>
+      <div class="at-body">
+      <div class="at-cat">Predictions &amp; Analysis</div>
+      <div class="at-card-title">Group Stage Predictions: Every Group Ranked by Difficulty</div>
+      <div class="at-card-meta">
+        <span>&#x23F1; 9 min read</span>
+        <span class="at-card-link">Read &#x2192;</span>
+      </div>
+      </div>
+    </a>
+    <a href="/articles/world-cup-2026-dark-horses/" class="at-card">
+      <picture>
+      <source type="image/webp" srcset="/articles/world-cup-2026-dark-horses/og.webp">
+      <img class="at-img" src="/articles/world-cup-2026-dark-horses/og.png" alt="A lone footballer sprinting through dramatic tunnel lighting, symbolising a dark horse team" loading="lazy">
+      </picture>
+      <div class="at-body">
+      <div class="at-cat">Analysis</div>
+      <div class="at-card-title">World Cup 2026 Dark Horses: 5 Teams to Watch</div>
+      <div class="at-card-meta">
+        <span>&#x23F1; 6 min read</span>
+        <span class="at-card-link">Read &#x2192;</span>
+      </div>
+      </div>
+    </a>
+  </div>
+</section>
+
 <footer>
   <strong><a href="../index.html">myteamkickoff.com</a></strong> &middot; World Cup 2026 Kickoff Times in Your Timezone<br>
   🇺🇸 USA &middot; 🇨🇦 Canada &middot; 🇲🇽 Mexico &middot; June 11 – July 19, 2026<br>
