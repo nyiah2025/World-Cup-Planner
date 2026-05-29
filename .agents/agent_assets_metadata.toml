@@ -1,0 +1,68 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "h6Tf2k8Xx_Vv99w36DDuE"
+uri = "file://site/articles/how-does-the-2026-world-cup-format-work/og.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "ieBj62iBWmXvzgMY51bou"
+uri = "file://site/articles/what-is-the-round-of-32/og.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "PuyS63agpxzUaxPPnpIRY"
+uri = "file://site/articles/group-stage-predictions-every-group-ranked-by-difficulty/og.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "eSPOTGwbZSUwMsWzw5PSf"
+uri = "file://site/articles/world-cup-2026-dark-horses/og.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "nPwwNY6vG4S3deEDdJGst"
+uri = "file://site/articles/how-to-watch-world-cup-2026-uk/og.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "JZYddBfd4dQmhHCYfhGzE"
+uri = "file://site/articles/how-to-watch-world-cup-2026-usa/og.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "sRkks-Fl0h0gesPbM-dVW"
+uri = "file://site/articles/how-to-watch-world-cup-2026-canada/og.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "VdSWxPX-3eG0dvkoNVydQ"
+uri = "file://site/articles/how-to-watch-world-cup-2026-australia/og.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "f5WBujSFzbQCN9VKvwucs"
+uri = "file://site/articles/how-to-watch-world-cup-2026-india/og.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "y5hDCk5Eh6_OQBz5-AB8W"
+uri = "file://site/articles/how-to-watch-world-cup-2026-nigeria/og.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "K40IzVCpXQ3TcTGeKDymZ"
+uri = "file://site/articles/how-to-watch-world-cup-2026-caribbean/og.png"
+type = "image"
+title = "generated_image"
