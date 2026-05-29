@@ -21,6 +21,19 @@ const MIME_TYPES = {
   ".woff2": "font/woff2",
 };
 
+function getCacheControl(ext) {
+  if ([".png", ".webp", ".jpg", ".woff", ".woff2", ".js"].includes(ext)) {
+    return "public, max-age=31536000, immutable";
+  }
+  if (ext === ".css") {
+    return "public, max-age=86400";
+  }
+  if (ext === ".html") {
+    return "no-cache";
+  }
+  return "public, max-age=3600";
+}
+
 function serveFile(res, filePath) {
   const ext = path.extname(filePath);
   const contentType = MIME_TYPES[ext] || "application/octet-stream";
@@ -30,7 +43,10 @@ function serveFile(res, filePath) {
       res.end("Not found");
       return;
     }
-    res.writeHead(200, { "Content-Type": contentType });
+    res.writeHead(200, {
+      "Content-Type": contentType,
+      "Cache-Control": getCacheControl(ext),
+    });
     res.end(data);
   });
 }
