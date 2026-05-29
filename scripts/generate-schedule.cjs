@@ -252,7 +252,7 @@ function otherTeamsHtml(currentSlug) {
   const sorted = [...TEAMS].sort((a,b) => a.name.localeCompare(b.name));
   return sorted
     .filter(t => t.slug !== currentSlug)
-    .map(t => `<a href="../${t.slug}/index.html" class="team-link">${t.flag} ${esc(t.name)}</a>`)
+    .map(t => `<a href="/${t.slug}/" class="team-link">${t.flag} ${esc(t.name)}</a>`)
     .join('\n');
 }
 
@@ -384,20 +384,20 @@ function generateTeamPage(team, scores = {}) {
 <body>
 
 <nav class="topnav">
-  <a href="../index.html" class="nav-logo">myteam<span>kickoff</span>.com</a>
+  <a href="/" class="nav-logo">myteam<span>kickoff</span>.com</a>
   <button class="nav-menu-btn" id="navMenuBtn" aria-label="Open menu">☰</button>
   <div class="nav-links-wrap" id="navLinksWrap">
     <button class="nav-close-btn" id="navCloseBtn" aria-label="Close menu">✕</button>
-    <a href="../index.html" class="nav-home">← All Teams</a>
+    <a href="/" class="nav-home">← All Teams</a>
     <a href="/schedule/" class="nav-home">Schedule</a>
     <a href="/about/" class="nav-home">About</a>
-    <a href="/contact" class="nav-home">Contact</a>
+    <a href="/contact/" class="nav-home">Contact</a>
   </div>
 </nav>
 
 <div class="hero">
   <div class="hero-inner">
-    <div class="breadcrumb"><a href="../index.html">All Teams</a> / ${esc(displayName)}</div>
+    <div class="breadcrumb"><a href="/">All Teams</a> / ${esc(displayName)}</div>
     <div class="hero-flag">${flag}</div>
     <h1>What Time Is ${flag} ${esc(displayName)} Playing?</h1>
     <h2>${esc(displayName)} World Cup 2026 Schedule – Kickoff Times in Your Timezone</h2>
@@ -500,10 +500,10 @@ ${otherTeamsHtml(slug)}
 </section>
 
 <footer>
-  <strong><a href="../index.html">myteamkickoff.com</a></strong> &middot; World Cup 2026 Kickoff Times in Your Timezone<br>
+  <strong><a href="/">myteamkickoff.com</a></strong> &middot; World Cup 2026 Kickoff Times in Your Timezone<br>
   🇺🇸 USA &middot; 🇨🇦 Canada &middot; 🇲🇽 Mexico &middot; June 11 – July 19, 2026<br>
   Times based on official FIFA schedule. All kickoffs converted from local venue time to UTC.<br>
-  <a href="/privacy">Privacy Policy</a> &middot; <a href="/about/">About</a> &middot; <a href="/contact">Contact</a> &middot; &copy; 2026 myteamkickoff.com
+  <a href="/privacy/">Privacy Policy</a> &middot; <a href="/about/">About</a> &middot; <a href="/contact/">Contact</a> &middot; &copy; 2026 myteamkickoff.com
 </footer>
 
 <script>
