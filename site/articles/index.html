@@ -96,7 +96,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .ac-tool-link{font-size:11px;font-weight:600;color:var(--ink2);text-decoration:none;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;transition:all 0.15s;white-space:nowrap;}
 .ac-tool-link:hover{border-color:var(--gold);color:var(--gold);}
 /* FEATURED CARD IMAGE */
-.fc-img{width:100%;height:260px;object-fit:cover;display:block;}
+.fc-img{width:100%;max-height:280px;object-fit:cover;display:block;border-radius:10px;margin:16px 0 20px;}
 
 /* CTA STRIP */
 .cta-strip{background:var(--ink);border-radius:14px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:40px;text-decoration:none;transition:transform 0.18s;}
@@ -147,11 +147,11 @@ img.emoji{height:1em;width:1em;margin:0 .05em 0 .1em;vertical-align:-0.1em;displ
 
   <!-- FEATURED -->
   <a href="/articles/how-does-the-2026-world-cup-format-work/" class="featured-card">
-    <img class="fc-img" src="/articles/how-does-the-2026-world-cup-format-work/og.png" alt="How Does the 2026 World Cup Format Work?" loading="lazy">
     <div class="fc-inner">
       <div class="fc-content">
         <div class="fc-label">🏆 Featured · Tournament Guide</div>
         <div class="fc-title">How Does the 2026 World Cup Format Work? The Complete Guide</div>
+        <img class="fc-img" src="/articles/how-does-the-2026-world-cup-format-work/og.png" alt="How Does the 2026 World Cup Format Work?" loading="eager">
         <div class="fc-desc">The 2026 FIFA World Cup is the biggest in history — 48 teams, 12 groups, a brand-new Round of 32, and 104 matches across three countries. Here's everything you need to know, explained clearly.</div>
         <div class="fc-meta">
           <span>✍️ Jay Gumbs</span>

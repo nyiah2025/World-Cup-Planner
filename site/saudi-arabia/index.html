@@ -137,12 +137,12 @@ img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.
 .at-browse { font-size:13px; font-weight:700; color:var(--grass); text-decoration:none; white-space:nowrap; letter-spacing:0.3px; }
 .at-browse:hover { color:#3D8F50; }
 .at-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-.at-card { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:24px; text-decoration:none; display:flex; flex-direction:column; gap:0; transition:all 0.18s; }
+.at-card { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:0; overflow:hidden; text-decoration:none; display:flex; flex-direction:column; gap:0; transition:all 0.18s; }
 .at-card:hover { border-color:rgba(193,127,42,0.35); transform:translateY(-2px); box-shadow:0 8px 32px rgba(26,20,16,0.1); }
 .at-cat { font-size:9px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
 .at-card-title { font-family:'Syne',sans-serif; font-weight:700; font-size:15px; color:var(--ink); line-height:1.3; flex:1; margin-bottom:16px; }
 .at-card-meta { display:flex; align-items:center; justify-content:space-between; font-size:10px; color:var(--muted); font-family:'Instrument Mono',monospace; margin-top:auto; }
-.at-card-link { font-size:11px; font-weight:700; color:var(--grass); letter-spacing:0.5px; }
+.at-card-link { font-size:11px; font-weight:700; color:var(--grass); letter-spacing:0.5px; }.at-img { width:100%; height:140px; object-fit:cover; display:block; }.at-body { padding:16px 20px 20px; display:flex; flex-direction:column; flex:1; }
 @media(max-width:768px) { .at-grid { grid-template-columns:1fr; } }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
@@ -396,27 +396,36 @@ img.emoji { height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.
   </div>
   <div class="at-grid">
     <a href="/articles/how-does-the-2026-world-cup-format-work/" class="at-card">
+      <img class="at-img" src="/articles/how-does-the-2026-world-cup-format-work/og.png" alt="How Does the 2026 World Cup Format Work?" loading="lazy">
+      <div class="at-body">
       <div class="at-cat">Tournament Guide</div>
       <div class="at-card-title">How Does the New World Cup Format Work? The Complete Guide</div>
       <div class="at-card-meta">
         <span>&#x23F1; 7 min read</span>
         <span class="at-card-link">Read &#x2192;</span>
       </div>
+      </div>
     </a>
     <a href="/articles/group-stage-predictions-every-group-ranked-by-difficulty/" class="at-card">
+      <img class="at-img" src="/articles/group-stage-predictions-every-group-ranked-by-difficulty/og.png" alt="Group Stage Predictions: Every Group Ranked by Difficulty" loading="lazy">
+      <div class="at-body">
       <div class="at-cat">Predictions &amp; Analysis</div>
       <div class="at-card-title">Group Stage Predictions: Every Group Ranked by Difficulty</div>
       <div class="at-card-meta">
         <span>&#x23F1; 9 min read</span>
         <span class="at-card-link">Read &#x2192;</span>
       </div>
+      </div>
     </a>
     <a href="/articles/world-cup-2026-dark-horses/" class="at-card">
+      <img class="at-img" src="/articles/world-cup-2026-dark-horses/og.png" alt="World Cup 2026 Dark Horses: 5 Teams to Watch" loading="lazy">
+      <div class="at-body">
       <div class="at-cat">Analysis</div>
       <div class="at-card-title">World Cup 2026 Dark Horses: 5 Teams to Watch</div>
       <div class="at-card-meta">
         <span>&#x23F1; 6 min read</span>
         <span class="at-card-link">Read &#x2192;</span>
+      </div>
       </div>
     </a>
   </div>
