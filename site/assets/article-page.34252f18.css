@@ -98,10 +98,10 @@
 .bc-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; margin-bottom: 4px; }
 .bc-platform { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
 .bc-detail { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; }
-.bc-cta { display: block; text-align: center; padding: 9px; border-radius: 7px; font-size: 12px; font-weight: 700; text-decoration: none; transition: all 0.18s; border: none; background: var(--grass); color: white; }
-.bc-cta:hover { background: var(--grass-light); }
-.bc-cta.paid-cta { background: var(--gold); color: var(--ink); }
-.bc-cta.paid-cta:hover { background: var(--gold-light); }
+.bc-cta { display: block; text-align: center; padding: 9px; border-radius: 7px; font-size: 12px; font-weight: 700; text-decoration: none; transition: all 0.18s; border: none; background: var(--grass); color: white !important; }
+.bc-cta:hover { background: var(--grass-light); color: white !important; }
+.bc-cta.paid-cta { background: var(--gold); color: var(--ink) !important; }
+.bc-cta.paid-cta:hover { background: var(--gold-light); color: var(--ink) !important; }
 
 /* ── ARTICLE CTA ── */
 .article-cta { background: var(--ink); border-radius: 14px; padding: 28px; margin-top: 40px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; text-decoration: none; transition: transform 0.18s; }
