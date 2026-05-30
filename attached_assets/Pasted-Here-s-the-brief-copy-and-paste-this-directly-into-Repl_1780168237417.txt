@@ -1,0 +1,107 @@
+Here's the brief — copy and paste this directly into Replit Agent:
+
+---
+
+**Build a printable World Cup 2026 wallchart page for myteamkickoff.com**
+
+Create a new page at `/wallchart/index.html` that matches the existing site design and functions as a printable tournament bracket.
+
+---
+
+**Design system to match (already established across the site):**
+- Fonts: Syne (headings, 800 weight), Instrument Sans (body), Instrument Mono (labels/mono)
+- Colors: gold `#C17F2A`, gold-light `#E8A84C`, grass green `#2A6B3A`, ink `#1A1410`, bg `#F5F0E8`, bg2 `#EDE8DC`, white `#FDFAF4`
+- Noise texture overlay on body (already used on all pages — copy from any existing page)
+- Nav and footer matching all other pages on the site
+
+---
+
+**Page structure (screen view):**
+
+**Nav** — same as all other pages: logo left, links right (Match Times, How to Watch, Articles)
+
+**Hero section** (dark ink background with grid overlay):
+- Eyebrow tag: "🖨️ Free Download"
+- H1: "World Cup 2026 Wallchart"
+- H2: "Free Printable Bracket — Fill In As You Go"
+- Short paragraph: "Print this wallchart, stick it on your wall, and fill in scores and advancing teams match by match. Covers all 12 groups, the Round of 32, and every knockout round through to the Final at MetLife Stadium on July 19."
+- Two CTA buttons: "🖨️ Print Wallchart" (triggers window.print()) and "📋 How to Use This" (smooth scrolls to instructions section)
+
+**Instructions section** (below hero, before the bracket):
+- Heading: "How to Use Your Wallchart"
+- Three simple steps in a card row: 1) Print this page (File → Print or Ctrl+P), 2) Fill in group stage scores as matches are played, 3) Track advancing teams through the knockout bracket
+- Note: "Tip — print in landscape orientation for best results"
+
+**The bracket itself** — this is the main content, needs careful structure:
+
+*Group Stage section:*
+- Display all 12 groups (A through L) in a responsive grid — 4 columns on desktop, 2 on tablet, 1 on mobile
+- Each group card shows: Group letter as heading, all 4 team names listed, 6 match rows (each team plays 3 matches — 4 teams = 6 combinations), each match row has: Team A name | blank score box | blank score box | Team B name, a horizontal line separator between matches, and at the bottom of each group card: "Advances: ___________" with two blank lines for fans to write in the qualifying teams
+
+The correct 12 groups and 4 teams per group are:
+- Group A: Mexico, South Korea, South Africa, Czechia
+- Group B: Canada, Switzerland, Qatar, Bosnia & Herzegovina
+- Group C: Brazil, Morocco, Scotland, Haiti
+- Group D: USA, Australia, Paraguay, Türkiye
+- Group E: Germany, Ecuador, Côte d'Ivoire, Curaçao
+- Group F: Netherlands, Japan, Tunisia, Sweden
+- Group G: Belgium, Iran, Egypt, New Zealand
+- Group H: Spain, Uruguay, Saudi Arabia, Cape Verde
+- Group I: France, Senegal, Norway, Iraq
+- Group J: Argentina, Austria, Algeria, Jordan
+- Group K: Portugal, Colombia, Uzbekistan, DR Congo
+- Group L: England, Croatia, Panama, Ghana
+
+*Knockout bracket section:*
+- Round of 32 (16 slots) — labeled slots with matchup descriptions (e.g. "Winner Group A vs Best 3rd") and blank lines for team names and scores
+- Round of 16 (8 slots)
+- Quarterfinals (4 slots)
+- Semifinals (2 slots)
+- Third Place Playoff (1 slot) — July 18, Hard Rock Stadium, Miami
+- Final (1 slot) — July 19, MetLife Stadium, New York
+
+Each knockout slot should show: a match number or label, two blank team name lines, two blank score boxes, and the date range for that round.
+
+**Below the bracket:**
+- Internal link CTA back to the match times tool: dark ink card, text "Find out what time each match kicks off in your timezone →", links to `/index.html`
+- Link to articles index
+
+**Footer** — same as all other pages
+
+---
+
+**Print stylesheet — critical requirement:**
+
+Add a `@media print` CSS block that:
+- Hides the nav, hero section, instructions section, footer, and all CTAs
+- Shows only the bracket (group stage + knockout sections) plus a small site credit line at the bottom: "myteamkickoff.com — World Cup 2026 Wallchart"
+- Sets the page to landscape orientation: `@page { size: A4 landscape; margin: 10mm; }`
+- Removes all background colors and noise textures (print in black and white cleanly)
+- Sets all text to black `#000`
+- Keeps borders on score boxes visible for printing
+- Scales the group grid to fit on 1–2 printed pages cleanly
+- Scales the knockout bracket to fit on 1 printed page
+
+The print output should look like a clean, professional wallchart — not a webpage screenshot.
+
+---
+
+**SEO requirements:**
+- `<title>`: Free World Cup 2026 Wallchart — Printable Bracket | myteamkickoff.com
+- `<meta description>`: Free printable World Cup 2026 wallchart. Fill in all 12 groups, the Round of 32, and every knockout round through to the Final. Print in one click.
+- `<link rel="canonical" href="https://myteamkickoff.com/wallchart">`
+
+---
+
+**After building the page, also:**
+1. Add `/wallchart` to `sitemap.xml` with `<priority>0.7</priority>` and `<changefreq>monthly</changefreq>`
+2. Add a "🗓️ Wallchart" link to the nav on all existing pages (after the Articles link)
+3. Add a wallchart card to the articles index page under a new "Tools & Downloads" section or the Lifestyle category — title: "Free World Cup 2026 Wallchart — Printable Bracket", description: "Print the full tournament bracket and fill it in as the matches are played. All 12 groups and every knockout round."
+
+---
+
+**Do not touch:**
+- Any team page schedule data (already corrected with scraped FIFA data)
+- The watch page broadcaster information
+- Any existing article content
+- The existing design of the homepage team picker or timezone converter
