@@ -29,6 +29,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@400;500;600&family=Instrument+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/base.4e99cbe0.css">
+<!-- Twemoji: consistent cross-platform emoji flags -->
+<script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <style>
 /* ── HERO ── */
 .hero {
@@ -1820,6 +1822,16 @@
   if(rd) rd.href='https://reddit.com/submit?url='+u+'&title='+t;
   if(em) em.href='mailto:?subject='+t+'&body='+u;
 })();
+</script>
+<script>
+/* Twemoji: replace emoji with cross-platform SVG flags */
+document.addEventListener('DOMContentLoaded', function() {
+  twemoji.parse(document.body, {
+    folder: 'svg',
+    ext: '.svg',
+    base: 'https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/'
+  });
+});
 </script>
 </body>
 </html>
