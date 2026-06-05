@@ -271,7 +271,7 @@ select {
     <a href="/watch/" class="nav-home">Watch</a>
     <a href="/articles/" class="nav-home">Articles</a>
     <div class="nav-drop-wrap" id="navDropWrap">
-    <button class="nav-home nav-drop-btn" id="navDropBtn" aria-haspopup="true" aria-expanded="false">🛠️ Tools ▾</button>
+    <a href="#" class="nav-home nav-drop-btn" id="navDropBtn" role="button" aria-haspopup="true" aria-expanded="false">🛠️ Tools ▾</a>
     <div class="nav-drop-menu" id="navDropMenu" role="menu">
       <a href="/wallchart/" class="nav-drop-item" role="menuitem">🗓️ Wallchart</a>
       <a href="/sweepstake-kit/" class="nav-drop-item" role="menuitem">🎲 Sweepstake Kit</a>
@@ -421,7 +421,7 @@ function showStatus(type, html) {
 </script>
 
 <script>
-(function(){var b=document.getElementById('navMenuBtn'),w=document.getElementById('navLinksWrap'),c=document.getElementById('navCloseBtn');if(!b||!w)return;b.addEventListener('click',function(){w.classList.add('open');});if(c)c.addEventListener('click',function(){w.classList.remove('open');});w.addEventListener('click',function(e){if(e.target.tagName==='A')w.classList.remove('open');});var db=document.getElementById('navDropBtn'),dm=document.getElementById('navDropMenu');if(db&&dm){db.addEventListener('click',function(e){e.stopPropagation();var o=dm.classList.toggle('open');db.setAttribute('aria-expanded',String(o));});document.addEventListener('click',function(){dm.classList.remove('open');db.setAttribute('aria-expanded','false');});}})();
+(function(){var b=document.getElementById('navMenuBtn'),w=document.getElementById('navLinksWrap'),c=document.getElementById('navCloseBtn');if(!b||!w)return;b.addEventListener('click',function(){w.classList.add('open');});if(c)c.addEventListener('click',function(){w.classList.remove('open');});w.addEventListener('click',function(e){if(e.target.tagName==='A')w.classList.remove('open');});var db=document.getElementById('navDropBtn'),dm=document.getElementById('navDropMenu');if(db&&dm){db.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();var o=dm.classList.toggle('open');db.setAttribute('aria-expanded',String(o));});document.addEventListener('click',function(){dm.classList.remove('open');db.setAttribute('aria-expanded','false');});}})();
 </script>
 </body>
 </html>
