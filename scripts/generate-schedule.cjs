@@ -390,6 +390,7 @@ function generateTeamPage(team, scores = {}) {
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@400;500;600&family=Instrument+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${assetUrl('/assets/base.css')}">
 <link rel="stylesheet" href="${assetUrl('/assets/team-page.css')}">
+<link rel="stylesheet" href="/assets/nav-drop.css">
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -403,6 +404,13 @@ function generateTeamPage(team, scores = {}) {
     <a href="/schedule/" class="nav-home">Schedule</a>
     <a href="/watch/" class="nav-home">Watch</a>
     <a href="/articles/" class="nav-home">Articles</a>
+    <div class="nav-drop-wrap" id="navDropWrap">
+    <a href="#" class="nav-home nav-drop-btn" id="navDropBtn" role="button" aria-haspopup="true" aria-expanded="false">🛠️ Tools ▾</a>
+    <div class="nav-drop-menu" id="navDropMenu" role="menu">
+      <a href="/wallchart/" class="nav-drop-item" role="menuitem">🗓️ Wallchart</a>
+      <a href="/sweepstake-kit/" class="nav-drop-item" role="menuitem">🎲 Sweepstake Kit</a>
+    </div>
+  </div>
     <a href="/about/" class="nav-home">About</a>
     <a href="/contact/" class="nav-home">Contact</a>
   </div>
