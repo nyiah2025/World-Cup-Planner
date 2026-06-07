@@ -1,0 +1,27 @@
+Hi, I'm Jay Gumbs and this is myteamkickoff.com — a free World Cup tool I built because I needed it and couldn't find it anywhere.
+
+Why I Built This
+I'm from St. Vincent and the Grenadines in the Caribbean, and if you know anything about following football from this part of the world, the timezone thing is a constant headache. Every major tournament, you're doing mental math, trusting someone's WhatsApp message, and occasionally finding out you missed kick-off because someone converted the time wrong.
+When the 2026 World Cup draw happened, I went looking for a clean tool where I could just pick my team and see their games in my local time. What I found were schedule pages locked to US Eastern time, or bloated sports sites where you had to dig through everything just to find your team's fixtures.
+So I built my own.
+
+What's on the Site
+The main tool is simple — pick any of the 48 qualified nations and see every one of their fixtures converted to your local timezone automatically. No sign-up, no app, no math.
+Beyond that, I've put together:
+
+How to Watch guides for around 30 countries, so you know which broadcaster or streaming service to use once you know when your team plays
+A downloadable wallchart you can print or save for the full tournament
+A sweepstake kit if you're running one with friends, family, or your workplace
+An articles section with country previews, viewing guides, and other bits I think fans will find useful
+
+Everything is free to use.
+
+How the Site Is Funded
+Like most free websites, myteamkickoff.com is supported by display advertising and some affiliate links — mainly VPN and streaming services on the Watch pages. If you click an affiliate link and make a purchase, I may earn a small commission at no extra cost to you.
+I'd rather be upfront about that than pretend the site runs on goodwill alone.
+
+A Bit About Me
+I've been building websites and digital tools online since 2007. This is one of several projects I run — I also write about affiliate marketing at Thriver's Hub and run software review site TrialBear.
+Outside of the online stuff, I'm a father, a chess player, and a pool player based in St. Vincent and the Grenadines.
+If you spot an error on the site or a match time looks off, the contact page is right there. I check it.
+— Jay
