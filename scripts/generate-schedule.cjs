@@ -379,7 +379,6 @@ function generateTeamPage(team, scores = {}) {
 <link rel="stylesheet" href="${assetUrl('/assets/base.css')}">
 <link rel="stylesheet" href="${assetUrl('/assets/team-page.css')}">
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -412,10 +411,7 @@ function generateTeamPage(team, scores = {}) {
   </div>
 </div>
 
-<div style="text-align:center;margin:28px auto;max-width:1100px;padding:0 24px;">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
+
 <div class="main">
   <div class="controls">
     <span class="tz-label">🌍 Your Timezone</span>
@@ -430,10 +426,7 @@ function generateTeamPage(team, scores = {}) {
 ${cards}
   </div>
 
-<div style="text-align:center;margin:28px auto;max-width:1100px;padding:0 24px;">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
+
   <div class="other-teams">
     <div class="other-teams-title">See Another Team's Schedule</div>
     <div class="team-links">
@@ -444,10 +437,7 @@ ${otherTeamsHtml(slug)}
 
 <div class="toast" id="toast"></div>
 
-<div style="text-align:center;margin:28px auto;max-width:1100px;padding:0 24px;">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
+
 
 <!-- FROM THE FAN'S GUIDE -->
 <section class="articles-teaser">
