@@ -46,13 +46,21 @@
 .kit-name{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:var(--ink);line-height:1.1;margin-bottom:6px;}
 .kit-desc{font-size:14px;color:var(--ink2);line-height:1.7;max-width:560px;}
 .kit-cta-wrap{display:flex;flex-direction:column;align-items:flex-start;gap:8px;flex-shrink:0;}
-.kit-cta{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--white);font-size:12px;font-weight:700;padding:10px 20px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;white-space:nowrap;transition:background 0.15s;}
-.kit-cta:hover{background:var(--gold);}
-.kit-cta.internal{background:var(--grass);}
+.kit-cta{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff !important;font-size:12px;font-weight:700;padding:10px 20px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;white-space:nowrap;transition:background 0.15s;}
+.kit-cta:hover{background:var(--gold);color:#1a1410 !important;}
+.kit-cta.internal{background:var(--grass);color:#fff !important;}
 .kit-cta.internal:hover{background:#0f7a32;}
 .kit-note{font-size:11px;color:var(--grass);font-weight:700;letter-spacing:0.3px;}
 /* SECTION HEADING */
 .kit-section-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-family:'Instrument Mono',monospace;margin:36px 0 14px;padding-bottom:10px;border-bottom:2px solid var(--border);}
+/* RELATED ARTICLES */
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:20px;}
+.related-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:20px 22px;text-decoration:none;display:block;transition:all 0.18s;}
+.related-card:hover{border-color:rgba(193,127,42,0.4);transform:translateY(-2px);box-shadow:0 6px 24px rgba(26,20,16,0.1);}
+.rc-cat{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.rc-title{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;color:var(--ink);line-height:1.3;margin-bottom:8px;}
+.rc-desc{font-size:13px;color:var(--ink2);line-height:1.65;margin-bottom:14px;}
+.rc-link{font-size:11px;font-weight:700;color:var(--grass);letter-spacing:0.5px;}
 @media(max-width:600px){
   .kit-card-top{flex-direction:column;}
   .kit-cta-wrap{width:100%;}
@@ -177,7 +185,7 @@
           <div class="kit-desc">This is the decision that changes everything. A 65-inch screen is the minimum for a genuine group-watching experience — <a href="/articles/world-cup-2026-viewing-party-guide/">as the viewing party guide explains</a>, the difference between a 43-inch and a 65-inch TV in a room of six people is night and day. The Hisense U8 Series hits the sweet spot: Mini-LED panel, Dolby Vision, 144Hz, and VIDAA's broad streaming app support, at a price point that makes the upgrade genuinely justifiable for a 39-day tournament. Go 75 inches if your room allows it — you won't regret it. Position the screen at seated eye level, not mounted high on a wall where everyone cranes their necks for ninety minutes.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/4g5KaBy" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -189,10 +197,10 @@
         <div class="kit-info">
           <div class="kit-badge green">🔊 Atmosphere</div>
           <div class="kit-name">Soundbar or Bluetooth Speaker</div>
-          <div class="kit-desc">TV speakers are one of the great lies of the consumer electronics industry. A screen that costs a thousand pounds ships with audio that sounds like it came from a tin can. A soundbar — even a modest one — transforms the atmosphere completely. The crowd roar should fill the room, not leak out of it. For groups of four or more, the Sony HT-S400 or Samsung HW-C450 hit the right price-to-impact ratio. If you're setting up in a second room or garden, a good Bluetooth speaker (JBL Charge, Bose SoundLink Flex) covers it cleanly.</div>
+          <div class="kit-desc">TV speakers are one of the great lies of the consumer electronics industry. A screen that costs a thousand pounds ships with audio that sounds like it came from a tin can. A soundbar — even a modest one — transforms the atmosphere completely. The crowd roar should fill the room, not leak out of it. For groups of four or more, the <a href="https://amzn.to/4eqKyJE" target="_blank" rel="noopener nofollow">Sony HT-S400</a> or <a href="https://amzn.to/4axyB2m" target="_blank" rel="noopener nofollow">Samsung HW-550F</a> hit the right price-to-impact ratio. If you're setting up in a second room or garden, a good Bluetooth speaker — the <a href="https://amzn.to/49FqAIA" target="_blank" rel="noopener nofollow">JBL Charge</a> or <a href="https://amzn.to/49JyTD4" target="_blank" rel="noopener nofollow">Bose SoundLink Flex</a> — covers it cleanly.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/4eqKyJE" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -207,8 +215,7 @@
           <div class="kit-desc">If you have a 4K HDR TV and a streaming device or console capable of 4K output, you need an HDMI 2.1 cable to carry the full signal without bottlenecking. The cable that came in the box with your TV is almost certainly not HDMI 2.1 — it's probably 2.0 or lower. A certified HDMI 2.1 cable costs very little and unlocks 4K/120Hz, HDR10+, and Dolby Vision passthrough. Buy two: one for the TV, one spare. The difference between a properly connected 4K signal and a throttled one is visible from the sofa.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
-          <div class="kit-note">From around £8 / $10</div>
+          <a href="https://amzn.to/4xfkCbp" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -223,7 +230,7 @@
           <div class="kit-desc">If your TV is mounted high on a wall — which most are — tilt it down. The centre of the screen should sit at roughly seated eye level. Watching a 90-minute match with your neck craned upward is a quick route to genuine discomfort, and with a 39-day tournament ahead, it's worth getting this right before the opening match. A tilt bracket is an easy weekend job. A full-motion articulating arm is better still — it lets you angle the screen perfectly for every seat configuration, which matters when you're hosting a group.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/43lwT0d" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -246,7 +253,7 @@
           <div class="kit-desc">The best streaming stick for most World Cup viewers. Runs every major broadcaster app — Peacock, Fox Sports, BBC iPlayer, ITVX, SBS On Demand, TSN, Telemundo — and the Wi-Fi 6E adapter is meaningfully faster than any competing stick at this price. The 4K Max handles live sports load without dropped frames or lag, and setup is plug-and-play in under five minutes. If you only upgrade one piece of tech before the tournament, this is it.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/3RQokrO" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -261,7 +268,7 @@
           <div class="kit-desc">The best streaming device available, without qualification. The A15 Bionic chip means app load times are instant and 4K live streams are smooth. AirPlay and Handoff make it an exceptional companion device if you're in the Apple ecosystem — start watching on your iPhone during the commute home, pick it up on the big screen when you walk through the door. Worth the premium if you're already iPhone/iPad.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/4abycmc" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -276,7 +283,7 @@
           <div class="kit-desc">Google's answer to the Fire Stick, and a genuine competitor at the same price. Google TV's interface is clean, the app store has strong coverage for US, UK, and Australian broadcasters, and Google Assistant's cross-app search is useful when you're jumping between Peacock and Fox Sports mid-tournament. Cast from your phone with one tap — no remote hunting required during a penalty shootout.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/4ocagEV" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -291,7 +298,7 @@
           <div class="kit-desc">Roku's entire identity is simplicity — the flattest, most self-explanatory interface in the category. If you're setting up a second screen in another room, or buying a device for someone who finds tech intimidating, Roku is the answer. It has an official BBC iPlayer app (one of very few sticks that does), broad broadcaster coverage, and a genuinely pain-free out-of-box experience.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/4e8w9jW" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -358,7 +365,7 @@
           <div class="kit-desc">A tablet is the ideal second screen for the World Cup. It runs every broadcaster app in full quality, sits flat on the coffee table during group games, and doubles as a fixtures browser and group standings tracker between matches. The iPad (10th gen) is the best all-round option — the display is excellent for live sport and the broadcaster app ecosystem is comprehensive. An Android tablet running a Fire TV or Google TV app covers the same ground for less money.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/4upBSYF" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -370,10 +377,10 @@
         <div class="kit-info">
           <div class="kit-badge slate">💻 Desk Setup</div>
           <div class="kit-name">Laptop Stand / Monitor Arm</div>
-          <div class="kit-desc">If you're watching matches at a desk — either at home or navigating the <a href="/articles/how-to-watch-world-cup-at-work/">office situation</a> — a laptop stand that raises the screen to eye level makes a long match significantly more comfortable. It also frees up desk space for the snack infrastructure that 90 minutes requires. The Nexstand K2 folds flat and travels well. A monitor arm gives you full positional freedom if you're working on a permanent home setup.</div>
+          <div class="kit-desc">If you're watching matches at a desk — either at home or navigating the <a href="/articles/how-to-watch-world-cup-at-work/">office situation</a> — a laptop stand that raises the screen to eye level makes a long match significantly more comfortable. It also frees up desk space for the snack infrastructure that 90 minutes requires. The Nexstand K7 folds flat and travels well. A monitor arm gives you full positional freedom if you're working on a permanent home setup.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/49N9dpf" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -385,11 +392,10 @@
         <div class="kit-info">
           <div class="kit-badge slate">📱 On the Go</div>
           <div class="kit-name">Portable Phone Stand</div>
-          <div class="kit-desc">Holding your phone for ninety minutes is not a plan. A small, adjustable phone stand — foldable, pocketable — is one of the cheapest items on this list and one of the most-used. It props your phone at a watchable angle on any surface: a desk, a kitchen counter, a train table. For the truly committed, a phone stand with a built-in MagSafe or wireless charging pad means the battery doesn't drain through the match.</div>
+          <div class="kit-desc">Holding your phone for ninety minutes is not a plan. A small, adjustable phone stand — foldable, pocketable — is one of the cheapest items on this list and one of the most-used. It props your phone at a watchable angle on any surface: a desk, a kitchen counter, a train table. The Lamicall MagSafe phone stand is the one to get — it doubles as a wireless charger, so the battery doesn't drain through the match.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
-          <div class="kit-note">From around £6 / $8</div>
+          <a href="https://amzn.to/49NBMml" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -401,10 +407,10 @@
         <div class="kit-info">
           <div class="kit-badge amber">⌨️ Productivity</div>
           <div class="kit-name">Wireless Keyboard and Trackpad</div>
-          <div class="kit-desc">For those working the <a href="/articles/how-to-watch-world-cup-at-work/">legitimate remote work play</a> — watching at home, genuinely staying responsive to emails and Slack — a wireless keyboard and trackpad setup lets you work from the sofa while the match plays on the TV. The Apple Magic Keyboard and Trackpad are the cleanest pairing for Mac users. Logitech's MX Keys and MX Master 3 cover the same ground cross-platform. Alt+Tab discipline still required.</div>
+          <div class="kit-desc">For those working the <a href="/articles/how-to-watch-world-cup-at-work/">legitimate remote work play</a> — watching at home, genuinely staying responsive to emails and Slack — a wireless keyboard and trackpad setup lets you work from the sofa while the match plays on the TV. The <a href="https://amzn.to/43SsL82" target="_blank" rel="noopener nofollow">Apple Magic Keyboard</a> and Trackpad are the cleanest pairing for Mac users. <a href="https://amzn.to/4uhxivB" target="_blank" rel="noopener nofollow">Logitech MX Keys</a> and the <a href="https://amzn.to/49H7OAv" target="_blank" rel="noopener nofollow">Logitech K400 Plus</a> cover the same ground cross-platform. Alt+Tab discipline still required.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/43SsL82" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -424,10 +430,10 @@
         <div class="kit-info">
           <div class="kit-badge gold">🎧 Essential</div>
           <div class="kit-name">AirPods Pro (or equivalent noise-cancelling earbuds)</div>
-          <div class="kit-desc">The single most useful audio item for a month of tournament football. ANC earbuds let you follow commentary in any environment — office, commute, kitchen — without broadcasting what you're doing to the room. AirPods Pro 2 are the benchmark: Transparency Mode means you can still hear colleagues approaching (important if you're watching at work, as the <a href="/articles/how-to-watch-world-cup-at-work/">work guide covers in detail</a>). Sony WF-1000XM5 and Samsung Galaxy Buds 2 Pro are strong alternatives depending on your ecosystem.</div>
+          <div class="kit-desc">The single most useful audio item for a month of tournament football. ANC earbuds let you follow commentary in any environment — office, commute, kitchen — without broadcasting what you're doing to the room. AirPods Pro 3 are the benchmark: Transparency Mode means you can still hear colleagues approaching (important if you're watching at work, as the <a href="/articles/how-to-watch-world-cup-at-work/">work guide covers in detail</a>). <a href="https://amzn.to/4e4mgUn" target="_blank" rel="noopener nofollow">Sony WF-1000XM5</a> and <a href="https://amzn.to/43PsgM6" target="_blank" rel="noopener nofollow">Samsung Galaxy Buds 4 Pro</a> are strong alternatives depending on your ecosystem.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/4olAzc8" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -439,10 +445,10 @@
         <div class="kit-info">
           <div class="kit-badge purple">🎧 Premium</div>
           <div class="kit-name">Over-Ear Noise-Cancelling Headphones</div>
-          <div class="kit-desc">For the late-night matches — the 9pm ET / 2am BST knockouts where you're watching in silence while the rest of the house sleeps — over-ear headphones beat earbuds for prolonged comfort. The Bose QuietComfort 45 and Sony WH-1000XM5 are the benchmarks: excellent ANC, comfortable for two hours, and both have a wire-free battery life that covers a match with extra time. The over-ear seal also means you're less likely to accidentally unmute yourself in a way that wakes anyone up.</div>
+          <div class="kit-desc">For the late-night matches — the 9pm ET / 2am BST knockouts where you're watching in silence while the rest of the house sleeps — over-ear headphones beat earbuds for prolonged comfort. The <a href="https://amzn.to/4et3R56" target="_blank" rel="noopener nofollow">Bose QuietComfort 45</a> and <a href="https://amzn.to/4uVm15d" target="_blank" rel="noopener nofollow">Sony WH-1000XM5</a> are the benchmarks: excellent ANC, comfortable for two hours, and both have a wire-free battery life that covers a match with extra time. The over-ear seal also means you're less likely to accidentally unmute yourself in a way that wakes anyone up.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/4et3R56" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -457,7 +463,7 @@
           <div class="kit-desc">A smart speaker earns its place across a 39-day tournament in a way it doesn't during normal life. "Alexa, what's the score?" or "Hey Google, when does Argentina play next?" — hands-free access to live scores and kickoff times while you're cooking, in another room, or managing a kitchen full of guests before kick-off. The Echo Dot (5th gen) is cheap, capable, and sounds better than its size suggests. Any room in the house that doesn't have a screen benefits from one.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/4dZ672s" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -469,10 +475,10 @@
         <div class="kit-info">
           <div class="kit-badge slate">🌙 Night Matches</div>
           <div class="kit-name">White Noise Machine</div>
-          <div class="kit-desc">This one is specifically for the 2am BST / 3am CET knockout rounds. If you're watching in a room near where someone is sleeping — or if you're the one trying to sleep nearby while someone else is watching — a white noise machine is a genuine quality-of-life purchase. It masks ambient noise without requiring silence from the room next door. A Lectrofan or LectroFan Micro is compact, effective, and genuinely useful beyond the tournament. Alternatively: a fan, a box fan, or a white noise app on a phone in the bedroom.</div>
+          <div class="kit-desc">This one is specifically for the 2am BST / 3am CET knockout rounds. If you're watching in a room near where someone is sleeping — or if you're the one trying to sleep nearby while someone else is watching — a white noise machine is a genuine quality-of-life purchase. It masks ambient noise without requiring silence from the room next door. A Lectrofan is compact, effective, and genuinely useful beyond the tournament. Alternatively: a fan, a box fan, or a white noise app on a phone in the bedroom.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/3QcpBsy" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -492,10 +498,10 @@
         <div class="kit-info">
           <div class="kit-badge gold">🔋 Essential</div>
           <div class="kit-name">Power Bank / Portable Charger</div>
-          <div class="kit-desc">The most-used item on this list. A power bank covers the situation where your phone is dying during the second half and your charger is in another room — it also covers the <a href="/articles/how-to-watch-world-cup-at-work/">at-work scenario</a>, where streaming a match on mobile data drains the battery faster than desk charging can keep up with. The Anker 737 (140W, 24,000mAh) charges a MacBook, iPad, and iPhone simultaneously. For something pocket-sized, the Anker PowerCore 10000 covers three full phone charges in a package the size of a deck of cards.</div>
+          <div class="kit-desc">The most-used item on this list. A power bank covers the situation where your phone is dying during the second half and your charger is in another room — it also covers the <a href="/articles/how-to-watch-world-cup-at-work/">at-work scenario</a>, where streaming a match on mobile data drains the battery faster than desk charging can keep up with. The <a href="https://amzn.to/3S6szPZ" target="_blank" rel="noopener nofollow">Anker 737</a> (140W, 24,000mAh) charges a MacBook, iPad, and iPhone simultaneously. For something pocket-sized, the <a href="https://amzn.to/4fBuXIt" target="_blank" rel="noopener nofollow">Anker PowerCore 10000</a> covers three full phone charges in a package the size of a deck of cards.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/3S6szPZ" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -507,10 +513,10 @@
         <div class="kit-info">
           <div class="kit-badge blue">🔌 Hub</div>
           <div class="kit-name">Multi-Port USB-C Charging Hub</div>
-          <div class="kit-desc">During a big match with guests, the number of devices that need charging is always higher than the number of available sockets. A multi-port USB-C hub with at least four ports — including one 100W PD port for laptops — solves this cleanly. The Anker 727 Charging Station is the benchmark: six ports, 100W total output, and a design that doesn't look industrial on a living room shelf. Charge the power bank, the tablet, two phones, and still have ports spare.</div>
+          <div class="kit-desc">During a big match with guests, the number of devices that need charging is always higher than the number of available sockets. A multi-port USB-C hub with at least four ports — including one high-wattage PD port for laptops — solves this cleanly. The Anker Prime Charging Station is the benchmark: multiple ports, high total output, and a design that doesn't look industrial on a living room shelf. Charge the power bank, the tablet, two phones, and still have ports spare.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/4vs8oKK" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -525,7 +531,7 @@
           <div class="kit-desc">Live sport is one of the most demanding streaming scenarios — millions of people hitting the same CDN simultaneously the moment a goal goes in. A weak Wi-Fi signal in the TV room is the single most common cause of streaming failures during peak moments. If your router is in a different room from your TV, a Wi-Fi 6 mesh node or range extender pointed at the viewing room makes a meaningful difference. The TP-Link Deco XE75 is a solid mesh system. If you can run an Ethernet cable from the router directly to the TV or streaming device, always do that first — wired beats wireless every time for live sports.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/4erLy01" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -540,7 +546,7 @@
           <div class="kit-desc">A three-socket power strip with USB-A and USB-C ports is one of those purchases that immediately becomes indispensable. It lives behind the TV for the duration of the tournament: streaming device plugged in, soundbar plugged in, USB ports charging the tablet and the phone simultaneously. If you're watching in a garden, a summer room, or anywhere without multiple sockets nearby, a long-lead extension is a non-negotiable add. The Anker Power Strip with surge protection is the one to get — it also protects your equipment against power surges, which matters during a thunderstorm halfway through extra time.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/3Q6x64g" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -563,7 +569,7 @@
           <div class="kit-desc">This is the item. Print it, hang it somewhere visible, and fill it in as results come in. For 39 days it becomes the centrepiece of the room — a live record of the tournament as it unfolds. Our <a href="/wallchart/">free printable wallchart</a> covers all 12 groups and every knockout round from the Round of 32 through to the Final. It's designed to be printed on A3 or A2 for wall display, or A4 if you're working with standard home printer paper. The pen you use for the winner column is a matter of personal principle. We recommend pencil for the group stage.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="/wallchart/" class="kit-cta internal">Get the free wallchart →</a>
+          <a href="/wallchart/" class="kit-cta internal">Get Free Wallchart →</a>
         </div>
       </div>
     </div>
@@ -578,7 +584,7 @@
           <div class="kit-desc">For group stages, a small whiteboard next to the TV is genuinely useful for tracking the current group table mid-tournament — especially during those days when three matches in the same group are played within 24 hours. A magnetic whiteboard with moveable name tiles is the premium option; a plain A3 whiteboard and a dry-erase marker covers it perfectly well. The goal is a visible, updateable reference that doesn't require anyone to look at their phone during the match to check where teams stand.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/4odjq4d" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -673,7 +679,7 @@
           <div class="kit-desc">Popcorn is the most-efficient watching food in existence: one-handed, generates no plates, produces minimal mess, and can be made in four minutes. A microwave popcorn variety pack covers the group stage. A countertop popcorn machine — the kind with the crank handle and the hot plate — is the upgrade for knockout-round parties. It doubles as a conversation piece, a genuine improvement on the bag version, and it smells like a cinema, which is exactly the atmosphere you're trying to create.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/3PNgRcx" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -700,10 +706,10 @@
         <div class="kit-info">
           <div class="kit-badge blue">🧊 Logistics</div>
           <div class="kit-name">Mini Fridge or Cool Box for the TV Room</div>
-          <div class="kit-desc">Every trip to the kitchen is a missed moment. A small countertop fridge in the TV room — or a cool box stocked and iced before kickoff — eliminates the logistics problem completely. The Subcold Core 15L is a capable compact fridge for this exact purpose. A cool box with ice is cheaper and works perfectly well for match days. Stock it before guests arrive, designate someone for the half-time restock, and nobody misses the first minute of the second half because they're in the kitchen.</div>
+          <div class="kit-desc">Every trip to the kitchen is a missed moment. A small countertop fridge in the TV room — or a cool box stocked and iced before kickoff — eliminates the logistics problem completely. The Frostorm mini fridge is a capable compact fridge for this exact purpose. A cool box with ice is cheaper and works perfectly well for match days. Stock it before guests arrive, designate someone for the half-time restock, and nobody misses the first minute of the second half because they're in the kitchen.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/4e3s1Sk" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -715,10 +721,10 @@
         <div class="kit-info">
           <div class="kit-badge amber">☕ Long Days</div>
           <div class="kit-name">Insulated Tumbler or Stadium Cup</div>
-          <div class="kit-desc">A large insulated tumbler keeps drinks cold for six hours — relevant when you're watching back-to-back matches and the ice in a glass has long since melted. The Stanley Quencher and Yeti Rambler both do this well. An engraved or printed World Cup-themed version is available for basically every team, if you want to lean into the aesthetic. The size matters: 40oz covers a full match without a refill. It also travels — useful for the matches you're following during a commute or at the office.</div>
+          <div class="kit-desc">A large insulated tumbler keeps drinks cold for six hours — relevant when you're watching back-to-back matches and the ice in a glass has long since melted. The <a href="https://amzn.to/4ulI6ZS" target="_blank" rel="noopener nofollow">Stanley Quencher</a> and <a href="https://amzn.to/3S9y8NA" target="_blank" rel="noopener nofollow">Yeti Rambler</a> both do this well. An engraved or printed World Cup-themed version is available for basically every team, if you want to lean into the aesthetic. The size matters: 40oz covers a full match without a refill. It also travels — useful for the matches you're following during a commute or at the office.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/4ulI6ZS" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -768,11 +774,10 @@
         <div class="kit-info">
           <div class="kit-badge green">🎊 Atmosphere</div>
           <div class="kit-name">World Cup Flag Bunting</div>
-          <div class="kit-desc">The visual transformation of a room from "living room with a TV" to "this is a football venue" is achieved largely with bunting. All 32 World Cup nations across a string of small flags — hung across the top of the TV or along a wall — costs very little and makes an outsized visual impact. For larger gatherings, individual flag bunting per team adds specificity and gives the room character. This is the item that looks like nothing in the packaging and looks excellent when it's up.</div>
+          <div class="kit-desc">The visual transformation of a room from "living room with a TV" to "this is a football venue" is achieved largely with bunting. All 48 nations across a string of small flags — hung across the top of the TV or along a wall — costs very little and makes an outsized visual impact. For larger gatherings, individual flag bunting per team adds specificity and gives the room character. This is the item that looks like nothing in the packaging and looks excellent when it's up.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Find on Amazon →</a>
-          <div class="kit-note">From around £5 / $6</div>
+          <a href="https://amzn.to/4adLiiQ" target="_blank" rel="noopener nofollow" class="kit-cta">Find on Amazon →</a>
         </div>
       </div>
     </div>
@@ -787,7 +792,7 @@
           <div class="kit-desc">This is on the list. The vuvuzela is not for every situation. It is specifically for penalty shootouts in the knockout rounds, and for goals scored by teams that were not expected to score them. It is not appropriate for indoor use in a house with neighbours, in a flat with thin walls, during a match being watched at 2am, or by children who have demonstrated poor impulse control. If none of those conditions apply, the vuvuzela remains one of the most effective atmosphere generators in the domestic football-viewing toolkit. You have been warned. Proceed accordingly.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Find on Amazon →</a>
+          <a href="https://amzn.to/4e7lsOv" target="_blank" rel="noopener nofollow" class="kit-cta">Find on Amazon →</a>
         </div>
       </div>
     </div>
@@ -802,7 +807,7 @@
           <div class="kit-desc">The combination of the <a href="/wallchart/">printable wallchart</a> and the <a href="/sweepstake-kit/">sweepstake team cards</a> gives you the physical fan infrastructure for the full 39 days — a bracket to track on the wall, and individual team cards for the draw. Print both before the tournament starts. The wallchart goes on the wall; the team cards go in a bowl for the sweepstake draw. Together, they create a reason for every person in the room to have a stake in every match. Both are completely free.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="/wallchart/" class="kit-cta internal">Get the wallchart →</a>
+          <a href="/wallchart/" class="kit-cta internal">Get Free Wallchart →</a>
         </div>
       </div>
     </div>
@@ -825,7 +830,7 @@
           <div class="kit-desc">Extra time plus penalties runs to 135 minutes. During a World Cup weekend, it's possible to watch four matches back to back — 360 minutes of football on the same seat. A memory foam lumbar support cushion or a proper stadium seat pad (the kind with both back support and seat padding) is not an indulgence. It's basic ergonomics for a long-distance viewing schedule. The Everlasting Comfort seat cushion is purpose-built for exactly this. Your lower back will have a different view if you skip this one.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/3SqLMvP" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -837,10 +842,10 @@
         <div class="kit-info">
           <div class="kit-badge purple">🌙 The Finisher</div>
           <div class="kit-name">Weighted Blanket or Oversized Throw</div>
-          <div class="kit-desc">The final item on the list, and possibly the most-used. The 39-day marathon ends on 19 July — but the most demanding stretch is the knockout rounds, where the late-night 9pm ET matches run past 1am BST, and the 2am BST kick-offs turn into 4am finishes with extra time. A weighted blanket (the Bearaby Napper or Simba Hybrid Gravity Blanket are benchmarks) provides the kind of couch-anchoring comfort that makes watching a tense match alone at 3am in complete silence feel like exactly the right decision. A large, heavy throw does the same job for a quarter of the price. Either way: this is how you finish 39 days of football. Blanket. Wall chart on the wall. Final whistle.</div>
+          <div class="kit-desc">The final item on the list, and possibly the most-used. The 39-day marathon ends on 19 July — but the most demanding stretch is the knockout rounds, where the late-night 9pm ET matches run past 1am BST, and the 2am BST kick-offs turn into 4am finishes with extra time. A weighted blanket like the Bearaby Napper provides the kind of couch-anchoring comfort that makes watching a tense match alone at 3am in complete silence feel like exactly the right decision. A large, heavy throw does the same job for a quarter of the price. Either way: this is how you finish 39 days of football. Blanket. Wall chart on the wall. Final whistle.</div>
         </div>
         <div class="kit-cta-wrap">
-          <a href="#affiliate" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
+          <a href="https://amzn.to/4ecAQte" target="_blank" rel="noopener nofollow" class="kit-cta">Check price on Amazon →</a>
         </div>
       </div>
     </div>
@@ -849,6 +854,36 @@
       <strong>You're set.</strong> 39 items. 39 days. Every match accounted for. Print the <a href="/wallchart/"><strong>wallchart</strong></a>, run the <a href="/sweepstake-kit/"><strong>sweepstake</strong></a>, check your team's <a href="/">kickoff times in your timezone</a>, and enjoy the tournament.
     </div>
 
+  </div>
+
+  <!-- RELATED ARTICLES -->
+  <div class="article-section">
+    <h2>Further Reading</h2>
+    <p>Three more guides worth having open before the tournament starts.</p>
+    <div class="related-grid">
+
+      <a href="/articles/world-cup-2026-viewing-party-guide/" class="related-card">
+        <div class="rc-cat">🎉 Lifestyle &amp; Viewing Experience</div>
+        <div class="rc-title">The Ultimate World Cup 2026 Viewing Party Guide</div>
+        <div class="rc-desc">How to host the perfect viewing party — venue setup, food timing, bracket games, tech backup plans, and how to handle the 2am BST kickoffs.</div>
+        <div class="rc-link">Read the guide →</div>
+      </a>
+
+      <a href="/articles/best-vpns-world-cup-2026/" class="related-card">
+        <div class="rc-cat">🔒 Lifestyle &amp; Viewing Experience</div>
+        <div class="rc-title">The 3 Best VPNs to Watch the World Cup 2026</div>
+        <div class="rc-desc">NordVPN, ExpressVPN, and Surfshark compared — which unlocks BBC iPlayer, SBS On Demand, and more. Full geo-blocking guide and five-minute setup.</div>
+        <div class="rc-link">Read the guide →</div>
+      </a>
+
+      <a href="/articles/best-streaming-devices-world-cup/" class="related-card">
+        <div class="rc-cat">📺 Lifestyle &amp; Viewing Experience</div>
+        <div class="rc-title">Best Streaming Devices for World Cup 2026 — Ranked</div>
+        <div class="rc-desc">Apple TV, Fire TV Stick 4K Max, Chromecast, Roku, and smart TV apps compared — which one gives you the best experience for the tournament?</div>
+        <div class="rc-link">Read the guide →</div>
+      </a>
+
+    </div>
   </div>
 
 </div>
