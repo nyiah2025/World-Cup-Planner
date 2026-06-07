@@ -266,6 +266,17 @@ function fmtUtcLabel(utc) {
 }
 
 // ─── TEAM PAGE GENERATOR ──────────────────────────────────────────────────────
+// Per-team editorial content lives in scripts/team-content/<slug>.html.
+// The generator splices it in between the fixtures grid and the "other teams"
+// block.  Teams without a content file get an empty string (no change).
+function loadTeamContent(slug) {
+  const contentPath = path.join(__dirname, 'team-content', `${slug}.html`);
+  if (fs.existsSync(contentPath)) {
+    return '\n' + fs.readFileSync(contentPath, 'utf8').trimEnd() + '\n';
+  }
+  return '';
+}
+
 function generateTeamPage(team, scores = {}) {
   const teamMatches = MATCHES.filter(m =>
     (m.stage === 'Group Stage') &&
@@ -277,6 +288,7 @@ function generateTeamPage(team, scores = {}) {
   const flag = team.flag;
   const group = team.group;
   const slug = team.slug;
+  const customContent = loadTeamContent(slug);
 
   // Build MATCHES JS array for page — include full data + any persisted scores
   const matchesJs = teamMatches.map(m => {
@@ -425,7 +437,7 @@ function generateTeamPage(team, scores = {}) {
   <div class="matches-grid">
 ${cards}
   </div>
-
+${customContent}
 
   <div class="other-teams">
     <div class="other-teams-title">See Another Team's Schedule</div>
