@@ -90,6 +90,12 @@ uri = "file://site/articles/best-vpns-world-cup-2026/og.png"
 type = "image"
 title = "vpn world cup streaming laptop"
 
+[[generated]]
+id = "s-ogzOfdqLFlCFMmD2rvy"
+uri = "file://attached_assets/generated_images/survival-kit-og-bg.png"
+type = "image"
+title = "generated_image"
+
 [[outputs]]
 id = "AnjoVsu9SrrytXJBSLT8Y"
 uri = "file://site/articles/best-vpns-world-cup-2026/og.png"
