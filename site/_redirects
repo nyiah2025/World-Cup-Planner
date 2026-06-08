@@ -1,1 +1,3 @@
 # Cloudflare Pages handles clean URLs natively — no rewrite rules needed.
+
+/ads.txt https://srv.adstxtmanager.com/19390/myteamkickoff.com 301
