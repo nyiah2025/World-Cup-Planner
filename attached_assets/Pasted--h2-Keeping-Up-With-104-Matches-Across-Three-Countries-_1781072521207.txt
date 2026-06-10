@@ -1,0 +1,17 @@
+<h2>Keeping Up With 104 Matches Across Three Countries</h2>
+The 2026 FIFA World Cup is unlike anything football has seen before. For the first time, 48 teams are competing instead of the usual 32 — which means 104 matches instead of 64, spread across 16 cities in three co-hosting countries: Canada, Mexico, and the United States. That's a lot of football. It's also a logistical puzzle for anyone trying to follow their team without missing a kickoff.
+I built this site because that puzzle was frustrating me personally. Finding accurate match times in my local timezone shouldn't require a spreadsheet and some hope. So I made a tool that does it for you.
+
+<h3>Four Timezones. One Tournament</h3>
+With 104 matches running from Vancouver to Mexico City and Boston to Los Angeles, the 2026 World Cup officially spans four distinct timezones — which is where things get complicated if you're watching from outside North America.
+<strong>Eastern Time (ET)</strong>
+Covers the major media markets on the east coast — New York/New Jersey, Boston, Miami, Philadelphia, Toronto, and Atlanta. Most of the high-profile group stage matches are scheduled here.
+<strong>Central Time (CT)</strong>
+Home to Dallas, Houston, Kansas City, and Monterrey — plus the most historic venue of the entire tournament, Estadio Azteca in Mexico City. If your team plays at the Azteca, this is your timezone.
+<strong>Mountain Time (MT)</strong>
+Denver hosts a handful of matches — one timezone step behind Central, one ahead of Pacific. Easy to overlook, easy to get wrong.
+<strong>Pacific Time (PT)</strong>
+Los Angeles, Seattle, San Francisco, and Vancouver. Late kickoffs for European and Caribbean viewers — these are the games that start when most of the world is already halfway through their evening.
+
+<h3>Convert Any Kickoff Time Instantly</h3>
+With games bouncing between Vancouver and Mexico City, keeping up with match times is genuinely complicated. That's exactly why I built this tracker — so you don't have to do the math yourself. Select your team or country above and every kickoff is instantly converted to your local time. No spreadsheet. No conversion errors. Just your team's schedule, in your timezone, right there.
