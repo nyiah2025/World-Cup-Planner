@@ -102,6 +102,12 @@ uri = "file://site/articles/world-cup-2026-stadiums-guide/og.png"
 type = "image"
 title = "world cup 2026 stadiums og image"
 
+[[generated]]
+id = "xaUFc_upvOIwwKlhljjgz"
+uri = "file://site/articles/world-cup-2026-stadiums-guide/hero.png"
+type = "image"
+title = "generated_image"
+
 [[outputs]]
 id = "AnjoVsu9SrrytXJBSLT8Y"
 uri = "file://site/articles/best-vpns-world-cup-2026/og.png"
