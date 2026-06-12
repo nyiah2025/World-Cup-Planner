@@ -96,6 +96,12 @@ uri = "file://attached_assets/generated_images/survival-kit-og-bg.png"
 type = "image"
 title = "generated_image"
 
+[[generated]]
+id = "BAvS8_oHImGV4tOuqMy6O"
+uri = "file://site/articles/world-cup-2026-stadiums-guide/og.png"
+type = "image"
+title = "world cup 2026 stadiums og image"
+
 [[outputs]]
 id = "AnjoVsu9SrrytXJBSLT8Y"
 uri = "file://site/articles/best-vpns-world-cup-2026/og.png"
