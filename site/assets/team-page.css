@@ -29,6 +29,10 @@
 }
 .stat-chip strong { color: var(--gold-light); }
 
+/* ── INLINE BODY LINKS ── */
+.section-label + div a { color: var(--grass); font-weight: 600; text-decoration: none; border-bottom: 1px solid rgba(42,107,58,0.3); }
+.section-label + div a:hover { color: var(--grass-light); border-bottom-color: rgba(61,143,80,0.5); }
+
 /* ── OTHER TEAMS ── */
 .other-teams { margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border); }
 .other-teams-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 16px; }
