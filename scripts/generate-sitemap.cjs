@@ -41,36 +41,17 @@ const TEAM_SLUGS = new Set([
 ]);
 
 // ── Folders that are NOT pages (skip them) ────────────────────────────────────
-// 'watch' temporarily added for AdSense review — restore when review complete
-const SKIP_DIRS = new Set(['privacy', 'watch']);
+const SKIP_DIRS = new Set(['privacy']);
 
 // ── Known top-level utility pages (add new ones here as they are created) ─────
 const UTILITY_PAGES = [
   { slug: 'schedule', priority: '0.9', changefreq: 'daily'  },
-  // 'watch' temporarily removed from sitemap for AdSense review — restore when review complete
+  { slug: 'watch',    priority: '0.8', changefreq: 'daily'  },
   { slug: 'articles', priority: '0.8', changefreq: 'daily'  },
   { slug: 'knockout', priority: '0.9', changefreq: 'daily'  },
   { slug: 'groups',   priority: '0.9', changefreq: 'daily'  },
   { slug: 'contact',  priority: '0.5', changefreq: 'monthly'},
 ];
-
-// ── Article slugs temporarily excluded from sitemap for AdSense review ────────
-// Restore by removing slugs from this set when review is complete.
-const SITEMAP_EXCLUDE = new Set([
-  'how-to-watch-world-cup-2026-australia',
-  'how-to-watch-world-cup-2026-canada',
-  'how-to-watch-world-cup-2026-caribbean',
-  'how-to-watch-world-cup-2026-india',
-  'how-to-watch-world-cup-2026-nigeria',
-  'how-to-watch-world-cup-2026-uk',
-  'how-to-watch-world-cup-2026-usa',
-  'how-to-watch-world-cup-at-work',
-  'world-cup-2026-dark-horses',
-  'group-stage-predictions-every-group-ranked-by-difficulty',
-  'best-vpns-world-cup-2026',
-  'best-streaming-devices-world-cup',
-  'world-cup-2026-survival-kit',
-]);
 
 // ── Build URL entries ──────────────────────────────────────────────────────────
 const entries = [];
@@ -96,7 +77,6 @@ for (const page of UTILITY_PAGES) {
         .map(d => d.name)
         .sort();
       for (const sub of subdirs) {
-        if (SITEMAP_EXCLUDE.has(sub)) continue;
         if (fs.existsSync(path.join(dir, sub, 'index.html'))) {
           addEntry(`${BASE_URL}/articles/${sub}/`, '0.7', 'weekly');
         }
