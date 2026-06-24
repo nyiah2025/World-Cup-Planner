@@ -799,13 +799,14 @@ function patchIndexHtml() {
   // QF  W n = winner of match 100+n (IDs 101-104)
   // SF W/L 1,2 = winner/loser of matches 105,106
   const newResolve = `function resolveKnockout() {
-  for (let n = 1; n <= 16; n++) { const w = matchWinners[72+n]; if (w) resolvedTeams[\`R32 W\${n}\`] = w; }
-  for (let n = 1; n <= 8;  n++) { const w = matchWinners[88+n]; if (w) resolvedTeams[\`R16 W\${n}\`] = w; }
-  for (let n = 1; n <= 4;  n++) { const w = matchWinners[96+n]; if (w) resolvedTeams[\`QF W\${n}\`] = w; }
-  if (matchWinners[101]) resolvedTeams['SF W1'] = matchWinners[101];
-  if (matchWinners[102]) resolvedTeams['SF W2'] = matchWinners[102];
-  if (matchLosers[101])  resolvedTeams['SF L1'] = matchLosers[101];
-  if (matchLosers[102])  resolvedTeams['SF L2'] = matchLosers[102];
+  function res(code) { return resolvedTeams[code] || code; }
+  for (let n = 1; n <= 16; n++) { const w = matchWinners[72+n]; if (w) resolvedTeams[\`R32 W\${n}\`] = res(w); }
+  for (let n = 1; n <= 8;  n++) { const w = matchWinners[88+n]; if (w) resolvedTeams[\`R16 W\${n}\`] = res(w); }
+  for (let n = 1; n <= 4;  n++) { const w = matchWinners[96+n]; if (w) resolvedTeams[\`QF W\${n}\`] = res(w); }
+  if (matchWinners[101]) resolvedTeams['SF W1'] = res(matchWinners[101]);
+  if (matchWinners[102]) resolvedTeams['SF W2'] = res(matchWinners[102]);
+  if (matchLosers[101])  resolvedTeams['SF L1'] = res(matchLosers[101]);
+  if (matchLosers[102])  resolvedTeams['SF L2'] = res(matchLosers[102]);
 }`;
 
   html = html.replace(
