@@ -12,6 +12,42 @@
 
 const fs   = require('fs');
 const path = require('path');
+const https = require('https');
+const http_  = require('http');
+
+// ─── FETCH STANDINGS FROM ESPN ────────────────────────────────────────────────
+function fetchStandings() {
+  return new Promise((resolve, reject) => {
+    const url = 'https://site.api.espn.com/apis/v2/sports/soccer/fifa.world/standings';
+    const mod = url.startsWith('https') ? https : http_;
+    mod.get(url, { timeout: 8000 }, (res) => {
+      let raw = '';
+      res.on('data', d => { raw += d; });
+      res.on('end', () => {
+        try {
+          const data = JSON.parse(raw);
+          const groups = {};
+          for (const child of (data.children || [])) {
+            const groupName = ((child.name || '').replace(/^Group\s+/i, '')).trim();
+            if (!groupName) continue;
+            const entries = (child.standings && child.standings.entries) || [];
+            const mapped = entries.map((e, i) => {
+              const team = (e.team && e.team.displayName) || '';
+              const note = e.note || {};
+              const rank = typeof note.rank === 'number' ? note.rank : i + 1;
+              const stats = e.stats || [];
+              const getStat = n => parseInt((stats.find(s => s.name === n) || {}).value || '0', 10) || 0;
+              return { _rank: rank, team, points: getStat('points'), played: getStat('gamesPlayed'), gd: getStat('pointDifferential'), gf: getStat('pointsFor') };
+            });
+            mapped.sort((a, b) => a._rank - b._rank);
+            groups[groupName] = mapped.map(({ _rank, ...rest }) => rest);
+          }
+          resolve(groups);
+        } catch (e) { reject(e); }
+      });
+    }).on('error', reject).on('timeout', () => reject(new Error('ESPN standings timeout')));
+  });
+}
 
 // Load the asset manifest produced by fingerprint.cjs so we can reference
 // fingerprinted filenames in generated HTML.
@@ -762,7 +798,7 @@ function matchesArrayJs(scores = {}) {
 }
 
 // ─── PATCH INDEX.HTML ─────────────────────────────────────────────────────────
-function patchIndexHtml() {
+function patchIndexHtml(standings) {
   const indexPath = path.join(__dirname, '..', 'site', 'index.html');
   const resultsPath = path.join(__dirname, '..', 'site', 'results.json');
   let html = fs.readFileSync(indexPath, 'utf8');
@@ -826,12 +862,21 @@ function patchIndexHtml() {
     'All 104 matches.'
   );
 
+  // Embed live standings fetched at build time so knockout slots resolve on first load
+  if (standings && Object.keys(standings).length > 0) {
+    html = html.replace(
+      /\/\/ ─── STANDINGS \(embedded at build time\) ──────────────────────────\nconst STANDINGS = .*?;/,
+      '// ─── STANDINGS (embedded at build time) ──────────────────────────\nconst STANDINGS = ' + JSON.stringify(standings) + ';'
+    );
+    console.log('📊 Embedded standings for groups: ' + Object.keys(standings).join(', '));
+  }
+
   fs.writeFileSync(indexPath, html, 'utf8');
   console.log('✅ Patched site/index.html');
 }
 
 // ─── PATCH SCHEDULE.HTML ──────────────────────────────────────────────────────
-function patchScheduleHtml(scores = {}) {
+function patchScheduleHtml(scores = {}, standings = {}) {
   const schedulePath = path.join(__dirname, '..', 'site', 'schedule', 'index.html');
   if (!fs.existsSync(schedulePath)) {
     console.warn('⚠️  site/schedule/index.html not found — skipping');
@@ -857,6 +902,14 @@ function patchScheduleHtml(scores = {}) {
     matchesArrayJs(scores) + '\n'
   );
 
+  // Embed live standings fetched at build time so knockout slots resolve on first load
+  if (standings && Object.keys(standings).length > 0) {
+    html = html.replace(
+      /\/\/ ─── STANDINGS \(embedded at build time\) ──────────────────────────\nconst STANDINGS = .*?;/,
+      '// ─── STANDINGS (embedded at build time) ──────────────────────────\nconst STANDINGS = ' + JSON.stringify(standings) + ';'
+    );
+  }
+
   fs.writeFileSync(schedulePath, html, 'utf8');
   console.log('✅ Patched site/schedule/index.html');
 }
@@ -875,7 +928,7 @@ const KNOWN_DIRS = [
 const DIRS_TO_REMOVE = KNOWN_DIRS.filter(d => !VALID_SLUGS.has(d));
 
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
-function main() {
+async function main() {
   const siteDir = path.join(__dirname, '..', 'site');
   const resultsPath = path.join(siteDir, 'results.json');
 
@@ -895,9 +948,18 @@ function main() {
     }
   }
 
-  // 1. Patch index.html and schedule page (both get embedded scores)
-  patchIndexHtml();
-  patchScheduleHtml(scores);
+  // 1. Fetch current standings from ESPN so knockout slots show real names
+  let standings = {};
+  try {
+    standings = await fetchStandings();
+    console.log(`🌍 Fetched standings for ${Object.keys(standings).length} groups from ESPN`);
+  } catch (e) {
+    console.warn('⚠️  Could not fetch standings from ESPN — knockout slots will use placeholder codes:', e.message);
+  }
+
+  // 2. Patch index.html and schedule page (both get embedded scores + standings)
+  patchIndexHtml(standings);
+  patchScheduleHtml(scores, standings);
 
   // 2. Remove obsolete team dirs
   for (const dir of DIRS_TO_REMOVE) {
@@ -925,4 +987,4 @@ function main() {
   console.log(`   Dirs removed:  ${DIRS_TO_REMOVE.join(', ')}`);
 }
 
-main();
+main().catch(err => { console.error('❌ generate-schedule failed:', err); process.exit(1); });

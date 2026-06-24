@@ -520,6 +520,9 @@ let resolvedTeams = {};  // placeholder code → real team name
 let matchWinners = {};   // matchId → winning team name
 let matchLosers = {};    // matchId → losing team name
 
+// ─── STANDINGS (embedded at build time) ──────────────────────────
+const STANDINGS = {"A":[{"team":"Mexico","points":6,"played":2,"gd":3,"gf":3},{"team":"South Korea","points":3,"played":2,"gd":0,"gf":2},{"team":"Czechia","points":1,"played":2,"gd":-1,"gf":2},{"team":"South Africa","points":1,"played":2,"gd":-2,"gf":1}],"B":[{"team":"Switzerland","points":7,"played":3,"gd":4,"gf":7},{"team":"Canada","points":4,"played":3,"gd":5,"gf":8},{"team":"Bosnia-Herzegovina","points":4,"played":3,"gd":-1,"gf":5},{"team":"Qatar","points":1,"played":3,"gd":-8,"gf":2}],"C":[{"team":"Brazil","points":4,"played":2,"gd":3,"gf":4},{"team":"Morocco","points":4,"played":2,"gd":1,"gf":2},{"team":"Scotland","points":3,"played":2,"gd":0,"gf":1},{"team":"Haiti","points":0,"played":2,"gd":-4,"gf":0}],"D":[{"team":"United States","points":6,"played":2,"gd":5,"gf":6},{"team":"Australia","points":3,"played":2,"gd":0,"gf":2},{"team":"Paraguay","points":3,"played":2,"gd":-2,"gf":2},{"team":"Türkiye","points":0,"played":2,"gd":-3,"gf":0}],"E":[{"team":"Germany","points":6,"played":2,"gd":7,"gf":9},{"team":"Ivory Coast","points":3,"played":2,"gd":0,"gf":2},{"team":"Ecuador","points":1,"played":2,"gd":-1,"gf":0},{"team":"Curaçao","points":1,"played":2,"gd":-6,"gf":1}],"F":[{"team":"Netherlands","points":4,"played":2,"gd":4,"gf":7},{"team":"Japan","points":4,"played":2,"gd":4,"gf":6},{"team":"Sweden","points":3,"played":2,"gd":0,"gf":6},{"team":"Tunisia","points":0,"played":2,"gd":-8,"gf":1}],"G":[{"team":"Egypt","points":4,"played":2,"gd":2,"gf":4},{"team":"Iran","points":2,"played":2,"gd":0,"gf":2},{"team":"Belgium","points":2,"played":2,"gd":0,"gf":1},{"team":"New Zealand","points":1,"played":2,"gd":-2,"gf":3}],"H":[{"team":"Spain","points":4,"played":2,"gd":4,"gf":4},{"team":"Uruguay","points":2,"played":2,"gd":0,"gf":3},{"team":"Cape Verde","points":2,"played":2,"gd":0,"gf":2},{"team":"Saudi Arabia","points":1,"played":2,"gd":-4,"gf":1}],"I":[{"team":"France","points":6,"played":2,"gd":5,"gf":6},{"team":"Norway","points":6,"played":2,"gd":4,"gf":7},{"team":"Senegal","points":0,"played":2,"gd":-3,"gf":3},{"team":"Iraq","points":0,"played":2,"gd":-6,"gf":1}],"J":[{"team":"Argentina","points":6,"played":2,"gd":5,"gf":5},{"team":"Austria","points":3,"played":2,"gd":0,"gf":3},{"team":"Algeria","points":3,"played":2,"gd":-2,"gf":2},{"team":"Jordan","points":0,"played":2,"gd":-3,"gf":2}],"K":[{"team":"Colombia","points":6,"played":2,"gd":3,"gf":4},{"team":"Portugal","points":4,"played":2,"gd":5,"gf":6},{"team":"Congo DR","points":1,"played":2,"gd":-1,"gf":1},{"team":"Uzbekistan","points":0,"played":2,"gd":-7,"gf":1}],"L":[{"team":"England","points":4,"played":2,"gd":2,"gf":4},{"team":"Ghana","points":4,"played":2,"gd":1,"gf":1},{"team":"Croatia","points":3,"played":2,"gd":-1,"gf":3},{"team":"Panama","points":0,"played":2,"gd":-2,"gf":0}]};
+
 // ─── HELPERS ─────────────────────────────────────────────────────
 function getFlag(teamName) {
   const t = TEAMS.find(t => t.name === teamName);
@@ -997,8 +1000,9 @@ tzSelect.addEventListener('change', () => {
 // ─── INIT ────────────────────────────────────────────────────────
 // Show embedded results immediately (before API responds) so old completed
 // matches are never blank even when ESPN's window no longer covers them.
+// processStandings also calls resolveKnockout() internally.
 seedEmbeddedResults();
-resolveKnockout();
+processStandings(STANDINGS);
 render();
 fetchLiveData();
 setInterval(fetchLiveData, 60000);
