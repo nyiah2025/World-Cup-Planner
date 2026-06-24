@@ -136,7 +136,7 @@ router.get("/standings", async (_req, res) => {
     }
 
     const url =
-      "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/standings";
+      "https://site.api.espn.com/apis/v2/sports/soccer/fifa.world/standings";
     const r = await fetch(url, { signal: AbortSignal.timeout(5000) });
     if (!r.ok) {
       return res.json({ groups: standingsCache?.data ?? {} });
@@ -145,7 +145,7 @@ router.get("/standings", async (_req, res) => {
     const data = (await r.json()) as Record<string, unknown>;
     const groups: GroupStandings = {};
 
-    const standingsArr = (data.standings as unknown[]) ?? [];
+    const standingsArr = (data.children as unknown[]) ?? [];
     for (const group of standingsArr) {
       const g = group as Record<string, unknown>;
       const rawName = (g.name as string) ?? "";
