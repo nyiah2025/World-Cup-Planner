@@ -156,32 +156,28 @@ router.get("/standings", async (_req, res) => {
         (g.standings as Record<string, unknown>)?.entries as unknown[]
       ) ?? [];
 
-      const mapped = entries.map((e, i): StandingEntry & { _rank: number } => {
-        const entry = e as Record<string, unknown>;
-        const teamObj = entry.team as Record<string, unknown>;
-        const stats = (entry.stats as Record<string, unknown>[]) ?? [];
-        const note = entry.note as Record<string, unknown> | undefined;
-        const rank = typeof note?.rank === "number" ? note.rank : i + 1;
+      groups[groupName] = entries.map(
+        (e, i): StandingEntry => {
+          const entry = e as Record<string, unknown>;
+          const teamObj = entry.team as Record<string, unknown>;
+          const stats = (entry.stats as Record<string, unknown>[]) ?? [];
 
-        const getStat = (name: string): number =>
-          parseInt(
-            (stats.find((s) => s.name === name)?.value as string) ?? "0",
-            10,
-          ) || 0;
+          const getStat = (name: string): number =>
+            parseInt(
+              (stats.find((s) => s.name === name)?.value as string) ?? "0",
+              10,
+            ) || 0;
 
-        return {
-          _rank: rank,
-          team: normalizeTeamName((teamObj?.displayName as string) ?? ""),
-          position: rank,
-          points: getStat("points"),
-          played: getStat("gamesPlayed"),
-          gd: getStat("pointDifferential"),
-          gf: getStat("pointsFor"),
-        };
-      });
-
-      mapped.sort((a, b) => a._rank - b._rank);
-      groups[groupName] = mapped.map(({ _rank: _, ...rest }) => rest);
+          return {
+            team: normalizeTeamName((teamObj?.displayName as string) ?? ""),
+            position: i + 1,
+            points: getStat("points"),
+            played: getStat("gamesPlayed"),
+            gd: getStat("pointDifferential"),
+            gf: getStat("pointsFor"),
+          };
+        },
+      );
     }
 
     standingsCache = { data: groups, ts: Date.now() };

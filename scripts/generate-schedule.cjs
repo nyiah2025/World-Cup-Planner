@@ -12,64 +12,6 @@
 
 const fs   = require('fs');
 const path = require('path');
-const https = require('https');
-const http_  = require('http');
-
-// ─── STANDINGS CACHE ──────────────────────────────────────────────────────────
-const STANDINGS_CACHE_PATH = path.join(__dirname, '..', 'site', 'standings.json');
-const STANDINGS_CACHE_MAX_AGE_MS = 3 * 60 * 60 * 1000; // 3 hours
-
-function loadCachedStandings() {
-  if (!fs.existsSync(STANDINGS_CACHE_PATH)) return null;
-  try {
-    const raw = JSON.parse(fs.readFileSync(STANDINGS_CACHE_PATH, 'utf8'));
-    if (!raw.fetchedAt || !raw.groups) return null;
-    const age = Date.now() - new Date(raw.fetchedAt).getTime();
-    if (age > STANDINGS_CACHE_MAX_AGE_MS) {
-      console.log(`⏰  standings.json is ${Math.round(age / 60000)}m old — will refresh from ESPN`);
-      return null;
-    }
-    console.log(`📋 Loaded standings from cache (${Math.round(age / 60000)}m old)`);
-    return raw.groups;
-  } catch (e) {
-    console.warn('⚠️  Could not parse standings.json cache:', e.message);
-    return null;
-  }
-}
-
-// ─── FETCH STANDINGS FROM ESPN ────────────────────────────────────────────────
-function fetchStandings() {
-  return new Promise((resolve, reject) => {
-    const url = 'https://site.api.espn.com/apis/v2/sports/soccer/fifa.world/standings';
-    const mod = url.startsWith('https') ? https : http_;
-    mod.get(url, { timeout: 8000 }, (res) => {
-      let raw = '';
-      res.on('data', d => { raw += d; });
-      res.on('end', () => {
-        try {
-          const data = JSON.parse(raw);
-          const groups = {};
-          for (const child of (data.children || [])) {
-            const groupName = ((child.name || '').replace(/^Group\s+/i, '')).trim();
-            if (!groupName) continue;
-            const entries = (child.standings && child.standings.entries) || [];
-            const mapped = entries.map((e, i) => {
-              const team = (e.team && e.team.displayName) || '';
-              const note = e.note || {};
-              const rank = typeof note.rank === 'number' ? note.rank : i + 1;
-              const stats = e.stats || [];
-              const getStat = n => parseInt((stats.find(s => s.name === n) || {}).value || '0', 10) || 0;
-              return { _rank: rank, team, points: getStat('points'), played: getStat('gamesPlayed'), gd: getStat('pointDifferential'), gf: getStat('pointsFor') };
-            });
-            mapped.sort((a, b) => a._rank - b._rank);
-            groups[groupName] = mapped.map(({ _rank, ...rest }) => rest);
-          }
-          resolve(groups);
-        } catch (e) { reject(e); }
-      });
-    }).on('error', reject).on('timeout', () => reject(new Error('ESPN standings timeout')));
-  });
-}
 
 // Load the asset manifest produced by fingerprint.cjs so we can reference
 // fingerprinted filenames in generated HTML.
@@ -505,26 +447,6 @@ ${cards}
   </div>
 ${customContent}
 
-  <div style="border-top:1px solid var(--border);margin:32px 0;"></div>
-  <div class="section-label">Group ${group} Standings</div>
-  <div style="max-width:520px;overflow-x:auto;margin-bottom:24px;padding:0 4px;">
-    <table style="width:100%;border-collapse:collapse;font-family:'Instrument Sans',sans-serif;font-size:14px;" id="groupStandingsTable">
-      <thead>
-        <tr style="background:var(--bg2,#f5f5f5);border-bottom:2px solid var(--border);">
-          <th style="padding:7px 8px;text-align:left;font-weight:600;color:var(--ink2);">#</th>
-          <th style="padding:7px 8px;text-align:left;font-weight:600;color:var(--ink2);">Team</th>
-          <th style="padding:7px 8px;text-align:center;font-weight:600;color:var(--ink2);">Pld</th>
-          <th style="padding:7px 8px;text-align:center;font-weight:600;color:var(--ink2);">Pts</th>
-          <th style="padding:7px 8px;text-align:center;font-weight:600;color:var(--ink2);">GD</th>
-          <th style="padding:7px 8px;text-align:center;font-weight:600;color:var(--ink2);">GF</th>
-        </tr>
-      </thead>
-      <tbody id="groupStandingsTbody">
-        <tr><td colspan="6" style="padding:8px;text-align:center;color:var(--ink3);">—</td></tr>
-      </tbody>
-    </table>
-  </div>
-
   <div class="other-teams">
     <div class="other-teams-title">See Another Team's Schedule</div>
     <div class="team-links">
@@ -770,40 +692,6 @@ seedEmbeddedResults();
 applyScoresToDom();
 fetchLiveData();
 setInterval(fetchLiveData, 60000);
-
-// ─── GROUP STANDINGS TABLE ────────────────────────────────────────
-// ─── STANDINGS (embedded at build time) ──────────────────────────
-const STANDINGS = {};
-const TEAM_GROUP = "${group}";
-const TEAM_NAME  = ${JSON.stringify(team.name)};
-
-function renderGroupStandingsTable(entries) {
-  const tbody = document.getElementById('groupStandingsTbody');
-  if (!tbody || !Array.isArray(entries) || entries.length === 0) return;
-  tbody.innerHTML = entries.map(function(e, i) {
-    const isSelf = e.team === TEAM_NAME;
-    const rowStyle = isSelf
-      ? ' style="font-weight:700;background:rgba(0,0,0,.04);"'
-      : ' style="border-top:1px solid var(--border);"';
-    const gdSign = e.gd > 0 ? '+' : '';
-    return '<tr' + rowStyle + '>'
-      + '<td style="padding:6px 8px;">' + (i + 1) + '</td>'
-      + '<td style="padding:6px 8px;">' + e.team + '</td>'
-      + '<td style="padding:6px 8px;text-align:center;">' + e.played + '</td>'
-      + '<td style="padding:6px 8px;text-align:center;font-weight:700;">' + e.points + '</td>'
-      + '<td style="padding:6px 8px;text-align:center;">' + gdSign + e.gd + '</td>'
-      + '<td style="padding:6px 8px;text-align:center;">' + e.gf + '</td>'
-      + '</tr>';
-  }).join('');
-}
-
-(function initGroupStandings() {
-  const entries = STANDINGS[TEAM_GROUP];
-  if (entries) renderGroupStandingsTable(entries);
-  fetch('/api/standings').then(function(r) { return r.ok ? r.json() : null; }).then(function(d) {
-    if (d && d.groups && d.groups[TEAM_GROUP]) renderGroupStandingsTable(d.groups[TEAM_GROUP]);
-  }).catch(function(){});
-})();
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -873,48 +761,8 @@ function matchesArrayJs(scores = {}) {
   return lines.join('\n');
 }
 
-// ─── PROCESS_STANDINGS — lookup-table for best-third-place R32 slots ────────────────
-// Pre-computed canonical third-place slot assignment for all C(12,8)=495
-// qualifying-group combinations. Kept in sync with site/index.html and
-// site/schedule/index.html by patchIndexHtml() and patchScheduleHtml().
-const PROCESS_STANDINGS_JS = `// ─── THIRD-PLACE ALLOCATION TABLE (pre-computed canonical slot assignments) ────
-// Key = sorted qualifying-group letters (8 of A-L). Value = array[8] where
-// entry i = group letter assigned to slot i, covering all C(12,8)=495 combos.
-// Slot order: 3A/B/C/D/F, 3C/D/F/G/H, 3C/E/F/H/I, 3E/H/I/J/K,
-//             3B/E/F/I/J, 3A/E/H/I/J, 3E/F/G/I/J, 3D/E/I/J/L.
-const THIRD_PLACE_TABLE = {"ABCDEFGH":["B","C","E","H","F","A","G","D"],"ABCDEFGI":["A","G","C","I","B","E","F","D"],"ABCDEFGJ":["A","G","C","J","B","E","F","D"],"ABCDEFGK":["A","F","C","K","B","E","G","D"],"ABCDEFGL":["B","D","C","E","F","A","G","L"],"ABCDEFHI":["B","D","C","H","F","A","I","E"],"ABCDEFHJ":["A","C","F","H","B","E","J","D"],"ABCDEFHK":["A","C","H","K","B","E","F","D"],"ABCDEFHL":["A","D","C","H","B","E","F","L"],"ABCDEFIJ":["A","D","C","J","B","E","F","I"],"ABCDEFIK":["A","C","F","K","B","E","I","D"],"ABCDEFIL":["A","D","C","I","B","E","F","L"],"ABCDEFJK":["A","D","C","K","B","E","F","J"],"ABCDEFJL":["A","D","C","J","B","E","F","L"],"ABCDEFKL":["A","D","C","K","B","E","F","L"],"ABCDEGHI":["B","C","H","I","E","A","G","D"],"ABCDEGHJ":["B","D","C","H","E","A","G","J"],"ABCDEGHK":["A","C","E","K","B","H","G","D"],"ABCDEGHL":["D","C","E","H","B","A","G","L"],"ABCDEGIJ":["A","C","E","J","B","I","G","D"],"ABCDEGIK":["A","D","C","K","B","E","G","I"],"ABCDEGIL":["A","D","C","I","B","E","G","L"],"ABCDEGJK":["A","D","C","K","B","E","G","J"],"ABCDEGJL":["A","D","C","J","B","E","G","L"],"ABCDEGKL":["A","D","C","K","B","E","G","L"],"ABCDEHIJ":["B","D","C","H","E","A","J","I"],"ABCDEHIK":["B","C","H","K","E","A","I","D"],"ABCDEHIL":["B","D","C","H","E","A","I","L"],"ABCDEHJK":["B","H","C","K","E","A","J","D"],"ABCDEHJL":["B","D","C","H","E","A","J","L"],"ABCDEHKL":["A","D","C","K","B","H","E","L"],"ABCDEIJK":["A","C","E","K","B","I","J","D"],"ABCDEIJL":["B","D","C","J","E","A","I","L"],"ABCDEIKL":["A","D","C","K","B","E","I","L"],"ABCDEJKL":["A","D","C","K","B","E","J","L"],"ABCDFGHI":["A","C","F","I","B","H","G","D"],"ABCDFGHJ":["A","C","F","J","B","H","G","D"],"ABCDFGHK":["A","C","F","K","B","H","G","D"],"ABCDFGHL":["D","C","F","H","B","A","G","L"],"ABCDFGIJ":["A","C","F","J","B","I","G","D"],"ABCDFGIK":["A","C","F","K","B","I","G","D"],"ABCDFGIL":["B","D","C","I","F","A","G","L"],"ABCDFGJK":["A","C","F","K","B","J","G","D"],"ABCDFGJL":["B","D","C","J","F","A","G","L"],"ABCDFGKL":["B","D","C","K","F","A","G","L"],"ABCDFHIJ":["A","C","F","I","B","H","J","D"],"ABCDFHIK":["A","D","C","K","B","H","F","I"],"ABCDFHIL":["A","D","C","I","B","H","F","L"],"ABCDFHJK":["A","C","F","K","B","H","J","D"],"ABCDFHJL":["A","D","C","J","B","H","F","L"],"ABCDFHKL":["A","D","C","K","B","H","F","L"],"ABCDFIJK":["A","D","C","K","B","I","F","J"],"ABCDFIJL":["A","D","C","J","B","I","F","L"],"ABCDFIKL":["A","D","C","K","B","I","F","L"],"ABCDFJKL":["A","D","C","K","B","J","F","L"],"ABCDGHIJ":["B","D","C","H","I","A","G","J"],"ABCDGHIK":["B","C","H","K","I","A","G","D"],"ABCDGHIL":["D","C","H","I","B","A","G","L"],"ABCDGHJK":["B","C","H","K","J","A","G","D"],"ABCDGHJL":["D","C","H","J","B","A","G","L"],"ABCDGHKL":["D","C","H","K","B","A","G","L"],"ABCDGIJK":["A","D","C","K","B","I","G","J"],"ABCDGIJL":["A","D","C","J","B","I","G","L"],"ABCDGIKL":["A","D","C","K","B","I","G","L"],"ABCDGJKL":["A","D","C","K","B","J","G","L"],"ABCDHIJK":["B","C","H","K","I","A","J","D"],"ABCDHIJL":["B","D","C","H","I","A","J","L"],"ABCDHIKL":["A","D","C","K","B","H","I","L"],"ABCDHJKL":["A","D","C","K","B","H","J","L"],"ABCDIJKL":["A","D","C","K","B","I","J","L"],"ABCEFGHI":["A","G","C","H","B","E","F","I"],"ABCEFGHJ":["C","G","F","H","B","A","E","J"],"ABCEFGHK":["A","F","C","K","B","H","G","E"],"ABCEFGHL":["A","F","C","H","B","E","G","L"],"ABCEFGIJ":["B","G","C","J","F","A","E","I"],"ABCEFGIK":["B","G","C","K","F","A","E","I"],"ABCEFGIL":["B","G","C","I","F","A","E","L"],"ABCEFGJK":["B","G","C","K","F","A","E","J"],"ABCEFGJL":["B","G","C","J","F","A","E","L"],"ABCEFGKL":["A","G","C","K","B","E","F","L"],"ABCEFHIJ":["B","C","H","I","E","A","F","J"],"ABCEFHIK":["A","F","C","K","B","H","E","I"],"ABCEFHIL":["A","F","C","I","B","H","E","L"],"ABCEFHJK":["B","C","H","K","E","A","F","J"],"ABCEFHJL":["B","C","H","J","E","A","F","L"],"ABCEFHKL":["A","F","C","K","B","H","E","L"],"ABCEFIJK":["A","C","I","K","B","E","F","J"],"ABCEFIJL":["A","C","I","J","B","E","F","L"],"ABCEFIKL":["A","C","I","K","B","E","F","L"],"ABCEFJKL":["A","F","C","K","B","E","J","L"],"ABCEGHIJ":["B","C","H","I","E","A","G","J"],"ABCEGHIK":["B","C","H","K","E","A","G","I"],"ABCEGHIL":["B","C","H","I","E","A","G","L"],"ABCEGHJK":["B","C","H","K","E","A","G","J"],"ABCEGHJL":["B","C","H","J","E","A","G","L"],"ABCEGHKL":["B","C","H","K","E","A","G","L"],"ABCEGIJK":["A","G","C","K","B","I","E","J"],"ABCEGIJL":["A","G","C","J","B","I","E","L"],"ABCEGIKL":["A","G","C","K","B","I","E","L"],"ABCEGJKL":["A","G","C","K","B","J","E","L"],"ABCEHIJK":["B","H","C","K","E","A","J","I"],"ABCEHIJL":["B","C","I","H","E","A","J","L"],"ABCEHIKL":["B","H","C","K","E","A","I","L"],"ABCEHJKL":["B","H","C","K","E","A","J","L"],"ABCEIJKL":["B","C","I","K","E","A","J","L"],"ABCFGHIJ":["A","G","C","I","B","H","F","J"],"ABCFGHIK":["A","F","C","K","B","H","G","I"],"ABCFGHIL":["A","F","C","I","B","H","G","L"],"ABCFGHJK":["A","C","F","K","B","H","G","J"],"ABCFGHJL":["A","C","F","J","B","H","G","L"],"ABCFGHKL":["A","C","F","K","B","H","G","L"],"ABCFGIJK":["A","G","C","K","B","I","F","J"],"ABCFGIJL":["A","G","C","J","B","I","F","L"],"ABCFGIKL":["A","F","C","K","B","I","G","L"],"ABCFGJKL":["A","G","C","K","B","J","F","L"],"ABCFHIJK":["B","C","H","K","F","A","I","J"],"ABCFHIJL":["B","C","H","I","F","A","J","L"],"ABCFHIKL":["A","F","C","K","B","H","I","L"],"ABCFHJKL":["A","F","C","K","B","H","J","L"],"ABCFIJKL":["A","F","C","K","B","I","J","L"],"ABCGHIJK":["B","C","H","K","I","A","G","J"],"ABCGHIJL":["B","G","C","H","I","A","J","L"],"ABCGHIKL":["B","C","H","K","I","A","G","L"],"ABCGHJKL":["B","C","H","K","J","A","G","L"],"ABCGIJKL":["A","C","I","K","B","J","G","L"],"ABCHIJKL":["B","H","C","K","I","A","J","L"],"ABDEFGHI":["A","G","F","I","B","H","E","D"],"ABDEFGHJ":["A","G","F","J","B","H","E","D"],"ABDEFGHK":["B","D","H","K","F","A","G","E"],"ABDEFGHL":["A","D","F","H","B","E","G","L"],"ABDEFGIJ":["B","G","I","J","F","A","E","D"],"ABDEFGIK":["B","G","I","K","F","A","E","D"],"ABDEFGIL":["D","G","F","I","B","A","E","L"],"ABDEFGJK":["B","G","F","K","J","A","E","D"],"ABDEFGJL":["D","G","F","J","B","A","E","L"],"ABDEFGKL":["A","D","F","K","B","E","G","L"],"ABDEFHIJ":["B","D","F","H","E","A","J","I"],"ABDEFHIK":["B","H","F","K","E","A","I","D"],"ABDEFHIL":["B","D","F","H","E","A","I","L"],"ABDEFHJK":["B","H","F","K","E","A","J","D"],"ABDEFHJL":["B","D","H","J","E","A","F","L"],"ABDEFHKL":["A","D","H","K","B","E","F","L"],"ABDEFIJK":["A","D","F","K","B","E","J","I"],"ABDEFIJL":["A","D","I","J","B","E","F","L"],"ABDEFIKL":["A","D","I","K","B","E","F","L"],"ABDEFJKL":["A","D","F","K","B","E","J","L"],"ABDEGHIJ":["B","D","H","J","E","A","G","I"],"ABDEGHIK":["B","D","H","K","E","A","G","I"],"ABDEGHIL":["B","D","I","H","E","A","G","L"],"ABDEGHJK":["B","D","H","K","E","A","G","J"],"ABDEGHJL":["B","D","H","J","E","A","G","L"],"ABDEGHKL":["B","D","H","K","E","A","G","L"],"ABDEGIJK":["A","G","I","K","B","J","E","D"],"ABDEGIJL":["D","G","I","J","B","A","E","L"],"ABDEGIKL":["D","G","I","K","B","A","E","L"],"ABDEGJKL":["B","D","E","K","J","A","G","L"],"ABDEHIJK":["B","D","H","K","E","A","J","I"],"ABDEHIJL":["B","D","I","H","E","A","J","L"],"ABDEHIKL":["B","D","H","K","E","A","I","L"],"ABDEHJKL":["B","D","H","K","E","A","J","L"],"ABDEIJKL":["B","D","I","K","E","A","J","L"],"ABDFGHIJ":["A","G","I","J","B","H","F","D"],"ABDFGHIK":["A","D","F","K","B","H","G","I"],"ABDFGHIL":["A","D","F","I","B","H","G","L"],"ABDFGHJK":["A","D","F","K","B","H","G","J"],"ABDFGHJL":["A","D","F","J","B","H","G","L"],"ABDFGHKL":["A","D","F","K","B","H","G","L"],"ABDFGIJK":["B","G","I","K","J","A","F","D"],"ABDFGIJL":["D","G","I","J","B","A","F","L"],"ABDFGIKL":["A","D","F","K","B","I","G","L"],"ABDFGJKL":["A","D","F","K","B","J","G","L"],"ABDFHIJK":["B","D","H","K","F","A","J","I"],"ABDFHIJL":["B","D","H","J","F","A","I","L"],"ABDFHIKL":["A","D","F","K","B","H","I","L"],"ABDFHJKL":["A","D","F","K","B","H","J","L"],"ABDFIJKL":["A","D","F","K","B","I","J","L"],"ABDGHIJK":["B","D","H","K","I","A","G","J"],"ABDGHIJL":["B","D","H","J","I","A","G","L"],"ABDGHIKL":["B","D","H","K","I","A","G","L"],"ABDGHJKL":["B","D","H","K","J","A","G","L"],"ABDGIJKL":["B","D","I","K","J","A","G","L"],"ABDHIJKL":["B","D","H","K","I","A","J","L"],"ABEFGHIJ":["A","G","F","I","B","H","E","J"],"ABEFGHIK":["A","G","F","K","B","H","E","I"],"ABEFGHIL":["A","G","F","I","B","H","E","L"],"ABEFGHJK":["A","G","F","K","B","H","E","J"],"ABEFGHJL":["A","G","F","J","B","H","E","L"],"ABEFGHKL":["A","G","F","K","B","H","E","L"],"ABEFGIJK":["B","G","I","K","F","A","E","J"],"ABEFGIJL":["B","G","I","J","F","A","E","L"],"ABEFGIKL":["B","G","I","K","F","A","E","L"],"ABEFGJKL":["B","G","F","K","J","A","E","L"],"ABEFHIJK":["B","H","I","K","E","A","F","J"],"ABEFHIJL":["B","H","I","J","E","A","F","L"],"ABEFHIKL":["B","H","F","K","E","A","I","L"],"ABEFHJKL":["B","H","F","K","E","A","J","L"],"ABEFIJKL":["A","F","I","K","B","E","J","L"],"ABEGHIJK":["B","H","I","K","E","A","G","J"],"ABEGHIJL":["B","H","I","J","E","A","G","L"],"ABEGHIKL":["B","H","I","K","E","A","G","L"],"ABEGHJKL":["B","G","H","K","E","A","J","L"],"ABEGIJKL":["A","G","I","K","B","J","E","L"],"ABEHIJKL":["B","H","I","K","E","A","J","L"],"ABFGHIJK":["A","G","I","K","B","H","F","J"],"ABFGHIJL":["A","G","I","J","B","H","F","L"],"ABFGHIKL":["A","G","I","K","B","H","F","L"],"ABFGHJKL":["A","G","H","K","B","J","F","L"],"ABFGIJKL":["B","G","I","K","J","A","F","L"],"ABFHIJKL":["B","H","I","K","F","A","J","L"],"ABGHIJKL":["B","G","H","K","I","A","J","L"],"ACDEFGHI":["F","D","C","H","I","A","G","E"],"ACDEFGHJ":["A","C","E","J","F","H","G","D"],"ACDEFGHK":["A","C","E","K","F","H","G","D"],"ACDEFGHL":["D","C","E","H","F","A","G","L"],"ACDEFGIJ":["C","G","F","J","I","A","E","D"],"ACDEFGIK":["F","G","C","K","I","A","E","D"],"ACDEFGIL":["D","G","C","I","F","A","E","L"],"ACDEFGJK":["D","G","C","K","F","A","E","J"],"ACDEFGJL":["D","G","C","J","F","A","E","L"],"ACDEFGKL":["D","C","E","K","F","A","G","L"],"ACDEFHIJ":["C","F","E","H","J","A","I","D"],"ACDEFHIK":["A","H","C","K","I","E","F","D"],"ACDEFHIL":["A","D","C","H","I","E","F","L"],"ACDEFHJK":["C","D","H","K","J","A","F","E"],"ACDEFHJL":["C","D","E","H","J","A","F","L"],"ACDEFHKL":["A","D","C","K","F","H","E","L"],"ACDEFIJK":["A","C","E","K","I","J","F","D"],"ACDEFIJL":["A","D","C","J","F","I","E","L"],"ACDEFIKL":["A","D","C","K","I","E","F","L"],"ACDEFJKL":["A","D","C","K","J","E","F","L"],"ACDEGHIJ":["C","D","H","I","J","A","G","E"],"ACDEGHIK":["C","D","H","K","I","A","G","E"],"ACDEGHIL":["C","D","E","H","I","A","G","L"],"ACDEGHJK":["C","H","E","K","J","A","G","D"],"ACDEGHJL":["C","D","E","H","J","A","G","L"],"ACDEGHKL":["D","C","H","K","E","A","G","L"],"ACDEGIJK":["A","C","E","K","J","I","G","D"],"ACDEGIJL":["D","G","C","J","I","A","E","L"],"ACDEGIKL":["D","G","C","K","I","A","E","L"],"ACDEGJKL":["D","G","C","K","J","A","E","L"],"ACDEHIJK":["C","H","E","K","J","A","I","D"],"ACDEHIJL":["C","D","E","H","J","A","I","L"],"ACDEHIKL":["C","D","H","K","I","A","E","L"],"ACDEHJKL":["C","D","H","K","J","A","E","L"],"ACDEIJKL":["C","D","E","K","J","A","I","L"],"ACDFGHIJ":["A","C","F","I","J","H","G","D"],"ACDFGHIK":["A","C","F","K","I","H","G","D"],"ACDFGHIL":["D","C","F","H","I","A","G","L"],"ACDFGHJK":["A","C","F","K","J","H","G","D"],"ACDFGHJL":["D","C","F","H","J","A","G","L"],"ACDFGHKL":["D","C","H","K","F","A","G","L"],"ACDFGIJK":["D","G","C","K","I","A","F","J"],"ACDFGIJL":["D","G","C","J","I","A","F","L"],"ACDFGIKL":["D","C","F","K","I","A","G","L"],"ACDFGJKL":["D","C","F","K","J","A","G","L"],"ACDFHIJK":["C","H","F","K","I","A","J","D"],"ACDFHIJL":["C","D","F","H","J","A","I","L"],"ACDFHIKL":["A","D","C","K","I","H","F","L"],"ACDFHJKL":["D","C","H","K","J","A","F","L"],"ACDFIJKL":["A","D","C","K","F","I","J","L"],"ACDGHIJK":["C","D","H","K","J","A","G","I"],"ACDGHIJL":["C","D","H","I","J","A","G","L"],"ACDGHIKL":["D","C","H","K","I","A","G","L"],"ACDGHJKL":["D","C","H","K","J","A","G","L"],"ACDGIJKL":["C","D","I","K","J","A","G","L"],"ACDHIJKL":["C","D","H","K","J","A","I","L"],"ACEFGHIJ":["A","G","C","I","F","H","E","J"],"ACEFGHIK":["A","F","C","K","E","H","G","I"],"ACEFGHIL":["A","F","C","I","E","H","G","L"],"ACEFGHJK":["C","G","H","K","F","A","E","J"],"ACEFGHJL":["A","G","C","J","F","H","E","L"],"ACEFGHKL":["A","F","C","K","E","H","G","L"],"ACEFGIJK":["A","G","C","K","F","I","E","J"],"ACEFGIJL":["A","G","C","J","F","I","E","L"],"ACEFGIKL":["A","G","C","K","F","I","E","L"],"ACEFGJKL":["A","G","C","K","F","J","E","L"],"ACEFHIJK":["C","F","H","K","E","A","I","J"],"ACEFHIJL":["C","H","E","I","J","A","F","L"],"ACEFHIKL":["A","H","C","K","I","E","F","L"],"ACEFHJKL":["C","F","H","K","J","A","E","L"],"ACEFIJKL":["A","F","C","K","J","I","E","L"],"ACEGHIJK":["C","G","H","K","J","A","E","I"],"ACEGHIJL":["C","G","H","I","J","A","E","L"],"ACEGHIKL":["C","G","H","K","I","A","E","L"],"ACEGHJKL":["C","G","H","K","J","A","E","L"],"ACEGIJKL":["A","G","C","K","J","I","E","L"],"ACEHIJKL":["C","H","E","K","J","A","I","L"],"ACFGHIJK":["A","G","C","K","I","H","F","J"],"ACFGHIJL":["A","G","C","I","J","H","F","L"],"ACFGHIKL":["A","F","C","K","I","H","G","L"],"ACFGHJKL":["A","C","F","K","J","H","G","L"],"ACFGIJKL":["A","G","C","K","I","J","F","L"],"ACFHIJKL":["C","H","F","K","I","A","J","L"],"ACGHIJKL":["C","G","H","K","J","A","I","L"],"ADEFGHIJ":["A","G","F","I","J","H","E","D"],"ADEFGHIK":["A","G","F","K","I","H","E","D"],"ADEFGHIL":["D","G","H","I","F","A","E","L"],"ADEFGHJK":["A","G","F","K","J","H","E","D"],"ADEFGHJL":["D","G","F","H","J","A","E","L"],"ADEFGHKL":["A","D","H","K","F","E","G","L"],"ADEFGIJK":["D","G","F","K","J","A","E","I"],"ADEFGIJL":["D","G","F","J","I","A","E","L"],"ADEFGIKL":["D","G","F","K","I","A","E","L"],"ADEFGJKL":["D","G","F","K","J","A","E","L"],"ADEFHIJK":["D","F","H","K","E","A","J","I"],"ADEFHIJL":["D","F","H","J","E","A","I","L"],"ADEFHIKL":["D","F","H","K","I","A","E","L"],"ADEFHJKL":["D","F","H","K","J","A","E","L"],"ADEFIJKL":["A","D","F","K","J","I","E","L"],"ADEGHIJK":["D","G","H","K","J","A","E","I"],"ADEGHIJL":["D","G","I","H","J","A","E","L"],"ADEGHIKL":["D","G","H","K","I","A","E","L"],"ADEGHJKL":["D","G","H","K","J","A","E","L"],"ADEGIJKL":["D","G","I","K","J","A","E","L"],"ADEHIJKL":["D","H","E","K","J","A","I","L"],"ADFGHIJK":["A","G","H","K","I","J","F","D"],"ADFGHIJL":["D","G","H","J","I","A","F","L"],"ADFGHIKL":["A","D","F","K","I","H","G","L"],"ADFGHJKL":["A","D","F","K","J","H","G","L"],"ADFGIJKL":["D","G","I","K","J","A","F","L"],"ADFHIJKL":["D","F","H","K","J","A","I","L"],"ADGHIJKL":["D","G","H","K","J","A","I","L"],"AEFGHIJK":["A","G","I","K","F","H","E","J"],"AEFGHIJL":["A","G","I","J","F","H","E","L"],"AEFGHIKL":["A","G","F","K","I","H","E","L"],"AEFGHJKL":["A","G","H","K","F","J","E","L"],"AEFGIJKL":["A","G","F","K","J","I","E","L"],"AEFHIJKL":["F","H","I","K","J","A","E","L"],"AEGHIJKL":["A","H","I","K","J","E","G","L"],"AFGHIJKL":["A","G","I","K","J","H","F","L"],"BCDEFGHI":["F","D","C","I","B","H","G","E"],"BCDEFGHJ":["B","C","E","J","F","H","G","D"],"BCDEFGHK":["F","C","E","K","B","H","G","D"],"BCDEFGHL":["D","C","F","H","B","E","G","L"],"BCDEFGIJ":["C","G","F","J","B","I","E","D"],"BCDEFGIK":["B","G","C","K","F","I","E","D"],"BCDEFGIL":["D","G","C","I","B","E","F","L"],"BCDEFGJK":["C","G","F","K","B","J","E","D"],"BCDEFGJL":["D","G","C","J","B","E","F","L"],"BCDEFGKL":["D","C","F","K","B","E","G","L"],"BCDEFHIJ":["C","F","E","H","B","J","I","D"],"BCDEFHIK":["B","F","C","K","E","H","I","D"],"BCDEFHIL":["B","D","C","I","E","H","F","L"],"BCDEFHJK":["C","D","F","K","B","H","J","E"],"BCDEFHJL":["C","D","E","J","B","H","F","L"],"BCDEFHKL":["B","D","C","K","E","H","F","L"],"BCDEFIJK":["C","D","F","K","B","J","I","E"],"BCDEFIJL":["C","D","E","J","B","I","F","L"],"BCDEFIKL":["C","D","E","K","B","I","F","L"],"BCDEFJKL":["C","D","E","K","B","J","F","L"],"BCDEGHIJ":["B","C","H","J","E","I","G","D"],"BCDEGHIK":["B","D","C","K","I","H","G","E"],"BCDEGHIL":["B","D","C","I","E","H","G","L"],"BCDEGHJK":["B","C","E","K","J","H","G","D"],"BCDEGHJL":["D","C","E","J","B","H","G","L"],"BCDEGHKL":["D","C","E","K","B","H","G","L"],"BCDEGIJK":["B","C","E","K","I","J","G","D"],"BCDEGIJL":["D","G","C","J","B","I","E","L"],"BCDEGIKL":["D","G","C","K","B","I","E","L"],"BCDEGJKL":["D","G","C","K","B","J","E","L"],"BCDEHIJK":["B","C","E","K","I","H","J","D"],"BCDEHIJL":["B","D","C","H","I","E","J","L"],"BCDEHIKL":["B","D","C","K","E","H","I","L"],"BCDEHJKL":["D","H","C","K","B","E","J","L"],"BCDEIJKL":["C","D","E","K","B","J","I","L"],"BCDFGHIJ":["B","C","F","H","I","J","G","D"],"BCDFGHIK":["D","C","F","K","B","H","G","I"],"BCDFGHIL":["D","C","F","I","B","H","G","L"],"BCDFGHJK":["D","C","F","K","B","H","G","J"],"BCDFGHJL":["D","C","F","J","B","H","G","L"],"BCDFGHKL":["D","C","F","K","B","H","G","L"],"BCDFGIJK":["B","G","C","K","I","J","F","D"],"BCDFGIJL":["D","G","C","J","B","I","F","L"],"BCDFGIKL":["D","C","F","K","B","I","G","L"],"BCDFGJKL":["D","C","F","K","B","J","G","L"],"BCDFHIJK":["C","D","F","K","B","H","J","I"],"BCDFHIJL":["C","D","F","H","B","J","I","L"],"BCDFHIKL":["B","D","C","K","F","H","I","L"],"BCDFHJKL":["D","C","F","K","B","H","J","L"],"BCDFIJKL":["C","D","F","K","B","J","I","L"],"BCDGHIJK":["D","C","H","K","B","I","G","J"],"BCDGHIJL":["D","C","H","J","B","I","G","L"],"BCDGHIKL":["D","C","H","K","B","I","G","L"],"BCDGHJKL":["D","C","H","K","B","J","G","L"],"BCDGIJKL":["C","D","I","K","B","J","G","L"],"BCDHIJKL":["B","D","C","K","I","H","J","L"],"BCEFGHIJ":["B","G","C","I","F","H","E","J"],"BCEFGHIK":["B","G","C","K","E","H","F","I"],"BCEFGHIL":["B","G","C","I","E","H","F","L"],"BCEFGHJK":["B","G","C","K","F","H","E","J"],"BCEFGHJL":["B","G","C","J","F","H","E","L"],"BCEFGHKL":["B","F","C","K","E","H","G","L"],"BCEFGIJK":["B","G","C","K","F","J","E","I"],"BCEFGIJL":["B","G","C","J","F","I","E","L"],"BCEFGIKL":["B","G","C","K","F","I","E","L"],"BCEFGJKL":["B","G","C","K","F","J","E","L"],"BCEFHIJK":["C","F","H","K","B","I","E","J"],"BCEFHIJL":["C","H","E","I","B","J","F","L"],"BCEFHIKL":["B","H","C","K","E","I","F","L"],"BCEFHJKL":["C","F","H","K","B","J","E","L"],"BCEFIJKL":["C","F","I","K","B","J","E","L"],"BCEGHIJK":["B","G","C","K","I","H","E","J"],"BCEGHIJL":["B","G","C","I","J","H","E","L"],"BCEGHIKL":["B","G","C","K","I","H","E","L"],"BCEGHJKL":["B","G","C","K","J","H","E","L"],"BCEGIJKL":["B","G","C","K","I","J","E","L"],"BCEHIJKL":["B","H","C","K","I","E","J","L"],"BCFGHIJK":["B","G","C","K","I","H","F","J"],"BCFGHIJL":["B","G","C","H","I","J","F","L"],"BCFGHIKL":["B","F","C","K","I","H","G","L"],"BCFGHJKL":["B","C","F","K","J","H","G","L"],"BCFGIJKL":["B","G","C","K","I","J","F","L"],"BCFHIJKL":["C","H","F","K","B","I","J","L"],"BCGHIJKL":["B","C","H","K","J","I","G","L"],"BDEFGHIJ":["B","G","H","J","F","I","E","D"],"BDEFGHIK":["D","G","F","K","B","H","E","I"],"BDEFGHIL":["D","G","F","I","B","H","E","L"],"BDEFGHJK":["B","G","H","K","F","J","E","D"],"BDEFGHJL":["D","G","F","J","B","H","E","L"],"BDEFGHKL":["B","D","F","K","E","H","G","L"],"BDEFGIJK":["B","G","I","K","F","J","E","D"],"BDEFGIJL":["D","G","F","J","B","I","E","L"],"BDEFGIKL":["D","G","F","K","B","I","E","L"],"BDEFGJKL":["D","G","F","K","B","J","E","L"],"BDEFHIJK":["D","F","E","K","B","H","J","I"],"BDEFHIJL":["D","F","E","H","B","J","I","L"],"BDEFHIKL":["D","F","E","K","B","H","I","L"],"BDEFHJKL":["D","F","H","K","B","J","E","L"],"BDEFIJKL":["D","F","E","K","B","J","I","L"],"BDEGHIJK":["B","H","I","K","E","J","G","D"],"BDEGHIJL":["D","G","I","J","B","H","E","L"],"BDEGHIKL":["D","G","I","K","B","H","E","L"],"BDEGHJKL":["D","G","H","K","B","J","E","L"],"BDEGIJKL":["D","G","I","K","B","J","E","L"],"BDEHIJKL":["B","D","H","K","I","E","J","L"],"BDFGHIJK":["B","G","H","K","J","I","F","D"],"BDFGHIJL":["D","G","H","J","B","I","F","L"],"BDFGHIKL":["B","D","H","K","F","I","G","L"],"BDFGHJKL":["B","D","H","K","F","J","G","L"],"BDFGIJKL":["D","G","I","K","B","J","F","L"],"BDFHIJKL":["D","F","H","K","B","J","I","L"],"BDGHIJKL":["B","D","H","K","I","J","G","L"],"BEFGHIJK":["B","G","F","K","I","H","E","J"],"BEFGHIJL":["B","G","F","H","I","J","E","L"],"BEFGHIKL":["B","G","F","K","I","H","E","L"],"BEFGHJKL":["B","G","F","K","J","H","E","L"],"BEFGIJKL":["B","G","F","K","I","J","E","L"],"BEFHIJKL":["F","H","I","K","B","J","E","L"],"BEGHIJKL":["B","G","I","K","J","H","E","L"],"BFGHIJKL":["B","G","H","K","I","J","F","L"],"CDEFGHIJ":["C","G","H","I","F","J","E","D"],"CDEFGHIK":["F","D","C","K","I","H","G","E"],"CDEFGHIL":["F","D","C","I","E","H","G","L"],"CDEFGHJK":["D","C","F","K","J","H","G","E"],"CDEFGHJL":["D","C","E","J","F","H","G","L"],"CDEFGHKL":["D","C","E","K","F","H","G","L"],"CDEFGIJK":["F","G","C","K","I","J","E","D"],"CDEFGIJL":["D","G","C","J","F","I","E","L"],"CDEFGIKL":["D","G","C","K","F","I","E","L"],"CDEFGJKL":["D","G","C","K","F","J","E","L"],"CDEFHIJK":["D","H","C","K","F","I","J","E"],"CDEFHIJL":["F","D","C","H","E","J","I","L"],"CDEFHIKL":["D","F","C","K","I","H","E","L"],"CDEFHJKL":["F","D","C","K","E","H","J","L"],"CDEFIJKL":["C","D","I","K","F","J","E","L"],"CDEGHIJK":["C","H","E","K","J","I","G","D"],"CDEGHIJL":["D","G","C","I","J","H","E","L"],"CDEGHIKL":["D","G","C","K","I","H","E","L"],"CDEGHJKL":["D","C","E","K","J","H","G","L"],"CDEGIJKL":["D","G","C","K","J","I","E","L"],"CDEHIJKL":["D","H","C","K","J","E","I","L"],"CDFGHIJK":["D","C","F","K","J","H","G","I"],"CDFGHIJL":["D","C","F","H","I","J","G","L"],"CDFGHIKL":["D","C","F","K","I","H","G","L"],"CDFGHJKL":["D","C","F","K","J","H","G","L"],"CDFGIJKL":["D","G","C","K","I","J","F","L"],"CDFHIJKL":["F","D","C","K","J","H","I","L"],"CDGHIJKL":["D","C","H","K","J","I","G","L"],"CEFGHIJK":["C","G","H","K","F","I","E","J"],"CEFGHIJL":["C","G","H","I","F","J","E","L"],"CEFGHIKL":["F","H","C","K","E","I","G","L"],"CEFGHJKL":["C","G","H","K","F","J","E","L"],"CEFGIJKL":["C","G","I","K","F","J","E","L"],"CEFHIJKL":["F","H","C","K","J","I","E","L"],"CEGHIJKL":["C","G","I","K","J","H","E","L"],"CFGHIJKL":["C","G","H","K","J","I","F","L"],"DEFGHIJK":["D","G","H","K","F","J","E","I"],"DEFGHIJL":["D","G","F","J","I","H","E","L"],"DEFGHIKL":["D","G","F","K","I","H","E","L"],"DEFGHJKL":["D","G","H","K","F","J","E","L"],"DEFGIJKL":["D","G","I","K","F","J","E","L"],"DEFHIJKL":["F","D","I","K","J","H","E","L"],"DEGHIJKL":["D","G","I","K","J","H","E","L"],"DFGHIJKL":["D","G","H","K","J","I","F","L"],"EFGHIJKL":["F","G","I","K","J","H","E","L"]};
-
-function processStandings(groups) {
-  for (const [grp, entries] of Object.entries(groups)) {
-    entries.forEach((e, i) => { resolvedTeams[`${i+1}${grp}`] = e.team; });
-  }
-  const thirds = [];
-  for (const [grp, entries] of Object.entries(groups)) {
-    if (entries.length >= 3) thirds.push({ group: grp, ...entries[2] });
-  }
-  thirds.sort((a, b) =>
-    b.points !== a.points ? b.points - a.points :
-    b.gd    !== a.gd    ? b.gd    - a.gd    : b.gf - a.gf
-  );
-  // Only the best 8 of 12 third-placed teams qualify for the Round of 32
-  const qualified = thirds.slice(0, 8);
-  // Look up the exact slot assignment for this qualifying-group combination.
-  // THIRD_PLACE_TABLE was pre-computed covering all 495 possible 8-of-12 combos.
-  const qualKey = qualified.map(t => t.group).sort().join('');
-  const assignment = THIRD_PLACE_TABLE[qualKey];
-  if (!assignment) { resolveKnockout(); return; }
-  // SLOT_ORDER maps table index i to placeholder code used in MATCHES.
-  const SLOT_ORDER = ['3A/B/C/D/F','3C/D/F/G/H','3C/E/F/H/I','3E/H/I/J/K','3B/E/F/I/J','3A/E/H/I/J','3E/F/G/I/J','3D/E/I/J/L'];
-  assignment.forEach((grp, i) => {
-    if (!grp) return;
-    const team = qualified.find(t => t.group === grp);
-    if (team) resolvedTeams[SLOT_ORDER[i]] = team.team;
-  });
-  resolveKnockout();
-}`;
-
 // ─── PATCH INDEX.HTML ─────────────────────────────────────────────────────────
-function patchIndexHtml(standings) {
+function patchIndexHtml() {
   const indexPath = path.join(__dirname, '..', 'site', 'index.html');
   const resultsPath = path.join(__dirname, '..', 'site', 'results.json');
   let html = fs.readFileSync(indexPath, 'utf8');
@@ -966,13 +814,6 @@ function patchIndexHtml(standings) {
     newResolve
   );
 
-  // Replace processStandings() (plus optional preceding THIRD_PLACE_TABLE
-  // constant) with the lookup-table version so re-runs are idempotent.
-  html = html.replace(
-    /(?:\/\/ \u2500{3} THIRD-PLACE ALLOCATION TABLE[\s\S]*?const THIRD_PLACE_TABLE = \{[\s\S]*?;\n\n)?function processStandings\(groups\) \{[\s\S]*?\n\}/,
-    PROCESS_STANDINGS_JS
-  );
-
   // Also fix the footer match count
   html = html.replace(
     /All \d+ fixtures/,
@@ -985,21 +826,12 @@ function patchIndexHtml(standings) {
     'All 104 matches.'
   );
 
-  // Embed live standings fetched at build time so knockout slots resolve on first load
-  if (standings && Object.keys(standings).length > 0) {
-    html = html.replace(
-      /\/\/ ─── STANDINGS \(embedded at build time\) ──────────────────────────\nconst STANDINGS = .*?;/,
-      '// ─── STANDINGS (embedded at build time) ──────────────────────────\nconst STANDINGS = ' + JSON.stringify(standings) + ';'
-    );
-    console.log('📊 Embedded standings for groups: ' + Object.keys(standings).join(', '));
-  }
-
   fs.writeFileSync(indexPath, html, 'utf8');
   console.log('✅ Patched site/index.html');
 }
 
 // ─── PATCH SCHEDULE.HTML ──────────────────────────────────────────────────────
-function patchScheduleHtml(scores = {}, standings = {}) {
+function patchScheduleHtml(scores = {}) {
   const schedulePath = path.join(__dirname, '..', 'site', 'schedule', 'index.html');
   if (!fs.existsSync(schedulePath)) {
     console.warn('⚠️  site/schedule/index.html not found — skipping');
@@ -1025,21 +857,6 @@ function patchScheduleHtml(scores = {}, standings = {}) {
     matchesArrayJs(scores) + '\n'
   );
 
-  // Embed live standings fetched at build time so knockout slots resolve on first load
-  if (standings && Object.keys(standings).length > 0) {
-    html = html.replace(
-      /\/\/ ─── STANDINGS \(embedded at build time\) ──────────────────────────\nconst STANDINGS = .*?;/,
-      '// ─── STANDINGS (embedded at build time) ──────────────────────────\nconst STANDINGS = ' + JSON.stringify(standings) + ';'
-    );
-  }
-
-  // Replace processStandings() (plus optional preceding THIRD_PLACE_TABLE
-  // constant) with the lookup-table version so re-runs are idempotent.
-  html = html.replace(
-    /(?:\/\/ \u2500{3} THIRD-PLACE ALLOCATION TABLE[\s\S]*?const THIRD_PLACE_TABLE = \{[\s\S]*?;\n\n)?function processStandings\(groups\) \{[\s\S]*?\n\}/,
-    PROCESS_STANDINGS_JS
-  );
-
   fs.writeFileSync(schedulePath, html, 'utf8');
   console.log('✅ Patched site/schedule/index.html');
 }
@@ -1058,7 +875,7 @@ const KNOWN_DIRS = [
 const DIRS_TO_REMOVE = KNOWN_DIRS.filter(d => !VALID_SLUGS.has(d));
 
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
-async function main() {
+function main() {
   const siteDir = path.join(__dirname, '..', 'site');
   const resultsPath = path.join(siteDir, 'results.json');
 
@@ -1078,24 +895,9 @@ async function main() {
     }
   }
 
-  // 1. Load standings — prefer the local cache written by the API server poller;
-  //    fall back to a live ESPN fetch only when the cache is absent or stale.
-  let standings = {};
-  const cachedStandings = loadCachedStandings();
-  if (cachedStandings) {
-    standings = cachedStandings;
-  } else {
-    try {
-      standings = await fetchStandings();
-      console.log(`🌍 Fetched standings for ${Object.keys(standings).length} groups from ESPN`);
-    } catch (e) {
-      console.warn('⚠️  Could not fetch standings from ESPN — knockout slots will use placeholder codes:', e.message);
-    }
-  }
-
-  // 2. Patch index.html and schedule page (both get embedded scores + standings)
-  patchIndexHtml(standings);
-  patchScheduleHtml(scores, standings);
+  // 1. Patch index.html and schedule page (both get embedded scores)
+  patchIndexHtml();
+  patchScheduleHtml(scores);
 
   // 2. Remove obsolete team dirs
   for (const dir of DIRS_TO_REMOVE) {
@@ -1123,4 +925,4 @@ async function main() {
   console.log(`   Dirs removed:  ${DIRS_TO_REMOVE.join(', ')}`);
 }
 
-main().catch(err => { console.error('❌ generate-schedule failed:', err); process.exit(1); });
+main();

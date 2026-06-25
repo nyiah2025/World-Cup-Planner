@@ -133,28 +133,6 @@ function resolve(req, res, urlPath) {
 
 const server = http.createServer((req, res) => {
   const urlPath = req.url.split("?")[0] || "/";
-
-  // Proxy /api/* to the API server so fetch('/api/standings') works in dev
-  if (urlPath.startsWith('/api/') || urlPath === '/api') {
-    const opts = {
-      hostname: '127.0.0.1',
-      port: 8080,
-      path: req.url,
-      method: req.method,
-      headers: { ...req.headers, host: '127.0.0.1:8080' },
-    };
-    const proxy = http.request(opts, (proxyRes) => {
-      res.writeHead(proxyRes.statusCode, proxyRes.headers);
-      proxyRes.pipe(res, { end: true });
-    });
-    proxy.on('error', () => {
-      res.writeHead(502, { 'Content-Type': 'text/plain' });
-      res.end('API unavailable');
-    });
-    req.pipe(proxy, { end: true });
-    return;
-  }
-
   resolve(req, res, urlPath);
 });
 
