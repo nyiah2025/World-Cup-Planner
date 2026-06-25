@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { logger } from "./logger";
+import { patchStandingsIntoHtml } from "./site-patcher";
 
 const POLL_INTERVAL_MS = 2 * 60 * 60 * 1000; // 2 hours
 const ESPN_URL =
@@ -111,6 +112,10 @@ export async function fetchAndCacheStandings(): Promise<void> {
       { groups: groupCount, path: CACHE_PATH },
       "standings-poller: cache updated",
     );
+
+    // Patch the embedded STANDINGS constant in the static HTML files so
+    // JS-disabled browsers and pre-JS render see fresh data without a full rebuild.
+    patchStandingsIntoHtml(groups);
   } catch (err) {
     logger.error({ err }, "standings-poller: fetch failed");
   }
