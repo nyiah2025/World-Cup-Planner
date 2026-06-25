@@ -15,6 +15,28 @@ const path = require('path');
 const https = require('https');
 const http_  = require('http');
 
+// ─── STANDINGS CACHE ──────────────────────────────────────────────────────────
+const STANDINGS_CACHE_PATH = path.join(__dirname, '..', 'site', 'standings.json');
+const STANDINGS_CACHE_MAX_AGE_MS = 3 * 60 * 60 * 1000; // 3 hours
+
+function loadCachedStandings() {
+  if (!fs.existsSync(STANDINGS_CACHE_PATH)) return null;
+  try {
+    const raw = JSON.parse(fs.readFileSync(STANDINGS_CACHE_PATH, 'utf8'));
+    if (!raw.fetchedAt || !raw.groups) return null;
+    const age = Date.now() - new Date(raw.fetchedAt).getTime();
+    if (age > STANDINGS_CACHE_MAX_AGE_MS) {
+      console.log(`⏰  standings.json is ${Math.round(age / 60000)}m old — will refresh from ESPN`);
+      return null;
+    }
+    console.log(`📋 Loaded standings from cache (${Math.round(age / 60000)}m old)`);
+    return raw.groups;
+  } catch (e) {
+    console.warn('⚠️  Could not parse standings.json cache:', e.message);
+    return null;
+  }
+}
+
 // ─── FETCH STANDINGS FROM ESPN ────────────────────────────────────────────────
 function fetchStandings() {
   return new Promise((resolve, reject) => {
@@ -1002,13 +1024,19 @@ async function main() {
     }
   }
 
-  // 1. Fetch current standings from ESPN so knockout slots show real names
+  // 1. Load standings — prefer the local cache written by the API server poller;
+  //    fall back to a live ESPN fetch only when the cache is absent or stale.
   let standings = {};
-  try {
-    standings = await fetchStandings();
-    console.log(`🌍 Fetched standings for ${Object.keys(standings).length} groups from ESPN`);
-  } catch (e) {
-    console.warn('⚠️  Could not fetch standings from ESPN — knockout slots will use placeholder codes:', e.message);
+  const cachedStandings = loadCachedStandings();
+  if (cachedStandings) {
+    standings = cachedStandings;
+  } else {
+    try {
+      standings = await fetchStandings();
+      console.log(`🌍 Fetched standings for ${Object.keys(standings).length} groups from ESPN`);
+    } catch (e) {
+      console.warn('⚠️  Could not fetch standings from ESPN — knockout slots will use placeholder codes:', e.message);
+    }
   }
 
   // 2. Patch index.html and schedule page (both get embedded scores + standings)
