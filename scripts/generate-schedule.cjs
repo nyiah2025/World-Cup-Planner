@@ -761,8 +761,52 @@ function matchesArrayJs(scores = {}) {
   return lines.join('\n');
 }
 
+// ─── FETCH STANDINGS AT BUILD TIME ────────────────────────────────────────────
+async function fetchStandings() {
+  const ESPN_NORM = {
+    'United States': 'USA', 'United States of America': 'USA',
+    'Bosnia-Herzegovina': 'Bosnia & Herz.', 'Bosnia and Herzegovina': 'Bosnia & Herz.',
+    'Ivory Coast': "Côte d'Ivoire", "Cote d'Ivoire": "Côte d'Ivoire",
+    'Turkey': 'Türkiye', 'Czech Republic': 'Czechia',
+    'Democratic Republic of Congo': 'DR Congo', 'Congo DR': 'DR Congo', 'Congo, DR': 'DR Congo',
+    'Republic of Korea': 'South Korea', 'Korea Republic': 'South Korea',
+    'IR Iran': 'Iran',
+  };
+  function norm(n) { return ESPN_NORM[n] ?? n; }
+  try {
+    const url = 'https://site.api.espn.com/apis/v2/sports/soccer/fifa.world/standings';
+    const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+    if (!res.ok) { console.warn('⚠️  ESPN standings returned', res.status); return {}; }
+    const data = await res.json();
+    const groups = {};
+    for (const group of (data.children ?? [])) {
+      const rawName = (group.name ?? '').replace(/^Group\s+/i, '').trim();
+      if (!rawName) continue;
+      const entries = (group.standings?.entries ?? []);
+      groups[rawName] = entries.map((e, i) => {
+        const stats = e.stats ?? [];
+        const getStat = (name) => parseInt(stats.find(s => s.name === name)?.value ?? '0', 10) || 0;
+        return {
+          team: norm(e.team?.displayName ?? ''),
+          position: i + 1,
+          points: getStat('points'),
+          gd: getStat('pointDifferential'),
+          gf: getStat('pointsFor'),
+        };
+      });
+    }
+    const count = Object.keys(groups).length;
+    if (count) console.log(`🏆 Fetched standings for ${count} group(s)`);
+    else console.warn('⚠️  ESPN standings returned no groups');
+    return groups;
+  } catch (e) {
+    console.warn('⚠️  Could not fetch standings:', e.message);
+    return {};
+  }
+}
+
 // ─── PATCH INDEX.HTML ─────────────────────────────────────────────────────────
-function patchIndexHtml() {
+function patchIndexHtml(standings = {}) {
   const indexPath = path.join(__dirname, '..', 'site', 'index.html');
   const resultsPath = path.join(__dirname, '..', 'site', 'results.json');
   let html = fs.readFileSync(indexPath, 'utf8');
@@ -826,12 +870,21 @@ function patchIndexHtml() {
     'All 104 matches.'
   );
 
+  // Inject build-time standings so knockout slots resolve immediately on page load.
+  // Replaces the `const STANDINGS = {};` sentinel written by this script.
+  if (Object.keys(standings).length) {
+    html = html.replace(
+      /const STANDINGS = \{[\s\S]*?\};/,
+      `const STANDINGS = ${JSON.stringify(standings)};`
+    );
+  }
+
   fs.writeFileSync(indexPath, html, 'utf8');
   console.log('✅ Patched site/index.html');
 }
 
 // ─── PATCH SCHEDULE.HTML ──────────────────────────────────────────────────────
-function patchScheduleHtml(scores = {}) {
+function patchScheduleHtml(scores = {}, standings = {}) {
   const schedulePath = path.join(__dirname, '..', 'site', 'schedule', 'index.html');
   if (!fs.existsSync(schedulePath)) {
     console.warn('⚠️  site/schedule/index.html not found — skipping');
@@ -857,6 +910,14 @@ function patchScheduleHtml(scores = {}) {
     matchesArrayJs(scores) + '\n'
   );
 
+  // Inject build-time standings so knockout slots resolve immediately on page load.
+  if (Object.keys(standings).length) {
+    html = html.replace(
+      /const STANDINGS = \{[\s\S]*?\};/,
+      `const STANDINGS = ${JSON.stringify(standings)};`
+    );
+  }
+
   fs.writeFileSync(schedulePath, html, 'utf8');
   console.log('✅ Patched site/schedule/index.html');
 }
@@ -875,7 +936,7 @@ const KNOWN_DIRS = [
 const DIRS_TO_REMOVE = KNOWN_DIRS.filter(d => !VALID_SLUGS.has(d));
 
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
-function main() {
+(async function main() {
   const siteDir = path.join(__dirname, '..', 'site');
   const resultsPath = path.join(siteDir, 'results.json');
 
@@ -895,9 +956,12 @@ function main() {
     }
   }
 
-  // 1. Patch index.html and schedule page (both get embedded scores)
-  patchIndexHtml();
-  patchScheduleHtml(scores);
+  // Fetch current standings from ESPN so knockout slots can be resolved at build time
+  const standings = await fetchStandings();
+
+  // 1. Patch index.html and schedule page (both get embedded scores + standings)
+  patchIndexHtml(standings);
+  patchScheduleHtml(scores, standings);
 
   // 2. Remove obsolete team dirs
   for (const dir of DIRS_TO_REMOVE) {
@@ -923,6 +987,4 @@ function main() {
   console.log(`   Teams in draw: ${TEAMS.length}`);
   console.log(`   Matches total: ${MATCHES.length}`);
   console.log(`   Dirs removed:  ${DIRS_TO_REMOVE.join(', ')}`);
-}
-
-main();
+})();

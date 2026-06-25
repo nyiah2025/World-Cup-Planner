@@ -133,6 +133,32 @@ function resolve(req, res, urlPath) {
 
 const server = http.createServer((req, res) => {
   const urlPath = req.url.split("?")[0] || "/";
+
+  // Proxy /api/* requests to the API server on port 8080.
+  // Strip the "/api" prefix so the API server sees e.g. "/scores" not "/api/scores".
+  if (urlPath.startsWith("/api/")) {
+    const proxyPath = req.url.replace(/^\/api/, "");
+    const options = {
+      hostname: "localhost",
+      port: 8080,
+      path: proxyPath,
+      method: req.method,
+      headers: { ...req.headers, host: "localhost:8080" },
+    };
+    const proxyReq = http.request(options, (proxyRes) => {
+      res.writeHead(proxyRes.statusCode, proxyRes.headers);
+      proxyRes.pipe(res);
+    });
+    proxyReq.on("error", () => {
+      if (!res.headersSent) {
+        res.writeHead(502, { "Content-Type": "text/plain" });
+        res.end("API server unavailable");
+      }
+    });
+    req.pipe(proxyReq);
+    return;
+  }
+
   resolve(req, res, urlPath);
 });
 
