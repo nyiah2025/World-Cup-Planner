@@ -365,6 +365,14 @@ function generateTeamPage(team, scores = {}) {
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
+<script data-cfasync="false" src="https://cmp.gatekeeperconsent.com/min.js"></script>
+<script data-cfasync="false" src="https://the.gatekeeperconsent.com/cmp.min.js"></script>
+
+<script>
+    window.ezstandalone = window.ezstandalone || {};
+    ezstandalone.cmd = ezstandalone.cmd || [];
+</script>
+
 <meta charset="UTF-8">
 <meta name="fo-verify" content="ff551aa5-0412-48f7-87ce-eb6cf70bfb9a" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6904183268749770"
@@ -458,6 +466,15 @@ ${otherTeamsHtml(slug)}
 <div class="toast" id="toast"></div>
 
 
+<!-- FOOD GUIDE CALLOUT -->
+<div class="food-guide-callout">
+  <div class="fgc-icon">🍕</div>
+  <div class="fgc-body">
+    <div class="fgc-label">Viewing Party Food</div>
+    <div class="fgc-text">What to eat when your team plays — recipes and snack ideas matched to every group.</div>
+  </div>
+  <a class="fgc-link" href="/articles/world-cup-food-guide/#group-${group.toLowerCase()}">See Group ${group} Food &amp; Recipes &#x2192;</a>
+</div>
 
 <!-- FROM THE FAN'S GUIDE -->
 <section class="articles-teaser">
@@ -783,12 +800,16 @@ async function fetchStandings() {
       const rawName = (group.name ?? '').replace(/^Group\s+/i, '').trim();
       if (!rawName) continue;
       const entries = (group.standings?.entries ?? []);
-      groups[rawName] = entries.map((e, i) => {
+      // Sort by ESPN's authoritative note.rank, falling back to source order
+      const sorted = [...entries].sort((a, b) =>
+        (a.note?.rank ?? 99) - (b.note?.rank ?? 99)
+      );
+      groups[rawName] = sorted.map((e, i) => {
         const stats = e.stats ?? [];
         const getStat = (name) => parseInt(stats.find(s => s.name === name)?.value ?? '0', 10) || 0;
         return {
           team: norm(e.team?.displayName ?? ''),
-          position: i + 1,
+          position: (e.note?.rank ?? i + 1),
           points: getStat('points'),
           gd: getStat('pointDifferential'),
           gf: getStat('pointsFor'),
