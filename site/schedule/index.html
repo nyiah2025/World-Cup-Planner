@@ -449,28 +449,56 @@ function processStandings(groups) {
     MATCHES.flatMap(m => [m.home, m.away]).filter(t => /^3[A-L]/.test(t))
   )];
   const top8 = thirds.slice(0, thirdCodes.length);
-  const sortedCodes = [...thirdCodes].sort((a, b) => {
-    const ag = a.slice(1).split('/'), bg = b.slice(1).split('/');
-    return top8.filter(t => ag.includes(t.group)).length -
-           top8.filter(t => bg.includes(t.group)).length;
-  });
-  const used = new Set();
-  function assign(i) {
-    if (i === sortedCodes.length) return true;
-    const code = sortedCodes[i];
-    const allowed = code.slice(1).split('/');
-    for (const t of top8) {
-      if (allowed.includes(t.group) && !used.has(t.group)) {
-        resolvedTeams[code] = t.team;
-        used.add(t.group);
-        if (assign(i + 1)) return true;
-        delete resolvedTeams[code];
-        used.delete(t.group);
-      }
+  const groupByTeam = {};
+  for (const t of top8) groupByTeam[t.team] = t.group;
+
+  // ── Official FIFA 2026 third-place allocation table ──────────────────────
+  // Key: alphabetically-sorted letters of the 8 qualifying third-place groups.
+  // Value: slot placeholder → qualifying group letter.
+  // Source: FIFA World Cup 26™ Competition Regulations, Appendix (bracket draw).
+  const FIFA_THIRD_PLACE_TABLE = {
+    'BDEFIJKL': {
+      '3A/B/C/D/F':'D','3C/D/F/G/H':'F','3C/E/F/H/I':'I',
+      '3A/E/H/I/J':'E','3E/H/I/J/K':'K','3E/F/G/I/J':'J',
+      '3B/E/F/I/J':'B','3D/E/I/J/L':'L'
     }
-    return false;
+  };
+
+  const comboKey = top8.map(t => t.group).sort().join('');
+  const tableEntry = FIFA_THIRD_PLACE_TABLE[comboKey];
+
+  if (tableEntry) {
+    // Use the canonical FIFA-defined assignment for this qualifying combination
+    const teamByGroup = {};
+    for (const t of top8) teamByGroup[t.group] = t.team;
+    for (const [slot, grp] of Object.entries(tableEntry)) {
+      if (teamByGroup[grp]) resolvedTeams[slot] = teamByGroup[grp];
+    }
+  } else {
+    // Fallback: backtracking assignment for combinations not yet in the table
+    const sortedCodes = [...thirdCodes].sort((a, b) => {
+      const ag = a.slice(1).split('/'), bg = b.slice(1).split('/');
+      return top8.filter(t => ag.includes(t.group)).length -
+             top8.filter(t => bg.includes(t.group)).length;
+    });
+    const used = new Set();
+    function assign(i) {
+      if (i === sortedCodes.length) return true;
+      const code = sortedCodes[i];
+      const allowed = code.slice(1).split('/');
+      for (const t of top8) {
+        if (allowed.includes(t.group) && !used.has(t.group)) {
+          resolvedTeams[code] = t.team;
+          used.add(t.group);
+          if (assign(i + 1)) return true;
+          delete resolvedTeams[code];
+          used.delete(t.group);
+        }
+      }
+      return false;
+    }
+    assign(0);
   }
-  assign(0);
   resolveKnockout();
 }
 
