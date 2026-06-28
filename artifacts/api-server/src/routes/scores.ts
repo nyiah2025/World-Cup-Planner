@@ -13,6 +13,7 @@ interface MatchScore {
   status: "scheduled" | "live" | "final";
   clock?: string;
   date: string;
+  penaltyWinner?: string;
 }
 
 interface StandingEntry {
@@ -86,14 +87,31 @@ function parseScoreboardData(data: Record<string, unknown>): MatchScore[] {
       const homeTeamObj = home?.team as Record<string, unknown>;
       const awayTeamObj = away?.team as Record<string, unknown>;
 
+      const hs = parseInt((home?.score as string) ?? "0", 10) || 0;
+      const as_ = parseInt((away?.score as string) ?? "0", 10) || 0;
+
+      let penaltyWinner: string | undefined;
+      if (hs === as_ && completed) {
+        if ((home as Record<string, unknown>)?.winner === true) {
+          penaltyWinner = normalizeTeamName(
+            (homeTeamObj?.displayName as string) ?? "",
+          );
+        } else if ((away as Record<string, unknown>)?.winner === true) {
+          penaltyWinner = normalizeTeamName(
+            (awayTeamObj?.displayName as string) ?? "",
+          );
+        }
+      }
+
       return {
         homeTeam: normalizeTeamName((homeTeamObj?.displayName as string) ?? ""),
         awayTeam: normalizeTeamName((awayTeamObj?.displayName as string) ?? ""),
-        homeScore: parseInt((home?.score as string) ?? "0", 10) || 0,
-        awayScore: parseInt((away?.score as string) ?? "0", 10) || 0,
+        homeScore: hs,
+        awayScore: as_,
         status: completed ? "final" : state === "in" ? "live" : "scheduled",
         clock: (statusObj?.displayClock as string | undefined) ?? undefined,
         date: (e.date as string) ?? "",
+        ...(penaltyWinner ? { penaltyWinner } : {}),
       };
     });
   });

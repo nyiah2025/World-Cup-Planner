@@ -294,7 +294,7 @@ function generateTeamPage(team, scores = {}) {
   const matchesJs = teamMatches.map(m => {
     const sc = scores[m.id];
     const scorePart = sc
-      ? `, homeScore:${sc.homeScore}, awayScore:${sc.awayScore}, status:${JSON.stringify(sc.status)}`
+      ? `, homeScore:${sc.homeScore}, awayScore:${sc.awayScore}, status:${JSON.stringify(sc.status)}${sc.penaltyWinner ? `, penaltyWinner:${JSON.stringify(sc.penaltyWinner)}` : ''}`
       : '';
     return `  {id:${m.id}, home:${JSON.stringify(m.home)}, away:${JSON.stringify(m.away)}, utc:"${m.utc}"${scorePart}}`;
   }).join(',\n');
@@ -766,7 +766,7 @@ function matchesArrayJs(scores = {}) {
     }
     const sc = scores[m.id];
     const scorePart = sc
-      ? `, homeScore:${sc.homeScore}, awayScore:${sc.awayScore}, status:${JSON.stringify(sc.status)}`
+      ? `, homeScore:${sc.homeScore}, awayScore:${sc.awayScore}, status:${JSON.stringify(sc.status)}${sc.penaltyWinner ? `, penaltyWinner:${JSON.stringify(sc.penaltyWinner)}` : ''}`
       : '';
     lines.push(
       `  {id:${m.id}, stage:${JSON.stringify(m.stage)}, group:${JSON.stringify(m.group)}, ` +
@@ -919,13 +919,21 @@ async function fetchKnockoutScores(standings = {}) {
           const statusType = comp.status?.type;
           const completed = statusType?.completed ?? false;
           const state = statusType?.state ?? 'pre';
+          const hs = parseInt(home?.score ?? '0', 10) || 0;
+          const as_ = parseInt(away?.score ?? '0', 10) || 0;
+          let penaltyWinner;
+          if (hs === as_ && completed) {
+            if (home?.winner === true) penaltyWinner = norm(home?.team?.displayName ?? '');
+            else if (away?.winner === true) penaltyWinner = norm(away?.team?.displayName ?? '');
+          }
           espnMatches.push({
             homeTeam: norm(home?.team?.displayName ?? ''),
             awayTeam: norm(away?.team?.displayName ?? ''),
-            homeScore: parseInt(home?.score ?? '0', 10) || 0,
-            awayScore: parseInt(away?.score ?? '0', 10) || 0,
+            homeScore: hs,
+            awayScore: as_,
             status: completed ? 'final' : state === 'in' ? 'live' : 'scheduled',
             date: evt.date ?? '',
+            ...(penaltyWinner ? { penaltyWinner } : {}),
           });
         }
       }
@@ -961,10 +969,18 @@ async function fetchKnockoutScores(standings = {}) {
       const as_ = homeFirst ? em.awayScore : em.homeScore;
 
       if (em.status === 'final') {
-        scores[m.id] = { homeScore: hs, awayScore: as_, status: 'final' };
+        const sc = { homeScore: hs, awayScore: as_, status: 'final' };
+        let winner, loser;
         if (hs !== as_) {
-          const winner = hs > as_ ? mHome : mAway;
-          const loser  = hs > as_ ? mAway : mHome;
+          winner = hs > as_ ? mHome : mAway;
+          loser  = hs > as_ ? mAway : mHome;
+        } else if (em.penaltyWinner) {
+          winner = em.penaltyWinner === em.homeTeam ? mHome : mAway;
+          loser  = em.penaltyWinner === em.homeTeam ? mAway : mHome;
+          sc.penaltyWinner = winner;
+        }
+        scores[m.id] = sc;
+        if (winner) {
           // Resolve winner code so subsequent rounds can be matched
           if      (m.id >= 73 && m.id <= 88) resolvedTeams[`R32 W${m.id - 72}`] = winner;
           else if (m.id >= 89 && m.id <= 96) resolvedTeams[`R16 W${m.id - 88}`] = winner;

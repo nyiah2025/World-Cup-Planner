@@ -392,9 +392,17 @@ function seedEmbeddedResults() {
     const mHome = resolvedTeams[m.home] || m.home;
     const mAway = resolvedTeams[m.away] || m.away;
     liveData[m.id] = { homeScore: m.homeScore, awayScore: m.awayScore, status: m.status || 'final' };
-    if ((m.status || 'final') === 'final' && m.homeScore !== m.awayScore) {
-      matchWinners[m.id] = m.homeScore > m.awayScore ? mHome : mAway;
-      matchLosers[m.id]  = m.homeScore > m.awayScore ? mAway : mHome;
+    if ((m.status || 'final') === 'final') {
+      if (m.homeScore !== m.awayScore) {
+        matchWinners[m.id] = m.homeScore > m.awayScore ? mHome : mAway;
+        matchLosers[m.id]  = m.homeScore > m.awayScore ? mAway : mHome;
+      } else if (m.penaltyWinner) {
+        if (m.penaltyWinner === mHome) {
+          matchWinners[m.id] = mHome; matchLosers[m.id] = mAway;
+        } else if (m.penaltyWinner === mAway) {
+          matchWinners[m.id] = mAway; matchLosers[m.id] = mHome;
+        }
+      }
     }
   }
 }
@@ -425,6 +433,9 @@ function processScores(espnMatches) {
         if (hs !== as_) {
           matchWinners[m.id] = hs > as_ ? mHome : mAway;
           matchLosers[m.id]  = hs > as_ ? mAway : mHome;
+        } else if (em.penaltyWinner) {
+          matchWinners[m.id] = em.penaltyWinner === (homeFirst ? em.homeTeam : em.awayTeam) ? mHome : mAway;
+          matchLosers[m.id]  = em.penaltyWinner === (homeFirst ? em.homeTeam : em.awayTeam) ? mAway : mHome;
         }
       }
       break;
