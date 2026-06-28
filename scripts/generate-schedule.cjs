@@ -1145,7 +1145,37 @@ const DIRS_TO_REMOVE = KNOWN_DIRS.filter(d => !VALID_SLUGS.has(d));
   // Fetch completed knockout results from ESPN and merge with results.json scores.
   // results.json (group stage) takes priority; ESPN knockout data fills in the rest.
   const knockoutScores = await fetchKnockoutScores(standings);
-  const allScores = { ...scores, ...knockoutScores };
+  const knockoutCachePath = path.join(siteDir, 'knockout-scores.json');
+
+  let effectiveKnockoutScores = knockoutScores;
+  if (Object.keys(knockoutScores).length > 0) {
+    // Fresh data — persist it so future runs can fall back to it if ESPN is down
+    try {
+      fs.writeFileSync(knockoutCachePath, JSON.stringify(knockoutScores, null, 2), 'utf8');
+    } catch (e) {
+      console.warn('⚠️  Could not write knockout scores cache:', e.message);
+    }
+  } else {
+    // ESPN returned nothing (API error or 0 results) — try the last-known-good cache
+    if (fs.existsSync(knockoutCachePath)) {
+      try {
+        const raw = JSON.parse(fs.readFileSync(knockoutCachePath, 'utf8'));
+        const rebuilt = {};
+        for (const [k, v] of Object.entries(raw)) {
+          rebuilt[Number(k)] = v;
+        }
+        const cachedCount = Object.keys(rebuilt).length;
+        if (cachedCount > 0) {
+          console.warn(`⚠️  ESPN returned no knockout data — using cached ${cachedCount} result(s) from previous run to avoid blanking the bracket`);
+          effectiveKnockoutScores = rebuilt;
+        }
+      } catch (e) {
+        console.warn('⚠️  Could not read knockout scores cache:', e.message);
+      }
+    }
+  }
+
+  const allScores = { ...scores, ...effectiveKnockoutScores };
 
   // 1. Patch index.html and schedule page (both get embedded scores + standings)
   patchIndexHtml(standings, allScores);
