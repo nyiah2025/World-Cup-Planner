@@ -61,12 +61,9 @@ function toDateStr(d: Date): string {
   return d.toISOString().slice(0, 10).replace(/-/g, "");
 }
 
-async function fetchScoreboardForDate(dateStr: string): Promise<MatchScore[]> {
-  const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=${dateStr}&limit=50`;
-  const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
-  if (!res.ok) return [];
-
-  const data = (await res.json()) as Record<string, unknown>;
+// Parse ESPN scoreboard JSON into MatchScore[].
+// Works for both single-date and date-range ESPN API responses.
+function parseScoreboardData(data: Record<string, unknown>): MatchScore[] {
   const events = (data.events as unknown[]) ?? [];
 
   return events.flatMap((evt): MatchScore[] => {
@@ -102,6 +99,29 @@ async function fetchScoreboardForDate(dateStr: string): Promise<MatchScore[]> {
   });
 }
 
+// Fetch ESPN scoreboard for a date param — either a single YYYYMMDD string
+// or a range "YYYYMMDD-YYYYMMDD".  Returns [] on any error.
+async function fetchScoreboardForDateParam(
+  dateParam: string,
+): Promise<MatchScore[]> {
+  const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=${dateParam}&limit=100`;
+  try {
+    const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+    if (!res.ok) return [];
+    const data = (await res.json()) as Record<string, unknown>;
+    return parseScoreboardData(data);
+  } catch {
+    return [];
+  }
+}
+
+// ─── BRACKET DATE CONSTANTS ───────────────────────────────────────────────────
+
+// FIFA World Cup 2026 knockout stage runs June 28 – July 19 (UTC).
+// Expressed as YYYYMMDD strings for easy comparison with toDateStr() output.
+const BRACKET_START = "20260628";
+const BRACKET_END = "20260720"; // one day past the Final for safety
+
 // ─── ROUTES ──────────────────────────────────────────────────────────────────
 
 router.get("/scores", async (_req, res) => {
@@ -110,19 +130,53 @@ router.get("/scores", async (_req, res) => {
       return res.json({ matches: scoresCache.data });
     }
 
-    // Fetch yesterday, today, and tomorrow to cover live + very recent results
     const today = new Date();
-    const dates = [-1, 0, 1].map((offset) => {
-      const d = new Date(today);
-      d.setUTCDate(d.getUTCDate() + offset);
-      return toDateStr(d);
-    });
+    const todayStr = toDateStr(today);
+    const tomorrow = new Date(today);
+    tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+    const tomorrowStr = toDateStr(tomorrow);
 
-    const results = await Promise.all(dates.map(fetchScoreboardForDate));
-    const all = results.flat().filter((m) => m.status !== "scheduled");
+    let all: MatchScore[];
 
-    scoresCache = { data: all, ts: Date.now() };
-    return res.json({ matches: all });
+    if (todayStr >= BRACKET_START && todayStr <= BRACKET_END) {
+      // During the knockout stage, fetch the full bracket window in one range
+      // query so results from earlier rounds are always included.
+      // ESPN scoreboard API supports YYYYMMDD-YYYYMMDD range format.
+      const rangeParam = `${BRACKET_START}-${tomorrowStr}`;
+      all = await fetchScoreboardForDateParam(rangeParam);
+
+      // If the range query returned nothing (API may not support the format),
+      // fall back to fetching yesterday / today / tomorrow individually.
+      if (all.length === 0) {
+        logger.warn(
+          "ESPN range query returned no results — falling back to ±1 day",
+        );
+        const dates = [-1, 0, 1].map((offset) => {
+          const d = new Date(today);
+          d.setUTCDate(d.getUTCDate() + offset);
+          return toDateStr(d);
+        });
+        const parts = await Promise.all(
+          dates.map((d) => fetchScoreboardForDateParam(d)),
+        );
+        all = parts.flat();
+      }
+    } else {
+      // Outside the tournament window — standard ±1 day is sufficient.
+      const dates = [-1, 0, 1].map((offset) => {
+        const d = new Date(today);
+        d.setUTCDate(d.getUTCDate() + offset);
+        return toDateStr(d);
+      });
+      const parts = await Promise.all(
+        dates.map((d) => fetchScoreboardForDateParam(d)),
+      );
+      all = parts.flat();
+    }
+
+    const filtered = all.filter((m) => m.status !== "scheduled");
+    scoresCache = { data: filtered, ts: Date.now() };
+    return res.json({ matches: filtered });
   } catch (err) {
     logger.error({ err }, "Failed to fetch scores");
     return res.json({ matches: scoresCache?.data ?? [] });

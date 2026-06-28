@@ -826,25 +826,171 @@ async function fetchStandings() {
   }
 }
 
-// ─── PATCH INDEX.HTML ─────────────────────────────────────────────────────────
-function patchIndexHtml(standings = {}) {
-  const indexPath = path.join(__dirname, '..', 'site', 'index.html');
-  const resultsPath = path.join(__dirname, '..', 'site', 'results.json');
-  let html = fs.readFileSync(indexPath, 'utf8');
+// ─── FETCH KNOCKOUT SCORES AT BUILD TIME ──────────────────────────────────────
+// Fetches completed knockout results from ESPN (R32 through Final) and returns
+// a scores map keyed by match ID, suitable for passing to matchesArrayJs().
+// Requires standings data to resolve group-stage placeholder codes (1A, 2B, etc.)
+// before matching against ESPN team names.
+async function fetchKnockoutScores(standings = {}) {
+  const ESPN_NORM = {
+    'United States': 'USA', 'United States of America': 'USA',
+    'Bosnia-Herzegovina': 'Bosnia & Herz.', 'Bosnia and Herzegovina': 'Bosnia & Herz.',
+    'Ivory Coast': "Côte d'Ivoire", "Cote d'Ivoire": "Côte d'Ivoire",
+    'Turkey': 'Türkiye', 'Czech Republic': 'Czechia',
+    'Democratic Republic of Congo': 'DR Congo', 'Congo DR': 'DR Congo', 'Congo, DR': 'DR Congo',
+    'Republic of Korea': 'South Korea', 'Korea Republic': 'South Korea',
+    'IR Iran': 'Iran',
+  };
+  function norm(n) { return ESPN_NORM[n] ?? n; }
 
-  // Load persisted match results — keyed by match id (as number)
-  let scores = {};
-  if (fs.existsSync(resultsPath)) {
-    try {
-      const raw = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
-      for (const [k, v] of Object.entries(raw)) {
-        scores[Number(k)] = v;
+  // Step 1: Build resolvedTeams from standings (mirrors browser processStandings)
+  const resolvedTeams = {};
+  for (const [grp, entries] of Object.entries(standings)) {
+    entries.forEach((e, i) => { resolvedTeams[`${i+1}${grp}`] = e.team; });
+  }
+
+  // Apply FIFA 2026 third-place allocation table (same as browser)
+  const thirds = [];
+  for (const [grp, entries] of Object.entries(standings)) {
+    if (entries.length >= 3) thirds.push({ group: grp, team: entries[2].team,
+      points: entries[2].points, gd: entries[2].gd, gf: entries[2].gf });
+  }
+  thirds.sort((a, b) =>
+    b.points !== a.points ? b.points - a.points :
+    b.gd !== a.gd ? b.gd - a.gd : b.gf - a.gf
+  );
+  const thirdCodes = [...new Set(
+    MATCHES.flatMap(m => [m.home, m.away]).filter(t => /^3[A-L]/.test(t))
+  )];
+  const top8 = thirds.slice(0, thirdCodes.length);
+  const FIFA_THIRD_PLACE_TABLE = {
+    'BDEFIJKL': {
+      '3A/B/C/D/F':'D','3C/D/F/G/H':'F','3C/E/F/H/I':'I',
+      '3A/E/H/I/J':'E','3E/H/I/J/K':'K','3E/F/G/I/J':'J',
+      '3B/E/F/I/J':'B','3D/E/I/J/L':'L'
+    }
+  };
+  const comboKey = top8.map(t => t.group).sort().join('');
+  const tableEntry = FIFA_THIRD_PLACE_TABLE[comboKey];
+  if (tableEntry) {
+    const teamByGroup = {};
+    for (const t of top8) teamByGroup[t.group] = t.team;
+    for (const [slot, grp] of Object.entries(tableEntry)) {
+      if (teamByGroup[grp]) resolvedTeams[slot] = teamByGroup[grp];
+    }
+  } else {
+    const sortedCodes = [...thirdCodes].sort((a, b) => {
+      const ag = a.slice(1).split('/'), bg = b.slice(1).split('/');
+      return top8.filter(t => ag.includes(t.group)).length -
+             top8.filter(t => bg.includes(t.group)).length;
+    });
+    const used = new Set();
+    function assignThird(i) {
+      if (i === sortedCodes.length) return true;
+      const code = sortedCodes[i];
+      const allowed = code.slice(1).split('/');
+      for (const t of top8) {
+        if (allowed.includes(t.group) && !used.has(t.group)) {
+          resolvedTeams[code] = t.team;
+          used.add(t.group);
+          if (assignThird(i + 1)) return true;
+          delete resolvedTeams[code];
+          used.delete(t.group);
+        }
       }
-      console.log(`📊 Loaded ${Object.keys(scores).length} result(s) from results.json`);
-    } catch (e) {
-      console.warn('⚠️  Could not parse results.json — skipping score preservation:', e.message);
+      return false;
+    }
+    assignThird(0);
+  }
+
+  // Step 2: Fetch ESPN scoreboard for the full knockout bracket window
+  // (June 28 – July 20). ESPN supports YYYYMMDD-YYYYMMDD range queries.
+  let espnMatches = [];
+  try {
+    const url = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260628-20260720&limit=100';
+    const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
+    if (res.ok) {
+      const data = await res.json();
+      for (const evt of (data.events ?? [])) {
+        for (const comp of (evt.competitions ?? [])) {
+          const competitors = comp.competitors ?? [];
+          const home = competitors.find(x => x.homeAway === 'home');
+          const away = competitors.find(x => x.homeAway === 'away');
+          const statusType = comp.status?.type;
+          const completed = statusType?.completed ?? false;
+          const state = statusType?.state ?? 'pre';
+          espnMatches.push({
+            homeTeam: norm(home?.team?.displayName ?? ''),
+            awayTeam: norm(away?.team?.displayName ?? ''),
+            homeScore: parseInt(home?.score ?? '0', 10) || 0,
+            awayScore: parseInt(away?.score ?? '0', 10) || 0,
+            status: completed ? 'final' : state === 'in' ? 'live' : 'scheduled',
+            date: evt.date ?? '',
+          });
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('⚠️  Could not fetch knockout scores from ESPN:', e.message);
+    return {};
+  }
+
+  // Step 3: Match ESPN results against MATCHES entries in ID order.
+  // Process in order so R32 winners are known before R16 matching, etc.
+  const knockoutMatches = MATCHES.filter(m => m.stage !== 'Group Stage');
+  const scores = {};
+
+  for (const m of knockoutMatches) {
+    const mHome = resolvedTeams[m.home] || m.home;
+    const mAway = resolvedTeams[m.away] || m.away;
+
+    // Skip if either team is still an unresolved placeholder (prior result unknown)
+    if (mHome === m.home || mAway === m.away) continue;
+
+    const mDate = m.utc.slice(0, 10);
+    for (const em of espnMatches) {
+      if (em.status === 'scheduled') continue;
+      const eDate = (em.date || '').slice(0, 10);
+      const sameTeams =
+        (em.homeTeam === mHome && em.awayTeam === mAway) ||
+        (em.homeTeam === mAway && em.awayTeam === mHome);
+      if (!sameTeams || eDate !== mDate) continue;
+
+      const homeFirst = (em.homeTeam === mHome);
+      const hs = homeFirst ? em.homeScore : em.awayScore;
+      const as_ = homeFirst ? em.awayScore : em.homeScore;
+
+      if (em.status === 'final') {
+        scores[m.id] = { homeScore: hs, awayScore: as_, status: 'final' };
+        if (hs !== as_) {
+          const winner = hs > as_ ? mHome : mAway;
+          const loser  = hs > as_ ? mAway : mHome;
+          // Resolve winner code so subsequent rounds can be matched
+          if      (m.id >= 73 && m.id <= 88) resolvedTeams[`R32 W${m.id - 72}`] = winner;
+          else if (m.id >= 89 && m.id <= 96) resolvedTeams[`R16 W${m.id - 88}`] = winner;
+          else if (m.id >= 97 && m.id <= 100) resolvedTeams[`QF W${m.id - 96}`]  = winner;
+          else if (m.id === 101) { resolvedTeams['SF W1'] = winner; resolvedTeams['SF L1'] = loser; }
+          else if (m.id === 102) { resolvedTeams['SF W2'] = winner; resolvedTeams['SF L2'] = loser; }
+        }
+      } else if (em.status === 'live') {
+        scores[m.id] = { homeScore: hs, awayScore: as_, status: 'live' };
+      }
+      break;
     }
   }
+
+  const count = Object.keys(scores).length;
+  if (count > 0) console.log(`⚽ Embedded ${count} knockout result(s) from ESPN`);
+  else           console.log('ℹ️  No completed knockout results found yet');
+  return scores;
+}
+
+// ─── PATCH INDEX.HTML ─────────────────────────────────────────────────────────
+// scores: pre-merged map of matchId → {homeScore, awayScore, status} from
+//         results.json + live ESPN data.  Caller is responsible for merging.
+function patchIndexHtml(standings = {}, scores = {}) {
+  const indexPath = path.join(__dirname, '..', 'site', 'index.html');
+  let html = fs.readFileSync(indexPath, 'utf8');
 
   // Replace TEAMS array
   html = html.replace(
@@ -980,9 +1126,14 @@ const DIRS_TO_REMOVE = KNOWN_DIRS.filter(d => !VALID_SLUGS.has(d));
   // Fetch current standings from ESPN so knockout slots can be resolved at build time
   const standings = await fetchStandings();
 
+  // Fetch completed knockout results from ESPN and merge with results.json scores.
+  // results.json (group stage) takes priority; ESPN knockout data fills in the rest.
+  const knockoutScores = await fetchKnockoutScores(standings);
+  const allScores = { ...scores, ...knockoutScores };
+
   // 1. Patch index.html and schedule page (both get embedded scores + standings)
-  patchIndexHtml(standings);
-  patchScheduleHtml(scores, standings);
+  patchIndexHtml(standings, allScores);
+  patchScheduleHtml(allScores, standings);
 
   // 2. Remove obsolete team dirs
   for (const dir of DIRS_TO_REMOVE) {
