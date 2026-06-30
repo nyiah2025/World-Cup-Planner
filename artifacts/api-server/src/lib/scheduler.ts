@@ -28,10 +28,18 @@ const SCRIPT_PATH = path.resolve(
 
 let running = false;
 
-export function runGenerateSchedule(): Promise<void> {
+export const ALREADY_RUNNING = Symbol("ALREADY_RUNNING");
+
+/**
+ * Runs generate-schedule.cjs and resolves with:
+ *   true            — script exited 0 (success)
+ *   false           — script exited non-zero or failed to spawn
+ *   ALREADY_RUNNING — a run was already in progress (caller should handle separately)
+ */
+export function runGenerateSchedule(): Promise<true | false | typeof ALREADY_RUNNING> {
   if (running) {
     logger.info("[scheduler] generate-schedule already running — skipping");
-    return Promise.resolve();
+    return Promise.resolve(ALREADY_RUNNING);
   }
 
   running = true;
@@ -64,14 +72,14 @@ export function runGenerateSchedule(): Promise<void> {
           { elapsed },
           "[scheduler] generate-schedule completed successfully",
         );
+        resolve(true);
       } else {
         logger.error(
           { code, elapsed, output: lines.join("\n") },
           "[scheduler] generate-schedule exited with non-zero code",
         );
+        resolve(false);
       }
-
-      resolve();
     });
 
     child.on("error", (err) => {
@@ -80,7 +88,7 @@ export function runGenerateSchedule(): Promise<void> {
         { err },
         "[scheduler] failed to spawn generate-schedule process",
       );
-      resolve();
+      resolve(false);
     });
   });
 }

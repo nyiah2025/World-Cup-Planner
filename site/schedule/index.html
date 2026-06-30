@@ -777,6 +777,7 @@ document.addEventListener('DOMContentLoaded', function() {
     fetch('/api/refresh?token='+encodeURIComponent(token),{method:'POST'})
       .then(function(r){
         if(r.ok){location.reload();}
+        else if(r.status===409){btn.textContent='⏳ Already running…';setTimeout(function(){btn.textContent='🔄 Refresh results';btn.disabled=false;},5000);}
         else{btn.textContent='❌ Error ('+r.status+')';btn.disabled=false;}
       })
       .catch(function(){btn.textContent='❌ Network error';btn.disabled=false;});
