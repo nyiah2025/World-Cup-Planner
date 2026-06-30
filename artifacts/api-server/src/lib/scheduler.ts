@@ -28,7 +28,7 @@ const SCRIPT_PATH = path.resolve(
 
 let running = false;
 
-function runGenerateSchedule(): Promise<void> {
+export function runGenerateSchedule(): Promise<void> {
   if (running) {
     logger.info("[scheduler] generate-schedule already running — skipping");
     return Promise.resolve();

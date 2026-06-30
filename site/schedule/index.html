@@ -764,5 +764,25 @@ document.addEventListener('DOMContentLoaded', function() {
 <script>
 (function(){var b=document.getElementById('navMenuBtn'),w=document.getElementById('navLinksWrap'),c=document.getElementById('navCloseBtn');if(!b||!w)return;b.addEventListener('click',function(){w.classList.add('open');});if(c)c.addEventListener('click',function(){w.classList.remove('open');});w.addEventListener('click',function(e){if(e.target.tagName==='A')w.classList.remove('open');});var db=document.getElementById('navDropBtn'),dm=document.getElementById('navDropMenu');if(db&&dm){db.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();var o=dm.classList.toggle('open');db.setAttribute('aria-expanded',String(o));});document.addEventListener('click',function(){dm.classList.remove('open');db.setAttribute('aria-expanded','false');});}})();
 </script>
+<script>
+(function(){
+  var p=new URLSearchParams(location.search);
+  if(p.get('admin')!=='1')return;
+  var token=p.get('token')||'';
+  var btn=document.createElement('button');
+  btn.textContent='🔄 Refresh results';
+  btn.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#1a1a2e;color:#fff;border:1px solid rgba(255,255,255,0.25);border-radius:8px;padding:10px 16px;font-family:\'Instrument Sans\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,0.4);';
+  btn.addEventListener('click',function(){
+    btn.disabled=true;btn.textContent='Refreshing…';
+    fetch('/api/refresh?token='+encodeURIComponent(token),{method:'POST'})
+      .then(function(r){
+        if(r.ok){location.reload();}
+        else{btn.textContent='❌ Error ('+r.status+')';btn.disabled=false;}
+      })
+      .catch(function(){btn.textContent='❌ Network error';btn.disabled=false;});
+  });
+  document.body.appendChild(btn);
+})();
+</script>
 </body>
 </html>
