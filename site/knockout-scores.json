@@ -3,5 +3,22 @@
     "homeScore": 0,
     "awayScore": 1,
     "status": "final"
+  },
+  "74": {
+    "homeScore": 1,
+    "awayScore": 1,
+    "status": "final",
+    "penaltyWinner": "Paraguay"
+  },
+  "75": {
+    "homeScore": 1,
+    "awayScore": 1,
+    "status": "final",
+    "penaltyWinner": "Morocco"
+  },
+  "76": {
+    "homeScore": 2,
+    "awayScore": 1,
+    "status": "final"
   }
 }
