@@ -768,7 +768,18 @@ document.addEventListener('DOMContentLoaded', function() {
 (function(){
   var p=new URLSearchParams(location.search);
   if(p.get('admin')!=='1')return;
-  var token=p.get('token')||'';
+  if(p.get('token')){
+    sessionStorage.setItem('adminToken',p.get('token'));
+    p.delete('token');
+    var clean=p.toString()?'?'+p.toString():location.pathname;
+    history.replaceState(null,'',clean);
+  }
+  var token=sessionStorage.getItem('adminToken')||'';
+  if(!token){
+    token=prompt('Admin token:')||'';
+    if(token)sessionStorage.setItem('adminToken',token);
+  }
+  if(!token)return;
   var btn=document.createElement('button');
   btn.textContent='🔄 Refresh results';
   btn.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#1a1a2e;color:#fff;border:1px solid rgba(255,255,255,0.25);border-radius:8px;padding:10px 16px;font-family:\'Instrument Sans\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,0.4);';
