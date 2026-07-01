@@ -103,14 +103,22 @@ function parseScoreboardData(data: Record<string, unknown>): MatchScore[] {
         }
       }
 
+      const matchDate = (e.date as string) ?? "";
+      const matchStartMs = matchDate ? new Date(matchDate).getTime() : 0;
+      const staleLive =
+        state === "in" &&
+        !completed &&
+        matchStartMs > 0 &&
+        Date.now() - matchStartMs > 3 * 60 * 60 * 1000; // 3 hours past kickoff
+
       return {
         homeTeam: normalizeTeamName((homeTeamObj?.displayName as string) ?? ""),
         awayTeam: normalizeTeamName((awayTeamObj?.displayName as string) ?? ""),
         homeScore: hs,
         awayScore: as_,
-        status: completed ? "final" : state === "in" ? "live" : "scheduled",
+        status: completed || staleLive ? "final" : state === "in" ? "live" : "scheduled",
         clock: (statusObj?.displayClock as string | undefined) ?? undefined,
-        date: (e.date as string) ?? "",
+        date: matchDate,
         ...(penaltyWinner ? { penaltyWinner } : {}),
       };
     });
