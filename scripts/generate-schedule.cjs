@@ -865,8 +865,8 @@ async function fetchKnockoutScores(standings = {}) {
   const top8 = thirds.slice(0, thirdCodes.length);
   const FIFA_THIRD_PLACE_TABLE = {
     'BDEFIJKL': {
-      '3A/B/C/D/F':'D','3C/D/F/G/H':'F','3C/E/F/H/I':'I',
-      '3A/E/H/I/J':'E','3E/H/I/J/K':'K','3E/F/G/I/J':'J',
+      '3A/B/C/D/F':'D','3C/D/F/G/H':'F','3C/E/F/H/I':'E',
+      '3A/E/H/I/J':'I','3E/H/I/J/K':'K','3E/F/G/I/J':'J',
       '3B/E/F/I/J':'B','3D/E/I/J/L':'L'
     }
   };
