@@ -4,7 +4,7 @@ import { runGenerateSchedule, ALREADY_RUNNING } from "../lib/scheduler";
 
 const router: IRouter = Router();
 
-router.post("/refresh", async (req, res) => {
+router.get("/refresh", async (req, res) => {
   const token = req.query.token as string | undefined;
   const adminToken = process.env.ADMIN_REFRESH_TOKEN;
 

@@ -477,8 +477,8 @@ const MATCHES = [
   {id:74, stage:"Round of 32", group:"—", home:"1E", away:"3A/B/C/D/F", utc:"2026-06-29T20:30:00Z", venue:"Gillette Stadium", city:"Boston, USA", homeScore:1, awayScore:1, status:"final", penaltyWinner:"Paraguay"},
   {id:75, stage:"Round of 32", group:"—", home:"1F", away:"2C", utc:"2026-06-30T01:00:00Z", venue:"Estadio BBVA", city:"Monterrey, MEX", homeScore:1, awayScore:1, status:"final", penaltyWinner:"Morocco"},
   {id:76, stage:"Round of 32", group:"—", home:"1C", away:"2F", utc:"2026-06-29T17:00:00Z", venue:"NRG Stadium", city:"Houston, USA", homeScore:2, awayScore:1, status:"final"},
-  {id:77, stage:"Round of 32", group:"—", home:"1I", away:"3C/D/F/G/H", utc:"2026-06-30T21:00:00Z", venue:"MetLife Stadium", city:"New York, USA"},
-  {id:78, stage:"Round of 32", group:"—", home:"2E", away:"2I", utc:"2026-06-30T17:00:00Z", venue:"AT&T Stadium", city:"Dallas, USA"},
+  {id:77, stage:"Round of 32", group:"—", home:"1I", away:"3C/D/F/G/H", utc:"2026-06-30T21:00:00Z", venue:"MetLife Stadium", city:"New York, USA", homeScore:3, awayScore:0, status:"final"},
+  {id:78, stage:"Round of 32", group:"—", home:"2E", away:"2I", utc:"2026-06-30T17:00:00Z", venue:"AT&T Stadium", city:"Dallas, USA", homeScore:1, awayScore:2, status:"final"},
   {id:79, stage:"Round of 32", group:"—", home:"1A", away:"3C/E/F/H/I", utc:"2026-07-01T01:00:00Z", venue:"Estadio Azteca", city:"Mexico City, MEX"},
   {id:80, stage:"Round of 32", group:"—", home:"1L", away:"3E/H/I/J/K", utc:"2026-07-01T16:00:00Z", venue:"Mercedes-Benz Stadium", city:"Atlanta, USA"},
   {id:81, stage:"Round of 32", group:"—", home:"1D", away:"3B/E/F/I/J", utc:"2026-07-02T00:00:00Z", venue:"Levi's Stadium", city:"San Jose, USA"},
@@ -1083,7 +1083,7 @@ document.addEventListener('DOMContentLoaded', function() {
   btn.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#1a1a2e;color:#fff;border:1px solid rgba(255,255,255,0.25);border-radius:8px;padding:10px 16px;font-family:\'Instrument Sans\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,0.4);';
   btn.addEventListener('click',function(){
     btn.disabled=true;btn.textContent='Refreshing…';
-    fetch('/api/refresh?token='+encodeURIComponent(token),{method:'POST'})
+    fetch('/api/refresh?token='+encodeURIComponent(token))
       .then(function(r){
         if(r.ok){location.reload();}
         else if(r.status===409){btn.textContent='⏳ Already running…';setTimeout(function(){btn.textContent='🔄 Refresh results';btn.disabled=false;},5000);}
