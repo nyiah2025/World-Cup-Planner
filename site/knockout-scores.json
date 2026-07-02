@@ -35,5 +35,20 @@
     "homeScore": 2,
     "awayScore": 0,
     "status": "final"
+  },
+  "80": {
+    "homeScore": 2,
+    "awayScore": 1,
+    "status": "final"
+  },
+  "81": {
+    "homeScore": 2,
+    "awayScore": 0,
+    "status": "final"
+  },
+  "82": {
+    "homeScore": 3,
+    "awayScore": 2,
+    "status": "final"
   }
 }

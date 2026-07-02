@@ -301,9 +301,9 @@ const MATCHES = [
   {id:77, stage:"Round of 32", group:"—", home:"1I", away:"3C/D/F/G/H", utc:"2026-06-30T21:00:00Z", venue:"MetLife Stadium", city:"New York, USA", homeScore:3, awayScore:0, status:"final"},
   {id:78, stage:"Round of 32", group:"—", home:"2E", away:"2I", utc:"2026-06-30T17:00:00Z", venue:"AT&T Stadium", city:"Dallas, USA", homeScore:1, awayScore:2, status:"final"},
   {id:79, stage:"Round of 32", group:"—", home:"1A", away:"3C/E/F/H/I", utc:"2026-07-01T01:00:00Z", venue:"Estadio Azteca", city:"Mexico City, MEX", homeScore:2, awayScore:0, status:"final"},
-  {id:80, stage:"Round of 32", group:"—", home:"1L", away:"3E/H/I/J/K", utc:"2026-07-01T16:00:00Z", venue:"Mercedes-Benz Stadium", city:"Atlanta, USA"},
-  {id:81, stage:"Round of 32", group:"—", home:"1D", away:"3B/E/F/I/J", utc:"2026-07-02T00:00:00Z", venue:"Levi's Stadium", city:"San Jose, USA"},
-  {id:82, stage:"Round of 32", group:"—", home:"1G", away:"3A/E/H/I/J", utc:"2026-07-01T20:00:00Z", venue:"Lumen Field", city:"Seattle, USA"},
+  {id:80, stage:"Round of 32", group:"—", home:"1L", away:"3E/H/I/J/K", utc:"2026-07-01T16:00:00Z", venue:"Mercedes-Benz Stadium", city:"Atlanta, USA", homeScore:2, awayScore:1, status:"final"},
+  {id:81, stage:"Round of 32", group:"—", home:"1D", away:"3B/E/F/I/J", utc:"2026-07-02T00:00:00Z", venue:"Levi's Stadium", city:"San Jose, USA", homeScore:2, awayScore:0, status:"final"},
+  {id:82, stage:"Round of 32", group:"—", home:"1G", away:"3A/E/H/I/J", utc:"2026-07-01T20:00:00Z", venue:"Lumen Field", city:"Seattle, USA", homeScore:3, awayScore:2, status:"final"},
   {id:83, stage:"Round of 32", group:"—", home:"2K", away:"2L", utc:"2026-07-02T23:00:00Z", venue:"BMO Field", city:"Toronto, CAN"},
   {id:84, stage:"Round of 32", group:"—", home:"1H", away:"2J", utc:"2026-07-02T19:00:00Z", venue:"SoFi Stadium", city:"Los Angeles, USA"},
   {id:85, stage:"Round of 32", group:"—", home:"1B", away:"3E/F/G/I/J", utc:"2026-07-03T03:00:00Z", venue:"BC Place", city:"Vancouver, CAN"},
@@ -530,13 +530,13 @@ async function fetchLiveData() {
       fetch('/api/scores'),
       fetch('/api/standings'),
     ]);
-    if (scoresRes.status === 'fulfilled' && scoresRes.value.ok) {
-      const { matches } = await scoresRes.value.json();
-      processScores(matches || []);
-    }
     if (standingsRes.status === 'fulfilled' && standingsRes.value.ok) {
       const { groups } = await standingsRes.value.json();
       processStandings(groups || {});
+    }
+    if (scoresRes.status === 'fulfilled' && scoresRes.value.ok) {
+      const { matches } = await scoresRes.value.json();
+      processScores(matches || []);
     }
   } catch(e) {
     console.warn('Could not fetch live data:', e);
