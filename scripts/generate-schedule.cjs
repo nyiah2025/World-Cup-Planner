@@ -989,7 +989,27 @@ async function fetchKnockoutScores(standings = {}) {
           else if (m.id === 102) { resolvedTeams['SF W2'] = winner; resolvedTeams['SF L2'] = loser; }
         }
       } else if (em.status === 'live') {
-        scores[m.id] = { homeScore: hs, awayScore: as_, status: 'live' };
+        const kickoffMs = new Date(m.utc).getTime();
+        const staleLive = Date.now() - kickoffMs > 3 * 60 * 60 * 1000;
+        if (staleLive) {
+          // ESPN is stuck — treat as final so it doesn't get baked in as live
+          const sc = { homeScore: hs, awayScore: as_, status: 'final' };
+          let winner, loser;
+          if (hs !== as_) {
+            winner = hs > as_ ? mHome : mAway;
+            loser  = hs > as_ ? mAway : mHome;
+          }
+          scores[m.id] = sc;
+          if (winner) {
+            if      (m.id >= 73 && m.id <= 88) resolvedTeams[`R32 W${m.id - 72}`] = winner;
+            else if (m.id >= 89 && m.id <= 96) resolvedTeams[`R16 W${m.id - 88}`] = winner;
+            else if (m.id >= 97 && m.id <= 100) resolvedTeams[`QF W${m.id - 96}`]  = winner;
+            else if (m.id === 101) { resolvedTeams['SF W1'] = winner; resolvedTeams['SF L1'] = loser; }
+            else if (m.id === 102) { resolvedTeams['SF W2'] = winner; resolvedTeams['SF L2'] = loser; }
+          }
+        } else {
+          scores[m.id] = { homeScore: hs, awayScore: as_, status: 'live' };
+        }
       }
       break;
     }
