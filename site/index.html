@@ -486,12 +486,12 @@ const MATCHES = [
   {id:83, stage:"Round of 32", group:"—", home:"2K", away:"2L", utc:"2026-07-02T23:00:00Z", venue:"BMO Field", city:"Toronto, CAN", homeScore:2, awayScore:1, status:"final"},
   {id:84, stage:"Round of 32", group:"—", home:"1H", away:"2J", utc:"2026-07-02T19:00:00Z", venue:"SoFi Stadium", city:"Los Angeles, USA", homeScore:3, awayScore:0, status:"final"},
   {id:85, stage:"Round of 32", group:"—", home:"1B", away:"3E/F/G/I/J", utc:"2026-07-03T03:00:00Z", venue:"BC Place", city:"Vancouver, CAN", homeScore:2, awayScore:0, status:"final"},
-  {id:86, stage:"Round of 32", group:"—", home:"1J", away:"2H", utc:"2026-07-03T22:00:00Z", venue:"Hard Rock Stadium", city:"Miami, USA"},
-  {id:87, stage:"Round of 32", group:"—", home:"1K", away:"3D/E/I/J/L", utc:"2026-07-04T01:30:00Z", venue:"Arrowhead Stadium", city:"Kansas City, USA"},
+  {id:86, stage:"Round of 32", group:"—", home:"1J", away:"2H", utc:"2026-07-03T22:00:00Z", venue:"Hard Rock Stadium", city:"Miami, USA", homeScore:3, awayScore:2, status:"final"},
+  {id:87, stage:"Round of 32", group:"—", home:"1K", away:"3D/E/I/J/L", utc:"2026-07-04T01:30:00Z", venue:"Arrowhead Stadium", city:"Kansas City, USA", homeScore:1, awayScore:0, status:"final"},
   {id:88, stage:"Round of 32", group:"—", home:"2D", away:"2G", utc:"2026-07-03T18:00:00Z", venue:"AT&T Stadium", city:"Dallas, USA", homeScore:1, awayScore:1, status:"final", penaltyWinner:"Egypt"},
   // ROUND OF 16
   {id:89, stage:"Round of 16", group:"—", home:"R32 W2", away:"R32 W5", utc:"2026-07-04T21:00:00Z", venue:"Lincoln Financial Field", city:"Philadelphia, USA"},
-  {id:90, stage:"Round of 16", group:"—", home:"R32 W1", away:"R32 W3", utc:"2026-07-04T17:00:00Z", venue:"NRG Stadium", city:"Houston, USA"},
+  {id:90, stage:"Round of 16", group:"—", home:"R32 W1", away:"R32 W3", utc:"2026-07-04T17:00:00Z", venue:"NRG Stadium", city:"Houston, USA", homeScore:0, awayScore:3, status:"final"},
   {id:91, stage:"Round of 16", group:"—", home:"R32 W4", away:"R32 W6", utc:"2026-07-05T20:00:00Z", venue:"MetLife Stadium", city:"New York, USA"},
   {id:92, stage:"Round of 16", group:"—", home:"R32 W7", away:"R32 W8", utc:"2026-07-06T00:00:00Z", venue:"Estadio Azteca", city:"Mexico City, MEX"},
   {id:93, stage:"Round of 16", group:"—", home:"R32 W11", away:"R32 W12", utc:"2026-07-06T19:00:00Z", venue:"AT&T Stadium", city:"Dallas, USA"},
@@ -641,7 +641,8 @@ function processScores(espnMatches) {
       break;
     }
   }
-  resolveKnockout();
+  // Multi-pass so R16+ embedded scores resolve to real team names
+  for (var _pass = 0; _pass < 4; _pass++) { seedEmbeddedResults(); resolveKnockout(); }
 }
 
 function processStandings(groups) {
@@ -1043,8 +1044,8 @@ tzSelect.addEventListener('change', () => {
 // matches are never blank even when ESPN's window no longer covers them.
 const STANDINGS = {"A":[{"team":"Mexico","position":1,"points":9,"gd":6,"gf":6},{"team":"South Africa","position":2,"points":4,"gd":-1,"gf":2},{"team":"South Korea","position":3,"points":3,"gd":-1,"gf":2},{"team":"Czechia","position":4,"points":1,"gd":-4,"gf":2}],"B":[{"team":"Switzerland","position":1,"points":7,"gd":4,"gf":7},{"team":"Canada","position":2,"points":4,"gd":5,"gf":8},{"team":"Bosnia & Herz.","position":3,"points":4,"gd":-1,"gf":5},{"team":"Qatar","position":4,"points":1,"gd":-8,"gf":2}],"C":[{"team":"Brazil","position":1,"points":7,"gd":6,"gf":7},{"team":"Morocco","position":2,"points":7,"gd":3,"gf":6},{"team":"Scotland","position":3,"points":3,"gd":-3,"gf":1},{"team":"Haiti","position":4,"points":0,"gd":-6,"gf":2}],"D":[{"team":"USA","position":1,"points":6,"gd":4,"gf":8},{"team":"Australia","position":2,"points":4,"gd":0,"gf":2},{"team":"Paraguay","position":3,"points":4,"gd":-2,"gf":2},{"team":"Türkiye","position":4,"points":3,"gd":-2,"gf":3}],"E":[{"team":"Germany","position":1,"points":6,"gd":6,"gf":10},{"team":"Côte d'Ivoire","position":2,"points":6,"gd":2,"gf":4},{"team":"Ecuador","position":3,"points":4,"gd":0,"gf":2},{"team":"Curaçao","position":4,"points":1,"gd":-8,"gf":1}],"F":[{"team":"Netherlands","position":1,"points":7,"gd":6,"gf":10},{"team":"Japan","position":2,"points":5,"gd":4,"gf":7},{"team":"Sweden","position":3,"points":4,"gd":0,"gf":7},{"team":"Tunisia","position":4,"points":0,"gd":-10,"gf":2}],"G":[{"team":"Belgium","position":1,"points":5,"gd":4,"gf":6},{"team":"Egypt","position":2,"points":5,"gd":2,"gf":5},{"team":"Iran","position":3,"points":3,"gd":0,"gf":3},{"team":"New Zealand","position":4,"points":1,"gd":-6,"gf":4}],"H":[{"team":"Spain","position":1,"points":7,"gd":5,"gf":5},{"team":"Cape Verde","position":2,"points":3,"gd":0,"gf":2},{"team":"Uruguay","position":3,"points":2,"gd":-1,"gf":3},{"team":"Saudi Arabia","position":4,"points":2,"gd":-4,"gf":1}],"I":[{"team":"France","position":1,"points":9,"gd":8,"gf":10},{"team":"Norway","position":2,"points":6,"gd":1,"gf":8},{"team":"Senegal","position":3,"points":3,"gd":2,"gf":8},{"team":"Iraq","position":4,"points":0,"gd":-11,"gf":1}],"J":[{"team":"Argentina","position":1,"points":9,"gd":7,"gf":8},{"team":"Austria","position":2,"points":4,"gd":0,"gf":6},{"team":"Algeria","position":3,"points":4,"gd":-2,"gf":5},{"team":"Jordan","position":4,"points":0,"gd":-5,"gf":3}],"K":[{"team":"Colombia","position":1,"points":7,"gd":3,"gf":4},{"team":"Portugal","position":2,"points":5,"gd":5,"gf":6},{"team":"DR Congo","position":3,"points":4,"gd":1,"gf":4},{"team":"Uzbekistan","position":4,"points":0,"gd":-9,"gf":2}],"L":[{"team":"England","position":1,"points":7,"gd":4,"gf":6},{"team":"Croatia","position":2,"points":6,"gd":0,"gf":5},{"team":"Ghana","position":3,"points":4,"gd":0,"gf":2},{"team":"Panama","position":4,"points":0,"gd":-4,"gf":0}]};
 if (Object.keys(STANDINGS).length) processStandings(STANDINGS);
-seedEmbeddedResults();
-resolveKnockout();
+// Multi-pass: each pass resolves one more round (R32→R16→QF→SF) before the next
+for (var _pass = 0; _pass < 4; _pass++) { seedEmbeddedResults(); resolveKnockout(); }
 render();
 fetchLiveData();
 setInterval(fetchLiveData, 60000);
