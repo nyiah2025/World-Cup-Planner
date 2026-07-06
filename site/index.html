@@ -490,10 +490,10 @@ const MATCHES = [
   {id:87, stage:"Round of 32", group:"—", home:"1K", away:"3D/E/I/J/L", utc:"2026-07-04T01:30:00Z", venue:"Arrowhead Stadium", city:"Kansas City, USA", homeScore:1, awayScore:0, status:"final"},
   {id:88, stage:"Round of 32", group:"—", home:"2D", away:"2G", utc:"2026-07-03T18:00:00Z", venue:"AT&T Stadium", city:"Dallas, USA", homeScore:1, awayScore:1, status:"final", penaltyWinner:"Egypt"},
   // ROUND OF 16
-  {id:89, stage:"Round of 16", group:"—", home:"R32 W2", away:"R32 W5", utc:"2026-07-04T21:00:00Z", venue:"Lincoln Financial Field", city:"Philadelphia, USA"},
+  {id:89, stage:"Round of 16", group:"—", home:"R32 W2", away:"R32 W5", utc:"2026-07-04T21:00:00Z", venue:"Lincoln Financial Field", city:"Philadelphia, USA", homeScore:0, awayScore:1, status:"final"},
   {id:90, stage:"Round of 16", group:"—", home:"R32 W1", away:"R32 W3", utc:"2026-07-04T17:00:00Z", venue:"NRG Stadium", city:"Houston, USA", homeScore:0, awayScore:3, status:"final"},
-  {id:91, stage:"Round of 16", group:"—", home:"R32 W4", away:"R32 W6", utc:"2026-07-05T20:00:00Z", venue:"MetLife Stadium", city:"New York, USA"},
-  {id:92, stage:"Round of 16", group:"—", home:"R32 W7", away:"R32 W8", utc:"2026-07-06T00:00:00Z", venue:"Estadio Azteca", city:"Mexico City, MEX"},
+  {id:91, stage:"Round of 16", group:"—", home:"R32 W4", away:"R32 W6", utc:"2026-07-05T20:00:00Z", venue:"MetLife Stadium", city:"New York, USA", homeScore:1, awayScore:2, status:"final"},
+  {id:92, stage:"Round of 16", group:"—", home:"R32 W7", away:"R32 W8", utc:"2026-07-06T00:00:00Z", venue:"Estadio Azteca", city:"Mexico City, MEX", homeScore:2, awayScore:3, status:"final"},
   {id:93, stage:"Round of 16", group:"—", home:"R32 W11", away:"R32 W12", utc:"2026-07-06T19:00:00Z", venue:"AT&T Stadium", city:"Dallas, USA"},
   {id:94, stage:"Round of 16", group:"—", home:"R32 W9", away:"R32 W10", utc:"2026-07-07T00:00:00Z", venue:"Lumen Field", city:"Seattle, USA"},
   {id:95, stage:"Round of 16", group:"—", home:"R32 W14", away:"R32 W16", utc:"2026-07-07T16:00:00Z", venue:"Mercedes-Benz Stadium", city:"Atlanta, USA"},
@@ -1079,20 +1079,62 @@ document.addEventListener('DOMContentLoaded', function() {
     if(token)sessionStorage.setItem('adminToken',token);
   }
   if(!token)return;
+
+  var overlay=document.createElement('div');
+  overlay.style.cssText='display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;flex-direction:column;gap:16px;font-family:\'Instrument Sans\',sans-serif;color:#fff;font-size:22px;font-weight:600;text-align:center;';
+  var overlayMsg=document.createElement('div');
+  var overlayClose=document.createElement('button');
+  overlayClose.textContent='Dismiss';
+  overlayClose.style.cssText='margin-top:8px;padding:8px 20px;background:#fff;color:#1a1a2e;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;';
+  overlayClose.onclick=function(){overlay.style.display='none';};
+  overlay.appendChild(overlayMsg);
+  overlay.appendChild(overlayClose);
+  document.body.appendChild(overlay);
+
+  function showOverlay(msg){overlayMsg.innerHTML=msg;overlay.style.display='flex';}
+
+  var panel=document.createElement('div');
+  panel.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:6px;';
+
   var btn=document.createElement('button');
   btn.textContent='🔄 Refresh results';
-  btn.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;background:#1a1a2e;color:#fff;border:1px solid rgba(255,255,255,0.25);border-radius:8px;padding:10px 16px;font-family:\'Instrument Sans\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,0.4);';
+  btn.style.cssText='background:#1a1a2e;color:#fff;border:1px solid rgba(255,255,255,0.25);border-radius:8px;padding:10px 16px;font-family:\'Instrument Sans\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,0.4);';
+
+  var resetLink=document.createElement('a');
+  resetLink.textContent='Reset token';
+  resetLink.href='#';
+  resetLink.style.cssText='font-size:11px;color:rgba(255,255,255,0.5);text-decoration:underline;';
+  resetLink.onclick=function(e){e.preventDefault();sessionStorage.removeItem('adminToken');location.reload();};
+
   btn.addEventListener('click',function(){
-    btn.disabled=true;btn.textContent='Refreshing…';
+    btn.disabled=true;
+    btn.textContent='⏳ Refreshing…';
+    showOverlay('⏳ Refreshing scores…<br><span style="font-size:14px;font-weight:400;opacity:0.75">Fetching latest results from ESPN</span>');
     fetch('/api/refresh?token='+encodeURIComponent(token))
       .then(function(r){
-        if(r.ok){location.reload();}
-        else if(r.status===409){btn.textContent='⏳ Already running…';setTimeout(function(){btn.textContent='🔄 Refresh results';btn.disabled=false;},5000);}
-        else{btn.textContent='❌ Error ('+r.status+')';btn.disabled=false;}
+        if(r.ok){
+          showOverlay('✅ Done! Reloading page…');
+          setTimeout(function(){location.reload();},1200);
+        } else if(r.status===401){
+          showOverlay('❌ Wrong token (401)<br><span style="font-size:14px;font-weight:400">Click Dismiss, then use the Reset token link to re-enter it.</span>');
+          btn.textContent='❌ Bad token';btn.disabled=false;
+        } else if(r.status===409){
+          showOverlay('⏳ Already running — try again in a moment.');
+          setTimeout(function(){overlay.style.display='none';btn.textContent='🔄 Refresh results';btn.disabled=false;},4000);
+        } else {
+          r.text().then(function(t){showOverlay('❌ Server error ('+r.status+')<br><span style="font-size:14px;font-weight:400">'+t+'</span>');});
+          btn.textContent='❌ Error ('+r.status+')';btn.disabled=false;
+        }
       })
-      .catch(function(){btn.textContent='❌ Network error';btn.disabled=false;});
+      .catch(function(err){
+        showOverlay('❌ Network error<br><span style="font-size:14px;font-weight:400">Could not reach /api/refresh<br>'+err+'</span>');
+        btn.textContent='❌ Network error';btn.disabled=false;
+      });
   });
-  document.body.appendChild(btn);
+
+  panel.appendChild(btn);
+  panel.appendChild(resetLink);
+  document.body.appendChild(panel);
 })();
 </script>
 </body>

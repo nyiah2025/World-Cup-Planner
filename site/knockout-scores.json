@@ -82,8 +82,23 @@
     "status": "final",
     "penaltyWinner": "Egypt"
   },
+  "89": {
+    "homeScore": 0,
+    "awayScore": 1,
+    "status": "final"
+  },
   "90": {
     "homeScore": 0,
+    "awayScore": 3,
+    "status": "final"
+  },
+  "91": {
+    "homeScore": 1,
+    "awayScore": 2,
+    "status": "final"
+  },
+  "92": {
+    "homeScore": 2,
     "awayScore": 3,
     "status": "final"
   }
