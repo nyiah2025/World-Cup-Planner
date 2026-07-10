@@ -122,5 +122,15 @@
     "awayScore": 0,
     "status": "final",
     "penaltyWinner": "Switzerland"
+  },
+  "97": {
+    "homeScore": 2,
+    "awayScore": 0,
+    "status": "final"
+  },
+  "98": {
+    "homeScore": 2,
+    "awayScore": 1,
+    "status": "final"
   }
 }

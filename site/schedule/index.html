@@ -320,8 +320,8 @@ const MATCHES = [
   {id:95, stage:"Round of 16", group:"—", home:"R32 W14", away:"R32 W16", utc:"2026-07-07T16:00:00Z", venue:"Mercedes-Benz Stadium", city:"Atlanta, USA", homeScore:3, awayScore:2, status:"final"},
   {id:96, stage:"Round of 16", group:"—", home:"R32 W13", away:"R32 W15", utc:"2026-07-07T20:00:00Z", venue:"BC Place", city:"Vancouver, CAN", homeScore:0, awayScore:0, status:"final", penaltyWinner:"Switzerland"},
   // QUARTERFINALS
-  {id:97, stage:"Quarterfinal", group:"—", home:"R16 W1", away:"R16 W2", utc:"2026-07-09T20:00:00Z", venue:"Gillette Stadium", city:"Boston, USA"},
-  {id:98, stage:"Quarterfinal", group:"—", home:"R16 W5", away:"R16 W6", utc:"2026-07-10T19:00:00Z", venue:"SoFi Stadium", city:"Los Angeles, USA"},
+  {id:97, stage:"Quarterfinal", group:"—", home:"R16 W1", away:"R16 W2", utc:"2026-07-09T20:00:00Z", venue:"Gillette Stadium", city:"Boston, USA", homeScore:2, awayScore:0, status:"final"},
+  {id:98, stage:"Quarterfinal", group:"—", home:"R16 W5", away:"R16 W6", utc:"2026-07-10T19:00:00Z", venue:"SoFi Stadium", city:"Los Angeles, USA", homeScore:2, awayScore:1, status:"final"},
   {id:99, stage:"Quarterfinal", group:"—", home:"R16 W3", away:"R16 W4", utc:"2026-07-11T21:00:00Z", venue:"Hard Rock Stadium", city:"Miami, USA"},
   {id:100, stage:"Quarterfinal", group:"—", home:"R16 W7", away:"R16 W8", utc:"2026-07-12T01:00:00Z", venue:"Arrowhead Stadium", city:"Kansas City, USA"},
   // SEMIFINALS
@@ -764,86 +764,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <script>
 (function(){var b=document.getElementById('navMenuBtn'),w=document.getElementById('navLinksWrap'),c=document.getElementById('navCloseBtn');if(!b||!w)return;b.addEventListener('click',function(){w.classList.add('open');});if(c)c.addEventListener('click',function(){w.classList.remove('open');});w.addEventListener('click',function(e){if(e.target.tagName==='A')w.classList.remove('open');});var db=document.getElementById('navDropBtn'),dm=document.getElementById('navDropMenu');if(db&&dm){db.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();var o=dm.classList.toggle('open');db.setAttribute('aria-expanded',String(o));});document.addEventListener('click',function(){dm.classList.remove('open');db.setAttribute('aria-expanded','false');});}})();
-</script>
-<script>
-(function(){
-  var p=new URLSearchParams(location.search);
-  if(p.get('admin')!=='1')return;
-  if(p.get('token')){
-    sessionStorage.setItem('adminToken',p.get('token'));
-    p.delete('token');
-    var clean=p.toString()?'?'+p.toString():location.pathname;
-    history.replaceState(null,'',clean);
-  }
-  var token=sessionStorage.getItem('adminToken')||'';
-  if(!token){
-    token=prompt('Admin token:')||'';
-    if(token)sessionStorage.setItem('adminToken',token);
-  }
-  if(!token)return;
-
-  // Full-screen overlay for status feedback
-  var overlay=document.createElement('div');
-  overlay.style.cssText='display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;flex-direction:column;gap:16px;font-family:\'Instrument Sans\',sans-serif;color:#fff;font-size:22px;font-weight:600;text-align:center;';
-  var overlayMsg=document.createElement('div');
-  var overlayClose=document.createElement('button');
-  overlayClose.textContent='Dismiss';
-  overlayClose.style.cssText='margin-top:8px;padding:8px 20px;background:#fff;color:#1a1a2e;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;';
-  overlayClose.onclick=function(){overlay.style.display='none';};
-  overlay.appendChild(overlayMsg);
-  overlay.appendChild(overlayClose);
-  document.body.appendChild(overlay);
-
-  function showOverlay(msg){
-    overlayMsg.innerHTML=msg;
-    overlay.style.display='flex';
-  }
-
-  var panel=document.createElement('div');
-  panel.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:6px;';
-
-  var btn=document.createElement('button');
-  btn.textContent='🔄 Refresh results';
-  btn.style.cssText='background:#1a1a2e;color:#fff;border:1px solid rgba(255,255,255,0.25);border-radius:8px;padding:10px 16px;font-family:\'Instrument Sans\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,0.4);';
-
-  var resetLink=document.createElement('a');
-  resetLink.textContent='Reset token';
-  resetLink.href='#';
-  resetLink.style.cssText='font-size:11px;color:rgba(255,255,255,0.5);text-decoration:underline;';
-  resetLink.onclick=function(e){e.preventDefault();sessionStorage.removeItem('adminToken');location.reload();};
-
-  btn.addEventListener('click',function(){
-    btn.disabled=true;
-    btn.textContent='⏳ Refreshing…';
-    showOverlay('⏳ Refreshing scores…<br><span style="font-size:14px;font-weight:400;opacity:0.75">Fetching latest results from ESPN</span>');
-    fetch('/api/refresh?token='+encodeURIComponent(token))
-      .then(function(r){
-        if(r.ok){
-          showOverlay('✅ Done! Reloading page…');
-          setTimeout(function(){location.reload();},1200);
-        } else if(r.status===401){
-          showOverlay('❌ Wrong token (401)<br><span style="font-size:14px;font-weight:400">Click Dismiss, then use the Reset token link to re-enter it.</span>');
-          btn.textContent='❌ Bad token';btn.disabled=false;
-        } else if(r.status===409){
-          showOverlay('⏳ Already running — try again in a moment.');
-          setTimeout(function(){overlay.style.display='none';btn.textContent='🔄 Refresh results';btn.disabled=false;},4000);
-        } else {
-          r.text().then(function(t){
-            showOverlay('❌ Server error ('+r.status+')<br><span style="font-size:14px;font-weight:400">'+t+'</span>');
-          });
-          btn.textContent='❌ Error ('+r.status+')';btn.disabled=false;
-        }
-      })
-      .catch(function(err){
-        showOverlay('❌ Network error<br><span style="font-size:14px;font-weight:400">Could not reach /api/refresh — is the API server running?<br>'+err+'</span>');
-        btn.textContent='❌ Network error';btn.disabled=false;
-      });
-  });
-
-  panel.appendChild(btn);
-  panel.appendChild(resetLink);
-  document.body.appendChild(panel);
-})();
 </script>
 </body>
 </html>
